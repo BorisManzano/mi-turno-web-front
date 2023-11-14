@@ -1,0 +1,268 @@
+.contentMessaje{
+display: flex;
+width: 1176px;
+height: 236px;
+flex-direction: column;
+align-items: center;
+gap: 24px;
+margin: 144px 96px 56px 96px;
+  align-self: stretch;
+}
+.contentMessaje > i {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+.contentMessaje >h1 {
+  margin: 0px;
+}
+.contentMessaje > p {
+  color: var(--Grey-8, #505050);
+text-align: center;
+font-family: Roboto;
+font-size: 14px;
+font-style: normal;
+font-weight: 400;
+line-height: 20px;
+}
+h1{
+  color: var(--Principal, #A442F1);
+text-align: center;
+font-variant-numeric: slashed-zero;
+font-family: Roboto;
+font-size: 26px;
+font-style: normal;
+font-weight: 600;
+line-height: 32px;
+}
+
+.messaje{
+  color: var(--Grey-8, #505050);
+text-align: center;
+font-family: Roboto;
+font-size: 14px;
+font-style: normal;
+font-weight: 400;
+line-height: 20px;
+}
+.impresion{
+border-radius: 8px;
+background: var(--Principal, #A442F1);
+color: var(--White, #FFF);
+text-align: center;
+font-variant-numeric: slashed-zero;
+font-family: Roboto;
+font-size: 16px;
+font-style: normal;
+font-weight: 600;
+line-height: 20px;
+}
+.contentReservation{
+display: flex;
+width: 1176px;
+flex-direction: column;
+align-items: flex-start;
+gap: 32px;
+margin: 144px 96px 56px 96px;
+border-top: 2px sold grey;
+}
+.contentReservation > section {
+  margin-top: 32px;
+}
+.contentPedido{
+  display: flex;
+  width: 977px;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 12px;
+  height: 96px;
+  align-items: center;
+}
+.itemPedido{
+  display: flex;
+  width: 977px;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-right: 16px;
+}
+.itemPedido >p {
+margin-top: 0px;
+color: var(--Grey-8, #505050);
+font-variant-numeric: ordinal;
+font-feature-settings: 'liga' off;
+font-family: Roboto;
+font-size: 14px;
+font-style: normal;
+font-weight: 600;
+line-height: 20px; /* 142.857% */
+}
+.itemPedidoButton{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  flex: 1 0 0;
+}
+.editReservationBtn{
+ display: flex;
+ width: 183px;
+ height: 44px;
+padding: 12px 24px;
+justify-content: center;
+align-items: center;
+gap: 4px;
+align-self: stretch;
+border-radius: 8px;
+background: rgba(164, 66, 241, 0.10);
+color: var(--Principal, #A442F1);
+font-variant-numeric: slashed-zero;
+border: none;
+font-family: Roboto;
+font-size: 16px;
+font-style: normal;
+font-weight: 600;
+line-height: 20px;
+}
+
+.cancelReservationBtn{
+display: flex;
+padding: 12px 24px;
+justify-content: center;
+align-items: center;
+gap: 4px;
+align-self: stretch;
+width: 183px;
+height: 44px;
+color: var(--Error, #E53939);
+font-variant-numeric: slashed-zero;
+border-radius: 8px;
+border: none;
+background: var(--Grey-1, #F5F5F5);
+font-family: Roboto;
+font-size: 15px;
+font-style: normal;
+font-weight: 600;
+line-height: 20px;
+}
+.contentInfo{
+display: flex;
+align-items: flex-start;
+gap: 48px;
+align-self: stretch;
+}
+.contentInfo > div {
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+gap: 12px;
+flex: 1 0 0;
+align-self: stretch;
+}
+.item2{
+margin-right: 48px;
+margin-left: 48px;
+
+}
+.item1 > h2{
+  color: var(--Black, #000);
+font-variant-numeric: slashed-zero;
+
+font-family: Roboto;
+font-size: 16px;
+font-style: normal;
+font-weight: 600;
+line-height: 20px;
+}
+.item2 > h2 {
+  color: var(--Black, #000);
+font-variant-numeric: slashed-zero;
+font-family: Roboto;
+font-size: 16px;
+font-style: normal;
+font-weight: 600;
+line-height: 20px;
+}
+
+.item1 > p{
+  color: var(--Grey-8, #505050);
+font-family: Roboto;
+font-size: 14px;
+font-style: normal;
+font-weight: 400;
+line-height: 20px;
+margin: 0px;
+}
+
+.item2 > p{
+color: var(--Grey-8, #505050);
+font-family: Roboto;
+font-size: 14px;
+font-style: normal;
+font-weight: 400;
+line-height: 20px;
+margin: 0px;
+}
+.itemPedido{
+  align-self: stretch;
+}
+.itemPedido > div > p {
+  color: var(--Grey-8, #505050);
+font-variant-numeric: ordinal;
+font-feature-settings: 'liga' off;
+font-family: Roboto;
+font-size: 14px;
+font-style: normal;
+font-weight: 600;
+line-height: 20px;
+}
+.subitemPedido{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-right: 16px;
+  align-self: stretch;
+  margin-bottom: 0px;
+}
+.subitemPedido > h2{
+  color: var(--Black, #000);
+  font-variant-numeric: slashed-zero;
+  font-family: Roboto;
+  font-size: 26px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 32px;
+}
+.subitemPedido > .numeroR {
+  color: var(--Principal, #A442F1);
+  font-variant-numeric: slashed-zero;
+  font-family: Roboto;
+  font-size: 26px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 32px;
+
+  margin-left: 5px;
+}
+.itemPedido  > div >  p{
+
+  color: var(--Grey-8, #505050);
+  font-variant-numeric: ordinal;
+  font-feature-settings: 'liga' off;
+  height: 20px;
+  font-family: Roboto;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 20px; 
+  margin-top: 12px;
+}
+.impresion{
+display: flex;
+width: 382px;
+padding: 12px 24px;
+justify-content: center;
+align-items: center;
+gap: 4px;
+border-radius: 8px;
+background: var(--Principal, #A442F1);
+border: none
+}
