@@ -1,5 +1,4 @@
 .login-page {
-  height: 85vh;
   margin-top: 5vh;
   display: flex;
   justify-content: center;
@@ -8,9 +7,10 @@
 }
 .login-container {
   border-radius: 12px;
-  width: 580px;
+  width: 35%;
   height: 65%;
-  box-shadow: 0px 0px 24px 0px rgba(0, 0, 0, 0.12);
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.12);
+  margin-top: 7vh;
 }
 .login-form {
   display: flex;
