@@ -1,8 +1,8 @@
-import CreateBranches from "./components/CreateBranches";
+
 function App() {
   return (
     <div className="App">
-     <CreateBranches/>
+      <h1>HELLO WORLD!</h1>
     </div>
   );
 }
