@@ -34,7 +34,6 @@ export const CancelReservation = () => {
   ];
   return (
     <>
-      <Navbar />
       <div className={s.container}>
         <div className={s.divleft}>
           <div className={s.horiz}>
