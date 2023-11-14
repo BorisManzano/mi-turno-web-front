@@ -1,3 +1,4 @@
+//  F  I  N  A  L     C  L  I  E  N  T     V  I  E  W
 .div-promotion-message {
   display: flex;
   align-items: center;
@@ -64,4 +65,31 @@
 .h5-navbar-text:hover {
   font-size: 16px;
   letter-spacing: 0.4px;
+}
+.h5-navbar-text:hover + svg > path {
+  transform: scale(1.1);
+}
+.h5-navbar-text:focus {
+  color: var(--Principal, #a442f1);
+}
+.h5-navbar-text:focus + svg > path {
+  fill: #a442f1;
+}
+svg > path {
+  transition: all 0.5s ease;
+}
+
+//  A  D  M  I  N  I  S  T  R  A  T  O  R     V  I  E  W
+.navbar-buttons-container {
+  display: flex;
+}
+.navbar-button-administrator {
+  width: 19vh;
+  margin: 0px 3%;
+  border: none;
+  border-radius: 12px;
+  transition: all 0.7s ease;
+}
+.navbar-button-administrator:hover {
+  transform: scale(1.08);
 }
