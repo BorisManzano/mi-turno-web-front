@@ -3,7 +3,7 @@ import Navbar from "../../commons/Navbar/Navbar";
 import FakeData from "../../utils/fake-data";
 import { TableList } from "../../commons/TableList";
 
-export const OperatorsList = () => {
+export const AdministratorOperatorsList = () => {
   const operators = FakeData.getOperators();
   return (
     <>

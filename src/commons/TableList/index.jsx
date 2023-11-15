@@ -20,7 +20,7 @@ export const TableList = ({ datatype, data }) => {
     column2 = "Mail";
     column3 = "Sucursal";
     column4 = "Contraseña";
-  } else if (dataType == "Reservas") {
+  } else if (dataType == "Reservas" || dataType == "OperatorReservas") {
     column1 = "Nombre y Apellido";
     column2 = "Reserva";
     column3 = "Sucursal";
@@ -30,7 +30,7 @@ export const TableList = ({ datatype, data }) => {
   return (
     <>
       <div className={s.container}>
-        <h1>{dataType}</h1>
+        <h1>{dataType == "OperatorReservas" ? "Reservas" : dataType}</h1>
         <div className={s.table}>
           {data.map((objIns, i) => {
             return (
@@ -60,7 +60,7 @@ export const TableList = ({ datatype, data }) => {
                       textTransform: "none",
                     }}
                   >
-                    Editar
+                    {dataType == "OperatorReservas" ? "Confirmación" : "Editar"}
                   </Button>
                 </div>
               </div>
