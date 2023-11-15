@@ -3,7 +3,7 @@ import FakeData from "../../utils/fake-data";
 import { TableList } from "../../commons/TableList";
 import Navbar from "../../commons/Navbar/Navbar";
 
-export const ReservationHistory = () => {
+export const UserReservationHistory = () => {
   //====test
   //const userid = 2;
   //====
