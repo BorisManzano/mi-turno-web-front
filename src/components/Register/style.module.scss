@@ -1,9 +1,7 @@
 .divs {
   display: flex;
   justify-content: center;
-  height: 100vh;
-
-  display: flex;
+  margin-top: 48px;
   width: 100%;
   padding-bottom: 0px;
   flex-direction: column;
@@ -71,7 +69,11 @@
 }
 
 .none:hover {
-  color: grey;
+  color: var(--Secundario, #cc6aff);
+}
+
+.none:active {
+  color: var(--Principal, #a442f1);
 }
 
 .bBorder {
@@ -309,6 +311,15 @@
   background: var(--Principal, #a442f1);
 }
 
+.btnSingIn:hover {
+  background: var(--Secundario, #cc6aff);
+}
+
+.btnSingIn:active {
+  background: var(--Principal, #a442f1);
+  box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.24) inset;
+}
+
 .btnLog {
   height: 44px;
   display: flex;
@@ -327,4 +338,13 @@
   font-style: normal;
   font-weight: 600;
   line-height: 20px;
+}
+
+.btnLog:hover {
+  background: rgba(164, 66, 241, 0.2);
+}
+
+.btnLog:active {
+  background: rgba(164, 66, 241, 0.2);
+  box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.24) inset;
 }
