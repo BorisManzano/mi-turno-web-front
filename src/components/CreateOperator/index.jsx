@@ -7,6 +7,7 @@ export default function CreateOperator() {
   const [confirmPswd, setConfirmPswd] = useState("");
   const [focus, setFocus] = useState(false);
   const [dni, setDNI] = useState("");
+  const fakeData = ["sucursal 1", "Sucursal 2", "Sucursal 3"];
 
   const handleInputPassword = (e) => {
     const newValue = e.target.value;
@@ -31,7 +32,7 @@ export default function CreateOperator() {
       <Navbar />
       <div className={s.parent}>
         <form className={s.f}>
-          <h1>Creation of operators</h1>
+          <h1>Creación de Operadores</h1>
           <div className={s.inputMail}>
             <label htmlFor="name">Fullname</label>
             <input
@@ -70,16 +71,20 @@ export default function CreateOperator() {
               />
             </div>
             <div className={s.allInputs}>
-              <label htmlFor="name" className={s.textInputs}>
-                Branch
-              </label>
-              <input
-                type="text"
+              <label htmlFor="Branch">Branch</label>
+              <select
                 name="Branch"
-                id="fn"
-                placeholder="Branch"
+                id="Branch"
                 className={s.inputArea}
-              />
+                placeholder="Sucursal"
+              >
+                <option disabled selected>
+                  seleccione una sucursal
+                </option>
+                {fakeData.map((suc) => {
+                  return <option value={suc}>{suc}</option>;
+                })}
+              </select>
             </div>
           </div>
           <div className={s.rowForm}>
