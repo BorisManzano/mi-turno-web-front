@@ -1,5 +1,3 @@
-import { faker } from "@faker-js/faker";
-
 const USERS = [
   {
     id: 1,
@@ -345,7 +343,6 @@ const RESERVATIONS = [
     reservationNumber: 89012,
   },
 ];
-
 
 const OPERATORS = [
   {
@@ -797,11 +794,17 @@ class FakeData {
   }
   getUserReservations = (user_id) => {
     const results = [];
-    results = this.reservations.filter((reservation) => reservation.user_id == user_id);
+    results = this.reservations.filter(
+      (reservation) => reservation.user_id == user_id
+    );
     return results;
-  }
-  getBranch = (branch_id) => { return this.branches.filter((branch) => branch.id == branch_id) };
-  getUser = (user_id) => { return this.users.filter((user) => user.id == user_id) }
+  };
+  getBranch = (branch_id) => {
+    return this.branches.filter((branch) => branch.id == branch_id);
+  };
+  getUser = (user_id) => {
+    return this.users.filter((user) => user.id == user_id);
+  };
   getUsers = () => this.users;
   getBranches = () => this.branches;
   getSucursales = () => this.sucursales;
@@ -810,4 +813,3 @@ class FakeData {
 }
 
 export default new FakeData();
-
