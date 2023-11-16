@@ -1,12 +1,31 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import s from "./style.module.scss";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Button from "@mui/material/Button";
 import { red } from "@mui/material/colors";
 import Navbar from "../../commons/Navbar/Navbar.jsx";
+import axios from "axios";
+import { useNavigate } from "react-router";
+import { useSelector } from "react-redux";
 
-export const CancelReservation = () => {
+export const CancelReservation = ({ reservation }) => {
+  const user = useSelector((state) => state.user);
+  const navigate = useNavigate();
+
+  const handleOnClick = (e) => {
+    e.preventDefault();
+    axios
+      .delete(`/api/users/removeAppointment/${reservation.reservationId}`)
+      .then((res) => {
+        alert("Se eliminó la reserva");
+        navigate("/client/reservations");
+      })
+      .catch((error) => {
+        alert("Ocurrió un error al eliminar la reserva");
+        console.error(error);
+      });
+  };
   const [checkedOption, setCheckedOptions] = useState({
     0: false,
     1: false,
@@ -66,7 +85,7 @@ export const CancelReservation = () => {
           <h1>Cancelar Reserva</h1>
           <br />
           <br />
-          <p>Hola Usuario,</p>
+          <p>Hola {user.name},</p>
 
           <h3>¿Por qué desea cancelar su reserva?</h3>
 
@@ -101,6 +120,7 @@ export const CancelReservation = () => {
                     <p>La cancelación no puede ser revertida</p>
 
                     <Button
+                      onClick={handleOnClick}
                       variant="contained"
                       style={{
                         backgroundColor: red[500],
@@ -121,19 +141,21 @@ export const CancelReservation = () => {
         <div className={s.divright}>
           <br />
           <p className={s.Info}>Información de la reserva</p>
-          <h2>Nombre Usuario</h2>
+          <h2>{user.name}</h2>
           <div style={{ marginTop: "10px" }}>
             <div className={s.horiz}>
               <p>Día: </p>
-              <p className={s.Info}>9/9/9999</p>
+              <p className={s.Info}>{reservation.date.split("T")[0]}</p>
             </div>
             <div className={s.horiz}>
               <p>Horario: </p>
-              <p className={s.Info}>13:00 hs</p>
+              <p className={s.Info}>
+                {reservation.date.split("T")[1].split(".")[0]}
+              </p>
             </div>
             <div className={s.horiz}>
               <p>Sucursal: </p>
-              <p className={s.Info}>Villa Crespo</p>
+              <p className={s.Info}>{reservation.branchName}</p>
             </div>
           </div>
           <div className={s.line}></div>
