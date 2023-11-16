@@ -7,6 +7,7 @@ import ReservationConfirmed from "./components/reservationconfirmed/index";
 import UserReservationHistory from "./components/UserReservationHistory/index";
 import ClientProfileEdit from "./components/ClientProfileEdition/ClientProfileEdit";
 import { AdministratorSucursalesList } from "./components/AdministratorSucursalesList";
+import { OperatorReservationsList } from "./components/OperatorReservationsList";
 
 function App() {
   return (
@@ -29,6 +30,14 @@ function App() {
         <Route
           path="/admin/allBranches"
           element={<AdministratorSucursalesList />}
+        />
+        <Route
+          path="/admin/operators"
+          element={<AdministratorSucursalesList />}
+        />
+        <Route
+          path="/operator/appointments"
+          element={<OperatorReservationsList />}
         />
       </Routes>
     </div>
