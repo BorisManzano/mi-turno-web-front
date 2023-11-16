@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import s from "./style.module.scss";
 import Button from "@mui/material/Button";
 import Navbar from "../Navbar/Navbar";
+import axios from "axios";
 
 export const TableList = ({ datatype, data }) => {
+  const [allBranches, setAllBranches] = useState();
   const dataType = datatype;
   const objKeys = Object.keys(data[0]);
   let column1 = "";
@@ -28,48 +30,127 @@ export const TableList = ({ datatype, data }) => {
     column4 = "N° de la reserva";
   }
   //puede ser operadores, sucursales o historial de reservas.
+  useEffect(() => {
+    axios
+      .get("http://localhost:3001/api/branches/allBranches")
+      .then((response) => {
+        setAllBranches(response.data);
+        console.log(response.data);
+      })
+      .catch((err) => console.error(err));
+  }, []);
   return (
     <>
       <Navbar role={"final-client"} />
       <div className={s.container} style={{ marginTop: "1.5%" }}>
         <h1>{dataType == "OperatorReservas" ? "Reservas" : dataType}</h1>
         <div className={s.table}>
-          {data.map((objIns, i) => {
-            return (
-              <div className={s.row} key={i}>
-                <div className={s.rowItem}>
-                  <p>{column1}</p>
-                  <b>{objIns[objKeys[0]]}</b>
+          {allBranches &&
+            allBranches.map((branch, i) => {
+              return (
+                <div className={s.row} key={i}>
+                  <div className={s.rowItem}>
+                    <p>{column1}</p>
+                    <b>{branch.name}</b>
+                  </div>
+                  <div className={s.rowItem}>
+                    <p>{column2}</p>
+                    <b>{branch.email}</b>
+                  </div>
+                  <div className={s.rowItem}>
+                    <p>{column3}</p>
+                    <b>{branch.telephone}</b>
+                  </div>
+                  <div className={s.rowItem}>
+                    <p>{column4}</p>
+                    <b>{`${branch.openingTime} to ${branch.closingTime}`}</b>
+                  </div>
+                  <div className={s.rowItem}>
+                    <Button
+                      variant="contained"
+                      style={{
+                        backgroundColor: "#F5F5F5",
+                        color: "#A442F1",
+                        textTransform: "none",
+                      }}
+                    >
+                      {dataType == "OperatorReservas"
+                        ? "Confirmación"
+                        : "Editar"}
+                    </Button>
+                  </div>
                 </div>
-                <div className={s.rowItem}>
-                  <p>{column2}</p>
-                  <b>{objIns[objKeys[1]]}</b>
-                </div>
-                <div className={s.rowItem}>
-                  <p>{column3}</p>
-                  <b>{objIns[objKeys[2]]}</b>
-                </div>
-                <div className={s.rowItem}>
-                  <p>{column4}</p>
-                  <b>{objIns[objKeys[3]]}</b>
-                </div>
-                <div className={s.rowItem}>
-                  <Button
-                    variant="contained"
-                    style={{
-                      backgroundColor: "#F5F5F5",
-                      color: "#A442F1",
-                      textTransform: "none",
-                    }}
-                  >
-                    {dataType == "OperatorReservas" ? "Confirmación" : "Editar"}
-                  </Button>
-                </div>
-              </div>
-            );
-          })}
+              );
+            })}
         </div>
       </div>
     </>
   );
 };
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//<div className={s.row} key={i}>
+//                <div className={s.rowItem}>
+//                  <p>{column1}</p>
+//                  <b>{objIns[objKeys[0]]}</b>
+//                  {/* <b>{objIns[objKeys[0]]}</b> */}
+//                </div>
+//                <div className={s.rowItem}>
+//                  <p>{column2}</p>
+//                  <b>{objIns[objKeys[1]]}</b>
+//                </div>
+//                <div className={s.rowItem}>
+//                  <p>{column3}</p>
+//                  <b>{objIns[objKeys[2]]}</b>
+//                </div>
+//                <div className={s.rowItem}>
+//                  <p>{column4}</p>
+//                  <b>{objIns[objKeys[3]]}</b>
+//                </div>
+//                <div className={s.rowItem}>
+//                  <Button
+//                    variant="contained"
+//                    style={{
+//                      backgroundColor: "#F5F5F5",
+//                      color: "#A442F1",
+//                      textTransform: "none",
+//                    }}
+//                  >
+//                    {dataType == "OperatorReservas" ? "Confirmación" : "Editar"}
+//                  </Button>
+//                </div>
+//              </div>

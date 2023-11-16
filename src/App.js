@@ -6,6 +6,7 @@ import ReservationPanel from "./components/ReservationPanel/ReservationPanel";
 import ReservationConfirmed from "./components/reservationconfirmed/index";
 import UserReservationHistory from "./components/UserReservationHistory/index";
 import ClientProfileEdit from "./components/ClientProfileEdition/ClientProfileEdit";
+import { AdministratorSucursalesList } from "./components/AdministratorSucursalesList";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <PromotionalMessage />
       <Routes>
         <Route path="/client/login" element={<Login />} />
+        <Route path="/" element={<Login />} />
         <Route path="/client/register" element={<Register />} />
         <Route path="/client/newReservation" element={<ReservationPanel />} />
         <Route
@@ -24,6 +26,10 @@ function App() {
           element={<UserReservationHistory />}
         />
         <Route path="/client/myAccount" element={<ClientProfileEdit />} />
+        <Route
+          path="/admin/allBranches"
+          element={<AdministratorSucursalesList />}
+        />
       </Routes>
     </div>
   );
