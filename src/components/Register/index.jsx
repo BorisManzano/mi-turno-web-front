@@ -5,6 +5,8 @@ import Check from "../../assets/Check";
 import Wrong from "../../assets/Wrong";
 import ArrowLeft from "../../assets/ArrowLeft";
 import Navbar from "../../commons/Navbar/Navbar";
+import Fullname from "../../commons/Form/Fullname";
+import Email from "../../commons/Form/Email";
 
 export default function Register() {
   const [password, setPassword] = useState("");
@@ -61,24 +63,13 @@ export default function Register() {
           <div className={s.head}>
             <button className={s.none}>
               <ArrowLeft className={s.none} />
-              Back
+              Atras
             </button>
             <h1 className={s.textTittle}>Create account</h1>
           </div>
           <div className={s.inputs}>
             <div className={s.rowForm}>
-              <div className={s.allInputs}>
-                <label htmlFor="name" className={s.textInputs}>
-                  Fullname
-                </label>
-                <input
-                  type="text"
-                  name="fullname"
-                  id="fn"
-                  placeholder="Name Lastname"
-                  className={s.inputArea}
-                />
-              </div>
+              <Fullname />
               <div>
                 <label htmlFor="dni" className={s.textInputs}>
                   DNI
@@ -96,21 +87,11 @@ export default function Register() {
                 />
               </div>
             </div>
-            <div className={s.inputMail}>
-              <label htmlFor="email" className={s.textInputs}>
-                Email
-              </label>
-              <input
-                type="email"
-                name="email"
-                id="em"
-                placeholder="example_name@example.com"
-              />
-            </div>
+            <Email />
             <div className={s.rowForm}>
               <div>
                 <label htmlFor="password" className={s.textInputs}>
-                  Password
+                  Contraseña
                 </label>
                 <div
                   className={
@@ -125,7 +106,7 @@ export default function Register() {
                     type={showPassword ? "text" : "password"}
                     name="password"
                     id="password"
-                    placeholder="password"
+                    placeholder="Contraseña"
                     value={password}
                     className={s.inputPassword}
                     onChange={handleInputPassword}
@@ -138,15 +119,9 @@ export default function Register() {
                 </div>
               </div>
               <div>
-                {password !== confirmPswd ? (
-                  <label htmlFor="password" className={s.textInputsErr}>
-                    Confirm Password
-                  </label>
-                ) : (
-                  <label htmlFor="password" className={s.textInputs}>
-                    Confirm Password
-                  </label>
-                )}
+                <label htmlFor="password" className={s.textInputs}>
+                  Repetir Contraseña
+                </label>
                 <div
                   className={
                     focus && password === confirmPswd
@@ -160,7 +135,7 @@ export default function Register() {
                     type={showConfirmPassword ? "text" : "password"}
                     name="password"
                     id="pswd"
-                    placeholder="password"
+                    placeholder="Contraseña"
                     value={confirmPswd}
                     className={s.inputPassword}
                     onChange={handleInputConfirmPswd}
@@ -176,9 +151,9 @@ export default function Register() {
           </div>
           <div className={s.warning}>
             {password === "" ? (
-              <p className={s.marg2}>The password must have:</p>
+              <p className={s.marg2}>La contraseña debe contener:</p>
             ) : (
-              <p className={s.marg}>The password must have:</p>
+              <p className={s.marg}>La contraseña debe contener:</p>
             )}
 
             <div className={s.bBorder}></div>
@@ -187,30 +162,30 @@ export default function Register() {
                 {password === "" ? (
                   <>
                     <div className={s.row3}>
-                      <p>ABC</p> <p>One uppercase letter</p>
+                      <p>ABC</p> <p>Una letra mayúscula</p>
                     </div>
                     <div className={s.row3}>
-                      <p>abc</p> <p>One lowercase letter</p>
+                      <p>abc</p> <p>Una letra minúscula</p>
                     </div>
                   </>
                 ) : (
                   <>
                     {checklist.uppercaseLetter ? (
                       <div className={s.row1}>
-                        <Check /> <p>ABC</p> <p>One uppercase letter</p>
+                        <Check /> <p>ABC</p> <p>Una letra mayúscula</p>
                       </div>
                     ) : (
                       <div className={s.row2}>
-                        <Wrong /> <p>ABC</p> <p>One uppercase letter</p>
+                        <Wrong /> <p>ABC</p> <p>Una letra minúscula</p>
                       </div>
                     )}
                     {checklist.lowercaseLetter ? (
                       <div className={s.row1}>
-                        <Check /> <p>abc</p> <p>One lowercase letter</p>
+                        <Check /> <p>abc</p> <p>Una letra minúscula</p>
                       </div>
                     ) : (
                       <div className={s.row2}>
-                        <Wrong /> <p>abc</p> <p>One lowercase letter</p>
+                        <Wrong /> <p>abc</p> <p>Una letra minúscula</p>
                       </div>
                     )}
                   </>
@@ -220,30 +195,30 @@ export default function Register() {
                 {password === "" ? (
                   <>
                     <div className={s.row3}>
-                      <p>123</p> <p>One number</p>
+                      <p>123</p> <p>Un número</p>
                     </div>
                     <div className={s.row3}>
-                      <p>***</p> <p>Minimum 8 characters</p>
+                      <p>***</p> <p>Mínimo 8 caracteres</p>
                     </div>
                   </>
                 ) : (
                   <>
                     {checklist.oneNumber ? (
                       <div className={s.row1}>
-                        <Wrong /> <p>123</p> <p>One number</p>
+                        <Wrong /> <p>123</p> <p>Un número</p>
                       </div>
                     ) : (
                       <div className={s.row2}>
-                        <Wrong /> <p>123</p> <p>One number</p>
+                        <Wrong /> <p>123</p> <p>Un número</p>
                       </div>
                     )}
                     {checklist.large ? (
                       <div className={s.row1}>
-                        <Check /> <p>***</p> <p>Minimum 8 characters</p>
+                        <Check /> <p>***</p> <p>Mínimo 8 caracteres</p>
                       </div>
                     ) : (
                       <div className={s.row2}>
-                        <Wrong /> <p>***</p> <p>Minimum 8 characters</p>
+                        <Wrong /> <p>***</p> <p>Mínimo 8 caracteres</p>
                       </div>
                     )}
                   </>
@@ -252,12 +227,10 @@ export default function Register() {
             </div>
           </div>
           <button className={s.btnSingIn}>
-            <h3>Sign up</h3>
+            <h3>Registrarme</h3>
           </button>
           <div className={s.bBorder}></div>
-          <button className={s.btnLog}>
-            Do you already have an account? Log in.
-          </button>
+          <button className={s.btnLog}>¿Ya tenés cuenta? Iniciá sesión</button>
         </form>
       </div>
     </>
