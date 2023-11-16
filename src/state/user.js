@@ -4,17 +4,19 @@ export const login = createAction("LOGIN");
 export const logout = createAction("LOGOUT");
 
 const initialState = {
-  name: null,
-  lastname: null,
+  fullname: null,
   email: null,
+  dni: null,
+  phoneNumber: null,
 };
 
 const userReducer = createReducer(initialState, {
   [login]: (state, action) => action.payload,
   [logout]: (state, action) => {
-    state.name = null;
-    state.lastname = null;
+    state.fullname = null;
     state.email = null;
+    state.dni = null;
+    state.phoneNumber = null;
   },
 });
 
