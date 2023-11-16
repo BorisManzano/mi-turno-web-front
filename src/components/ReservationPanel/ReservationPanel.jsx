@@ -11,7 +11,6 @@ import {
   StepLabel,
   Grid,
   Button,
-  TextField,
 } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -24,7 +23,7 @@ export default function PanelPrueba() {
   const navigate = useNavigate();
   const [activeStep, setActiveStep] = React.useState(0);
   const [selectedDate, setSelectedDate] = React.useState(null);
-
+  const [enabled, setEnabled] = React.useState(false);
   //...PARA CUANDO HABILITEMOS REDUX :  const date = useSelector((state) => state.date);
 
   function handleNext() {
@@ -48,11 +47,9 @@ export default function PanelPrueba() {
     e.preventDefault();
     handleNext();
     setSelectedBranch(e.target.value);
-    // console.log("ASÍ QUEDA----->", typeof e.target.value);
   }
 
   function handleDaySelector(e) {
-    // e.preventDefault();
     setSelectedDate(e);
     handleNext();
   }
@@ -70,6 +67,7 @@ export default function PanelPrueba() {
     setData((prevState) => {
       return { ...prevState, [name]: e.target.value };
     });
+    setEnabled(true);
   }
   function handleSubmit(e) {
     e.preventDefault();
@@ -134,6 +132,37 @@ export default function PanelPrueba() {
             <div
               className="title-panel"
               style={{ fontWeight: "bold", paddingBottom: "10px" }}
+            {steps.map((label) => (
+              <Step
+                key={label}
+                sx={{
+                  "& .MuiStepLabel-root .Mui-completed": {
+                    color: "green",
+                  },
+                  "& .MuiStepLabel-root .Mui-active": {
+                    color: "secondary.main",
+                  },
+                }}
+              >
+                <StepLabel>{label}</StepLabel>
+              </Step>
+            ))}
+          </Stepper>
+          <FormControl
+            xs={12}
+            sx={{
+              display: "flex",
+
+              width: "100%",
+              padding: "12px 12px 8px 12px",
+            }}
+          >
+            <FormLabel
+              xs={12}
+              sx={{
+                fontWeight: "bolder",
+              }}
+
             >
               Reserva
             </div>{" "}
@@ -381,5 +410,85 @@ export default function PanelPrueba() {
         {/* </Grid> */}
       </Box>
     </div>
+                {
+                  <Button
+                    variant="contained"
+                    disabled={activeStep < 2 || !enabled}
+                    onClick={handleSubmit}
+                    sx={{
+                      marginTop: "5%",
+                      marginBottom: "5%",
+                      background: "#A442F1",
+                    }}
+                  >
+                    Confirmar reserva
+                  </Button>
+                }
+              </div>
+            ) : (
+              <Button
+                variant="contained"
+                disabled={activeStep < 2 || !enabled}
+                sx={{
+                  width: "200px",
+                  marginTop: "5%",
+                  marginBottom: "5%",
+                  background: "#A442F1",
+                }}
+              >
+                Confirmar reserva
+              </Button>
+            )}
+          </FormControl>
+        </Grid>
+        <Grid xs={1}></Grid>
+
+        <Grid
+          item
+          xs={5}
+          sx={{
+            backgroundColor: "white",
+            display: "flex",
+            alignItems: "center",
+            alignContent: "center",
+            height: "400px",
+            width: "fixed",
+          }}
+        >
+          {activeStep === 1 ? (
+            <LocalizationProvider dateAdapter={AdapterDayjs} id="calendar">
+              <DateCalendar
+                sx={{ color: "#A442F1" }}
+                onChange={handleDaySelector}
+              />
+            </LocalizationProvider>
+          ) : (
+            <LocalizationProvider dateAdapter={AdapterDayjs} id="calendar">
+              <DateCalendar sx={{ color: "#A442F1" }} disabled />
+            </LocalizationProvider>
+          )}
+        </Grid>
+      </Grid>
+
+      <Grid
+        container
+        sx={{
+          display: "flex",
+          justifyContent: "flex-end",
+        }}
+      >
+        <Button
+          sx={{
+            position: "fixed",
+            bottom: "150px",
+            right: "130px",
+            backgroundColor: "#CC6AFF",
+            color: "white",
+          }}
+        >
+          Quedan 4:52
+        </Button>
+      </Grid>
+    </Box>
   );
 }
