@@ -4,7 +4,6 @@ import Eye from "../../assets/Eye";
 import Check from "../../assets/Check";
 import Wrong from "../../assets/Wrong";
 import ArrowLeft from "../../assets/ArrowLeft";
-import Navbar from "../../commons/Navbar/Navbar";
 
 export default function Register() {
   const [password, setPassword] = useState("");
@@ -55,7 +54,6 @@ export default function Register() {
 
   return (
     <>
-      <Navbar />
       <div className={s.divs}>
         <form className={s.f}>
           <div className={s.head}>

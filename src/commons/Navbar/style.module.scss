@@ -17,11 +17,11 @@
   line-height: 16px; /* 133.333% */
 }
 .navbar {
-  height: 8vh;
+  height: 7vh;
   // border-bottom: 0.5px solid salmon;
   display: flex;
   justify-content: space-between;
-  padding: 16px 140px;
+  padding: 16px 9%;
   align-items: center;
   gap: 14px;
   box-shadow: 0px 7px 20px -4px rgba(51, 51, 51, 0.1);
@@ -55,7 +55,11 @@
   flex-direction: row;
   align-items: center;
 }
-
+a {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
 .h5-navbar-text {
   margin: 0px 0px 0px 25px;
   font-size: 15px;

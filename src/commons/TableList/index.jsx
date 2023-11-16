@@ -1,6 +1,7 @@
 import React from "react";
 import s from "./style.module.scss";
 import Button from "@mui/material/Button";
+import Navbar from "../Navbar/Navbar";
 
 export const TableList = ({ datatype, data }) => {
   const dataType = datatype;
@@ -29,7 +30,8 @@ export const TableList = ({ datatype, data }) => {
   //puede ser operadores, sucursales o historial de reservas.
   return (
     <>
-      <div className={s.container}>
+      <Navbar role={"final-client"} />
+      <div className={s.container} style={{ marginTop: "1.5%" }}>
         <h1>{dataType == "OperatorReservas" ? "Reservas" : dataType}</h1>
         <div className={s.table}>
           {data.map((objIns, i) => {

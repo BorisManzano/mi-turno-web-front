@@ -1,7 +1,6 @@
 import React from "react";
 import FakeData from "../../utils/fake-data";
 import { TableList } from "../../commons/TableList";
-import Navbar from "../../commons/Navbar/Navbar";
 
 export const UserReservationHistory = () => {
   //====test
@@ -15,3 +14,4 @@ export const UserReservationHistory = () => {
     </>
   );
 };
+export default UserReservationHistory;
