@@ -1,5 +1,6 @@
 import * as React from "react";
 import "../ReservationPanel/ReservationPanel.scss";
+import Navbar from "../../commons/Navbar/Navbar";
 
 import {
   Box,
@@ -10,16 +11,19 @@ import {
   StepLabel,
   Grid,
   Button,
-  TextField,
 } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
+import PromotionalMessage from "../../commons/promotional-message";
+import axios from "axios";
+import { useNavigate } from "react-router";
 
 export default function PanelPrueba() {
+  const navigate = useNavigate();
   const [activeStep, setActiveStep] = React.useState(0);
   const [selectedDate, setSelectedDate] = React.useState(null);
-
+  const [enabled, setEnabled] = React.useState(false);
   //...PARA CUANDO HABILITEMOS REDUX :  const date = useSelector((state) => state.date);
 
   function handleNext() {
@@ -43,11 +47,9 @@ export default function PanelPrueba() {
     e.preventDefault();
     handleNext();
     setSelectedBranch(e.target.value);
-    // console.log("ASÍ QUEDA----->", typeof e.target.value);
   }
 
   function handleDaySelector(e) {
-    // e.preventDefault();
     setSelectedDate(e);
     handleNext();
   }
@@ -55,7 +57,7 @@ export default function PanelPrueba() {
   const [data, setData] = React.useState({
     nombreYApellido: "",
     telefono: "",
-    mail: "",
+    email: "",
   });
 
   function handleChanges(e) {
@@ -65,33 +67,35 @@ export default function PanelPrueba() {
     setData((prevState) => {
       return { ...prevState, [name]: e.target.value };
     });
+    setEnabled(true);
   }
   function handleSubmit(e) {
     e.preventDefault();
     //--------ACÁ IRÍA EL PEDIDO POST AL BACK--------------------------
+    navigate("/client/reservationConfirmed"); //PARA CUANDO ESTÉN LAS RUTAS
     // axios
-    //   .post("/path...", data)
+    //   .post("http://localhost:3001/api/users/newAppointment", data)
     //   .then(() => {
     //     setData({
     //       nombreYApellido: "",
     //       teléfono: "",
-    //       mail: "",
+    //       email: "",
     //     });
-    //     const date = {
-    //       id: date.id,
-    //       nombreYApellido: date.nombreYApellido,
+    // const date = {
+    //   id: date.id,
+    //   nombreYApellido: date.nombreYApellido,
 
-    //       mail: date.mail,
-    //     };
-    //     // dispatch(setDate(date)); //P/CUANDO SE HABILITE REDUX
-    //     // navigate("/???"); //PARA CUANDO ESTÉN LAS RUTAS
-    //     return date;
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error);
-    //   });
+    //   email: date.email,
+    // };
+    // dispatch(setDate(date)); //P/CUANDO SE HABILITE REDUX
+    // return date;
+    // })
+    // .catch(function (error) {
+    //   console.log(error);
+    // });
     //---------------------------------------------------------------------
   }
+  console.log("data", data);
   return (
     <Box
       className="body"
@@ -176,7 +180,6 @@ export default function PanelPrueba() {
           <FormControl
             xs={12}
             sx={{
-              // marginTop: "3px",
               display: "flex",
 
               width: "100%",
@@ -187,8 +190,6 @@ export default function PanelPrueba() {
               xs={12}
               sx={{
                 fontWeight: "bolder",
-                // marginBottom: "10px",
-                // padding: "5px",
               }}
             >
               Sucursal
@@ -319,13 +320,12 @@ export default function PanelPrueba() {
                 {
                   <Button
                     variant="contained"
-                    enabled
+                    disabled={activeStep < 2 || !enabled}
                     onClick={handleSubmit}
                     sx={{
                       marginTop: "5%",
                       marginBottom: "5%",
                       background: "#A442F1",
-                      width: "fixed",
                     }}
                   >
                     Confirmar reserva
@@ -335,9 +335,13 @@ export default function PanelPrueba() {
             ) : (
               <Button
                 variant="contained"
-                disabled
-                onClick={handleSubmit}
-                sx={{ marginTop: "5%", marginBottom: "5%" }}
+                disabled={activeStep < 2 || !enabled}
+                sx={{
+                  width: "200px",
+                  marginTop: "5%",
+                  marginBottom: "5%",
+                  background: "#A442F1",
+                }}
               >
                 Confirmar reserva
               </Button>
@@ -356,7 +360,6 @@ export default function PanelPrueba() {
             alignContent: "center",
             height: "400px",
             width: "fixed",
-            // height: "auto",
           }}
         >
           {activeStep === 1 ? (
@@ -373,7 +376,26 @@ export default function PanelPrueba() {
           )}
         </Grid>
       </Grid>
-      {/* </Grid> */}
+
+      <Grid
+        container
+        sx={{
+          display: "flex",
+          justifyContent: "flex-end",
+        }}
+      >
+        <Button
+          sx={{
+            position: "fixed",
+            bottom: "150px",
+            right: "130px",
+            backgroundColor: "#CC6AFF",
+            color: "white",
+          }}
+        >
+          Quedan 4:52
+        </Button>
+      </Grid>
     </Box>
   );
 }

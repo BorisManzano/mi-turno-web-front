@@ -8,6 +8,7 @@ import Navbar from "../../commons/Navbar/Navbar";
 import Fullname from "../../commons/Form/Fullname";
 import Email from "../../commons/Form/Email";
 
+
 export default function Register() {
   const [password, setPassword] = useState("");
   const [confirmPswd, setConfirmPswd] = useState("");
@@ -57,7 +58,6 @@ export default function Register() {
 
   return (
     <>
-      <Navbar />
       <div className={s.divs}>
         <form className={s.f}>
           <div className={s.head}>

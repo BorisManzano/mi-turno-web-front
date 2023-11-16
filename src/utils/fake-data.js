@@ -1,5 +1,3 @@
-import { faker } from "@faker-js/faker";
-
 const USERS = [
   {
     id: 1,
@@ -346,6 +344,363 @@ const RESERVATIONS = [
   },
 ];
 
+const OPERATORS = [
+  {
+    name_and_lastname: "Operator 1",
+    mail: "operator1@example.com",
+    sucursal: "Branch A",
+    password: "********",
+  },
+  {
+    name_and_lastname: "Operator 2",
+    mail: "operator2@example.com",
+    sucursal: "Branch B",
+    password: "********",
+  },
+  {
+    name_and_lastname: "Operator 3",
+    mail: "operator3@example.com",
+    sucursal: "Branch C",
+    password: "********",
+  },
+  {
+    name_and_lastname: "Operator 4",
+    mail: "operator4@example.com",
+    sucursal: "Branch A",
+    password: "********",
+  },
+  {
+    name_and_lastname: "Operator 5",
+    mail: "operator5@example.com",
+    sucursal: "Branch B",
+    password: "********",
+  },
+  {
+    name_and_lastname: "Operator 6",
+    mail: "operator6@example.com",
+    sucursal: "Branch C",
+    password: "********",
+  },
+  {
+    name_and_lastname: "Operator 7",
+    mail: "operator7@example.com",
+    sucursal: "Branch A",
+    password: "********",
+  },
+  {
+    name_and_lastname: "Operator 8",
+    mail: "operator8@example.com",
+    sucursal: "Branch B",
+    password: "********",
+  },
+  {
+    name_and_lastname: "Operator 9",
+    mail: "operator9@example.com",
+    sucursal: "Branch C",
+    password: "********",
+  },
+  {
+    name_and_lastname: "Operator 10",
+    mail: "operator10@example.com",
+    sucursal: "Branch A",
+    password: "********",
+  },
+  {
+    name_and_lastname: "Operator 11",
+    mail: "operator11@example.com",
+    sucursal: "Branch B",
+    password: "********",
+  },
+  {
+    name_and_lastname: "Operator 12",
+    mail: "operator12@example.com",
+    sucursal: "Branch C",
+    password: "********",
+  },
+  {
+    name_and_lastname: "Operator 13",
+    mail: "operator13@example.com",
+    sucursal: "Branch A",
+    password: "********",
+  },
+  {
+    name_and_lastname: "Operator 14",
+    mail: "operator14@example.com",
+    sucursal: "Branch B",
+    password: "********",
+  },
+  {
+    name_and_lastname: "Operator 15",
+    mail: "operator15@example.com",
+    sucursal: "Branch C",
+    password: "********",
+  },
+  {
+    name_and_lastname: "Operator 16",
+    mail: "operator16@example.com",
+    sucursal: "Branch A",
+    password: "********",
+  },
+  {
+    name_and_lastname: "Operator 17",
+    mail: "operator17@example.com",
+    sucursal: "Branch B",
+    password: "********",
+  },
+  {
+    name_and_lastname: "Operator 18",
+    mail: "operator18@example.com",
+    sucursal: "Branch C",
+    password: "********",
+  },
+  {
+    name_and_lastname: "Operator 19",
+    mail: "operator19@example.com",
+    sucursal: "Branch A",
+    password: "********",
+  },
+  {
+    name_and_lastname: "Operator 20",
+    mail: "operator20@example.com",
+    sucursal: "Branch B",
+    password: "********",
+  },
+];
+
+const RESERVATIONS2 = [
+  {
+    name_and_lastname: "John Doe",
+    date: "2023-11-13T18:30:00",
+    sucursal_name: "Branch A",
+    reservationNumber: 12345,
+  },
+  {
+    name_and_lastname: "Alice Smith",
+    date: "2023-11-14T19:00:00",
+    sucursal_name: "Branch B",
+    reservationNumber: 54321,
+  },
+  {
+    name_and_lastname: "Bob Johnson",
+    date: "2023-11-15T20:30:00",
+    sucursal_name: "Branch C",
+    reservationNumber: 67890,
+  },
+  {
+    name_and_lastname: "Eva Williams",
+    date: "2023-11-16T21:15:00",
+    sucursal_name: "Branch D",
+    reservationNumber: 98765,
+  },
+  {
+    name_and_lastname: "Charlie Brown",
+    date: "2023-11-17T18:45:00",
+    sucursal_name: "Branch A",
+    reservationNumber: 23456,
+  },
+  {
+    name_and_lastname: "Grace Davis",
+    date: "2023-11-18T19:30:00",
+    sucursal_name: "Branch B",
+    reservationNumber: 87654,
+  },
+  {
+    name_and_lastname: "Daniel White",
+    date: "2023-11-19T20:00:00",
+    sucursal_name: "Branch C",
+    reservationNumber: 13579,
+  },
+  {
+    name_and_lastname: "Sophie Miller",
+    date: "2023-11-20T21:45:00",
+    sucursal_name: "Branch D",
+    reservationNumber: 24680,
+  },
+  {
+    name_and_lastname: "Liam Taylor",
+    date: "2023-11-21T18:15:00",
+    sucursal_name: "Branch A",
+    reservationNumber: 11223,
+  },
+  {
+    name_and_lastname: "Olivia Clark",
+    date: "2023-11-22T19:45:00",
+    sucursal_name: "Branch B",
+    reservationNumber: 44556,
+  },
+  {
+    name_and_lastname: "Mia Anderson",
+    date: "2023-11-23T20:15:00",
+    sucursal_name: "Branch C",
+    reservationNumber: 77889,
+  },
+  {
+    name_and_lastname: "Noah Harris",
+    date: "2023-11-24T21:30:00",
+    sucursal_name: "Branch D",
+    reservationNumber: 99887,
+  },
+  {
+    name_and_lastname: "Ava Martin",
+    date: "2023-11-25T18:00:00",
+    sucursal_name: "Branch A",
+    reservationNumber: 33445,
+  },
+  {
+    name_and_lastname: "Emma Rodriguez",
+    date: "2023-11-26T19:15:00",
+    sucursal_name: "Branch B",
+    reservationNumber: 55667,
+  },
+  {
+    name_and_lastname: "William Martinez",
+    date: "2023-11-27T20:45:00",
+    sucursal_name: "Branch C",
+    reservationNumber: 77890,
+  },
+  {
+    name_and_lastname: "Isabella King",
+    date: "2023-11-28T21:00:00",
+    sucursal_name: "Branch D",
+    reservationNumber: 11234,
+  },
+  {
+    name_and_lastname: "James Garcia",
+    date: "2023-11-29T18:30:00",
+    sucursal_name: "Branch A",
+    reservationNumber: 44556,
+  },
+  {
+    name_and_lastname: "Ella Lee",
+    date: "2023-11-30T19:00:00",
+    sucursal_name: "Branch B",
+    reservationNumber: 66778,
+  },
+  {
+    name_and_lastname: "Alexander Scott",
+    date: "2023-12-01T20:30:00",
+    sucursal_name: "Branch C",
+    reservationNumber: 88900,
+  },
+];
+
+const SUCURSALES = [
+  {
+    name: "Sucursal A",
+    city: "Ciudad A",
+    max_cap: 100,
+    open_time_and_close: "9:00 AM to 6:00 PM",
+  },
+  {
+    name: "Sucursal B",
+    city: "Ciudad B",
+    max_cap: 150,
+    open_time_and_close: "8:30 AM to 7:00 PM",
+  },
+  {
+    name: "Sucursal C",
+    city: "Ciudad C",
+    max_cap: 120,
+    open_time_and_close: "10:00 AM to 5:30 PM",
+  },
+  {
+    name: "Sucursal D",
+    city: "Ciudad D",
+    max_cap: 80,
+    open_time_and_close: "9:30 AM to 6:30 PM",
+  },
+  {
+    name: "Sucursal E",
+    city: "Ciudad E",
+    max_cap: 200,
+    open_time_and_close: "8:00 AM to 8:00 PM",
+  },
+  {
+    name: "Sucursal F",
+    city: "Ciudad F",
+    max_cap: 130,
+    open_time_and_close: "10:30 AM to 5:00 PM",
+  },
+  {
+    name: "Sucursal G",
+    city: "Ciudad G",
+    max_cap: 90,
+    open_time_and_close: "9:00 AM to 6:30 PM",
+  },
+  {
+    name: "Sucursal H",
+    city: "Ciudad H",
+    max_cap: 180,
+    open_time_and_close: "8:30 AM to 7:30 PM",
+  },
+  {
+    name: "Sucursal I",
+    city: "Ciudad I",
+    max_cap: 110,
+    open_time_and_close: "10:00 AM to 6:00 PM",
+  },
+  {
+    name: "Sucursal J",
+    city: "Ciudad J",
+    max_cap: 160,
+    open_time_and_close: "8:00 AM to 8:00 PM",
+  },
+  {
+    name: "Sucursal K",
+    city: "Ciudad K",
+    max_cap: 140,
+    open_time_and_close: "9:30 AM to 7:30 PM",
+  },
+  {
+    name: "Sucursal L",
+    city: "Ciudad L",
+    max_cap: 100,
+    open_time_and_close: "10:30 AM to 5:30 PM",
+  },
+  {
+    name: "Sucursal M",
+    city: "Ciudad M",
+    max_cap: 120,
+    open_time_and_close: "9:00 AM to 6:00 PM",
+  },
+  {
+    name: "Sucursal N",
+    city: "Ciudad N",
+    max_cap: 170,
+    open_time_and_close: "8:30 AM to 7:00 PM",
+  },
+  {
+    name: "Sucursal O",
+    city: "Ciudad O",
+    max_cap: 110,
+    open_time_and_close: "10:00 AM to 6:30 PM",
+  },
+  {
+    name: "Sucursal P",
+    city: "Ciudad P",
+    max_cap: 80,
+    open_time_and_close: "9:30 AM to 7:00 PM",
+  },
+  {
+    name: "Sucursal Q",
+    city: "Ciudad Q",
+    max_cap: 150,
+    open_time_and_close: "8:00 AM to 8:00 PM",
+  },
+  {
+    name: "Sucursal R",
+    city: "Ciudad R",
+    max_cap: 130,
+    open_time_and_close: "10:30 AM to 6:30 PM",
+  },
+  {
+    name: "Sucursal S",
+    city: "Ciudad S",
+    max_cap: 100,
+    open_time_and_close: "9:00 AM to 5:30 PM",
+  },
+];
+
 const BRANCHES = [
   {
     id: 101,
@@ -431,20 +786,30 @@ const BRANCHES = [
 
 class FakeData {
   constructor() {
+    this.operators = OPERATORS;
     this.users = USERS;
-    this.reservations = RESERVATIONS;
+    this.sucursales = SUCURSALES;
+    this.reservations2 = RESERVATIONS2;
     this.branches = BRANCHES;
   }
   getUserReservations = (user_id) => {
     const results = [];
-    results = this.reservations.filter((reservation) => reservation.user_id == user_id);
+    results = this.reservations.filter(
+      (reservation) => reservation.user_id == user_id
+    );
     return results;
-  }
-  getBranch = (branch_id) => { return this.branches.filter((branch) => branch.id == branch_id) };
-  getUser = (user_id) => { return this.users.filter((user) => user.id == user_id) }
+  };
+  getBranch = (branch_id) => {
+    return this.branches.filter((branch) => branch.id == branch_id);
+  };
+  getUser = (user_id) => {
+    return this.users.filter((user) => user.id == user_id);
+  };
   getUsers = () => this.users;
   getBranches = () => this.branches;
-  getReservations = () => this.reservations;
+  getSucursales = () => this.sucursales;
+  getReservations2 = () => this.reservations2;
+  getOperators = () => this.operators;
 }
 
 export default new FakeData();

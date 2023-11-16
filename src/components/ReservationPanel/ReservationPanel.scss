@@ -7,22 +7,22 @@
 //   color: #a442f1;
 // }
 .title {
-  width: 1176px;
+  // width: 1176px;
   color: var(--Black, #000);
   font-variant-numeric: slashed-zero;
 
-  font-family: Roboto;
+  // font-family: Roboto;
   font-size: 25px;
   font-style: normal;
   font-weight: 600;
   line-height: 24px;
-  margin-bottom: 20px;
+  margin-bottom: 3rem;
+  margin-left: -1.2%;
 }
 
 .title-panel {
   color: var(--Black, #000);
-
-  font-family: Roboto;
+  // font-family: Roboto;
   font-size: 18px;
 
   font-style: normal;
@@ -34,7 +34,7 @@
   align-self: stretch;
   color: var(--Black, #000);
 
-  font-family: Roboto;
+  // font-family: Roboto;
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
@@ -61,4 +61,11 @@
 
   border-radius: 8px;
   background: var(--White, #fff);
+}
+
+.css-a08jba-MuiGrid-root > .MuiGrid-item {
+  border-radius: 12px;
+}
+.css-1xnrmf6 {
+  padding-top: 1rem;
 }
