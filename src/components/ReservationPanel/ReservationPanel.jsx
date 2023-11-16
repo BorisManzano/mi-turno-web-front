@@ -10,7 +10,6 @@ import {
   StepLabel,
   Grid,
   Button,
-  TextField,
 } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -19,7 +18,7 @@ import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 export default function PanelPrueba() {
   const [activeStep, setActiveStep] = React.useState(0);
   const [selectedDate, setSelectedDate] = React.useState(null);
-
+  const [enabled, setEnabled] = React.useState(false);
   //...PARA CUANDO HABILITEMOS REDUX :  const date = useSelector((state) => state.date);
 
   function handleNext() {
@@ -43,11 +42,9 @@ export default function PanelPrueba() {
     e.preventDefault();
     handleNext();
     setSelectedBranch(e.target.value);
-    // console.log("ASÍ QUEDA----->", typeof e.target.value);
   }
 
   function handleDaySelector(e) {
-    // e.preventDefault();
     setSelectedDate(e);
     handleNext();
   }
@@ -65,6 +62,7 @@ export default function PanelPrueba() {
     setData((prevState) => {
       return { ...prevState, [name]: e.target.value };
     });
+    setEnabled(true);
   }
   function handleSubmit(e) {
     e.preventDefault();
@@ -176,7 +174,6 @@ export default function PanelPrueba() {
           <FormControl
             xs={12}
             sx={{
-              // marginTop: "3px",
               display: "flex",
 
               width: "100%",
@@ -187,8 +184,6 @@ export default function PanelPrueba() {
               xs={12}
               sx={{
                 fontWeight: "bolder",
-                // marginBottom: "10px",
-                // padding: "5px",
               }}
             >
               Sucursal
@@ -319,13 +314,12 @@ export default function PanelPrueba() {
                 {
                   <Button
                     variant="contained"
-                    enabled
+                    disabled={activeStep < 2 || !enabled}
                     onClick={handleSubmit}
                     sx={{
                       marginTop: "5%",
                       marginBottom: "5%",
                       background: "#A442F1",
-                      width: "fixed",
                     }}
                   >
                     Confirmar reserva
@@ -335,9 +329,13 @@ export default function PanelPrueba() {
             ) : (
               <Button
                 variant="contained"
-                disabled
-                onClick={handleSubmit}
-                sx={{ marginTop: "5%", marginBottom: "5%" }}
+                disabled={activeStep < 2 || !enabled}
+                sx={{
+                  width: "200px",
+                  marginTop: "5%",
+                  marginBottom: "5%",
+                  background: "#A442F1",
+                }}
               >
                 Confirmar reserva
               </Button>
@@ -356,7 +354,6 @@ export default function PanelPrueba() {
             alignContent: "center",
             height: "400px",
             width: "fixed",
-            // height: "auto",
           }}
         >
           {activeStep === 1 ? (
@@ -373,7 +370,26 @@ export default function PanelPrueba() {
           )}
         </Grid>
       </Grid>
-      {/* </Grid> */}
+
+      <Grid
+        container
+        sx={{
+          display: "flex",
+          justifyContent: "flex-end",
+        }}
+      >
+        <Button
+          sx={{
+            position: "fixed",
+            bottom: "150px",
+            right: "130px",
+            backgroundColor: "#CC6AFF",
+            color: "white",
+          }}
+        >
+          Quedan 4:52
+        </Button>
+      </Grid>
     </Box>
   );
 }
