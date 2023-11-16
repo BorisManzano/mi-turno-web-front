@@ -1,7 +1,30 @@
+import { Route, Routes } from "react-router";
+import PromotionalMessage from "./commons/promotional-message";
+import Login from "./components/Login/index";
+import Register from "./components/Register/index";
+import ReservationPanel from "./components/ReservationPanel/ReservationPanel";
+import ReservationConfirmed from "./components/reservationconfirmed/index";
+import UserReservationHistory from "./components/UserReservationHistory/index";
+import ClientProfileEdit from "./components/ClientProfileEdition/ClientProfileEdit";
+
 function App() {
   return (
     <div className="App">
-      <h1>HELLO WORLD!</h1>
+      <PromotionalMessage />
+      <Routes>
+        <Route path="/client/login" element={<Login />} />
+        <Route path="/client/register" element={<Register />} />
+        <Route path="/client/newReservation" element={<ReservationPanel />} />
+        <Route
+          path="/client/reservationConfirmed"
+          element={<ReservationConfirmed />}
+        />
+        <Route
+          path="/client/reservations"
+          element={<UserReservationHistory />}
+        />
+        <Route path="/client/myAccount" element={<ClientProfileEdit />} />
+      </Routes>
     </div>
   );
 }
