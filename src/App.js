@@ -7,7 +7,7 @@ import ReservationConfirmed from "./components/reservationconfirmed/index";
 import UserReservationHistory from "./components/UserReservationHistory/index";
 import ClientProfileEdit from "./components/ClientProfileEdition/ClientProfileEdit";
 import { AdministratorSucursalesList } from "./components/AdministratorSucursalesList";
-import { OperatorReservationsList } from "./components/OperatorReservationsList";
+import { AdministratorOperatorsList } from "./components/AdministratorOperatorsList";
 
 function App() {
   return (
@@ -33,11 +33,7 @@ function App() {
         />
         <Route
           path="/admin/operators"
-          element={<AdministratorSucursalesList />}
-        />
-        <Route
-          path="/operator/appointments"
-          element={<OperatorReservationsList />}
+          element={<AdministratorOperatorsList />}
         />
       </Routes>
     </div>
