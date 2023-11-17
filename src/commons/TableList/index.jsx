@@ -6,23 +6,39 @@ import Navbar from "../Navbar/Navbar";
 export const TableList = ({ datatype, data }) => {
   const dataType = datatype;
   const objKeys = Object.keys(data[0]);
+  let key1 = "";
+  let key2 = "";
+  let key3 = "";
+  let key4 = "";
   let column1 = "";
   let column2 = "";
   let column3 = "";
   let column4 = "";
 
   if (dataType == "Sucursales") {
+    key1 = "";
+    key2 = "";
+    key3 = "";
+    key4 = "";
     column1 = "Nombre";
     column2 = "Ciudad";
     column3 = "Capacidad Máxima";
     column4 = "Horario de Inicio y cierre";
   } else if (dataType == "Operadores") {
+    key1 = "";
+    key2 = "";
+    key3 = "";
+    key4 = "";
     column1 = "Nombre y Apellido";
     column2 = "Mail";
     column3 = "Sucursal";
     column4 = "Contraseña";
   } else if (dataType == "Reservas" || dataType == "OperatorReservas") {
-    column1 = "Nombre y Apellido";
+    key1 = "";
+    key2 = "";
+    key3 = "";
+    key4 = "";
+    column1 = "Fecha de solicitud";
     column2 = "Reserva";
     column3 = "Sucursal";
     column4 = "N° de la reserva";
