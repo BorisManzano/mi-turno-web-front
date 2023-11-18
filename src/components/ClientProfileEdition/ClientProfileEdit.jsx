@@ -1,14 +1,22 @@
 import React, { useState } from "react";
 import "../ClientProfileEdition/ClientProfileEdit.scss";
 import Navbar from "../../commons/Navbar/Navbar";
-
+import { useSelector } from "react-redux";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
 export default function ClientProfileEdit() {
+  const user = useSelector((state) => state.user);
+  const [disabled, setDisabled] = useState(true);
+
   const [data, setData] = useState({
-    name: "",
-    mail: "",
-    dni: "",
-    phoneNumber: "",
-    password: "",
+    fullname: user.fullname,
+    email: user.email,
+    dni: user.dni,
+    phoneNumber: user.phoneNumber,
+    password: user.password,
+    newPassword: user.newPassword,
+    newPasswordConfirm: user.newPasswordConfirm,
   });
 
   function handleChanges(e) {
@@ -19,6 +27,40 @@ export default function ClientProfileEdit() {
       return { ...prevState, [name]: e.target.value };
     });
   }
+  function handleEditPasswordClick(e) {
+    e.preventDefault();
+    setDisabled(false);
+  }
+  function handleSubmit(e) {
+    e.preventDefault();
+    console.log("DATAA", data, data.newPassword);
+    data.newPassword === data.newPasswordConfirm
+      ? axios
+          .put("http://localhost:3001/api/users/edit/profile", {
+            fullname: data.fullname,
+            email: data.email,
+            dni: data.dni,
+            phoneNumber: data.phoneNumber,
+            password: data.newPassword,
+          })
+          .then((res) => {
+            const editedUser = {
+              fullname: res.data.fullname,
+              email: res.email,
+              dni: res.dni,
+              phoneNumber: res.phoneNumber,
+              password: res.password,
+            };
+            toast.success("TU PERFIL FUE ACTUALIZADO", {
+              position: toast.POSITION.TOP_CENTER,
+            });
+          })
+          .catch((err) => console.log("ERROR EN PEDIDO AXIOS", err))
+      : toast.error("LAS CONTRASEÑAS NO COINCIDEN", {
+          position: toast.POSITION.TOP_CENTER,
+        });
+  }
+
   return (
     <>
       <Navbar role={"final-client"} />
@@ -29,7 +71,7 @@ export default function ClientProfileEdit() {
             <p className="p-form-client">Nombre</p>
             <input
               name="name"
-              value={data.name}
+              value={user.fullname}
               className="input"
               type="text"
               onChange={handleChanges}
@@ -37,7 +79,7 @@ export default function ClientProfileEdit() {
             <p className="p-form-client">Mail</p>
             <input
               name="mail"
-              value={data.mail}
+              value={user.email}
               className="input"
               type="mail"
               onChange={handleChanges}
@@ -60,7 +102,7 @@ export default function ClientProfileEdit() {
                 <input
                   style={{ width: "100%" }}
                   name="dni"
-                  value={data.dni}
+                  value={user.dni}
                   className="input"
                   type="text"
                   onChange={handleChanges}
@@ -71,23 +113,56 @@ export default function ClientProfileEdit() {
                 <input
                   style={{ width: "98.5%" }}
                   name="phoneNumber"
-                  value={data.phoneNumber}
+                  value={user.phoneNumber}
                   className="input"
                   type="text"
                   onChange={handleChanges}
                 />
               </div>
             </div>
-            <p className="p-form-client">Contraseña</p>
-            <input
-              name="password"
-              value={data.password}
-              className="input"
-              type="text"
-              onChange={handleChanges}
-            />
-            <h4 className="h4-form-edit">Editar Contraseña</h4>
-            <button className="login-button">Aceptar</button>
+
+            {disabled ? (
+              <>
+                <p className="p-form-client">Contraseña</p>
+                <input
+                  disabled={disabled}
+                  name="password"
+                  value={user.password}
+                  className="input"
+                  type="text"
+                  onChange={handleChanges}
+                />
+              </>
+            ) : (
+              <>
+                <p className="p-form-client">Nueva Contraseña</p>
+                <input
+                  disabled={disabled}
+                  name="newPassword"
+                  value={user.newPassword}
+                  className="input"
+                  type="text"
+                  onChange={handleChanges}
+                />
+                <p className="p-form-client">
+                  Escribí de nuevo tu nueva contraseña
+                </p>
+                <input
+                  name="newPasswordConfirm"
+                  value={user.newPasswordConfirm}
+                  className="input"
+                  type="text"
+                  onChange={handleChanges}
+                />
+              </>
+            )}
+            <h4 className="h4-form-edit" onClick={handleEditPasswordClick}>
+              Editar Contraseña
+            </h4>
+            <button className="login-button" onClick={handleSubmit}>
+              Aceptar
+            </button>
+            <ToastContainer />
           </div>
         </div>
       </div>
