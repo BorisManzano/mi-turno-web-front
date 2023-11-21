@@ -38,6 +38,7 @@ const CreateBranches = function () {
     telephone : e.target.number.value,
     openingTime : e.target.horarioDeInicio.value,
     closingTime: e.target.horarioDeCierre.value,
+    capacity : e.target.cupos.value
     }
     axios.post("http://localhost:3001/api/branches/newBranch",info)
     .then((resp)=> {
