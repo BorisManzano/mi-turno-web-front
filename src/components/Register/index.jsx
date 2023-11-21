@@ -7,8 +7,10 @@ import ArrowLeft from "../../assets/ArrowLeft";
 import Navbar from "../../commons/Navbar/Navbar";
 import Fullname from "../../commons/Form/Fullname";
 import Email from "../../commons/Form/Email";
+import { useNavigate } from "react-router";
 
 export default function Register() {
+  const navigate = useNavigate();
   const [password, setPassword] = useState("");
   const [confirmPswd, setConfirmPswd] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -230,7 +232,13 @@ export default function Register() {
             <h3>Registrarme</h3>
           </button>
           <div className={s.bBorder}></div>
-          <button className={s.btnLog}>¿Ya tenés cuenta? Iniciá sesión</button>
+
+          <button
+            className={s.btnLog}
+            onClick={() => navigate("/client/login")}
+          >
+            ¿Ya tenés cuenta? Iniciá sesión
+          </button>
         </form>
       </div>
     </>
