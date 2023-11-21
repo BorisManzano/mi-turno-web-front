@@ -54,9 +54,6 @@ const Navbar = ({ role }) => {
         </div>
       ) : role === "administrator" ? (
         <div>
-          <div className="div-promotion-message">
-            <p className="p-promotion-message">Mensaje Promocional</p>
-          </div>
           <div className="navbar">
             <div className="navbar-buttons-container">
               <button className="navbar-button-administrator">
@@ -124,9 +121,6 @@ const Navbar = ({ role }) => {
         </div>
       ) : (
         <div>
-          <div className="div-promotion-message">
-            <p className="p-promotion-message">Mensaje Promocional</p>
-          </div>
           <div className="navbar">
             <span></span>
             <div className="div-navbar-text">
