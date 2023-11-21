@@ -1,19 +1,40 @@
+import axios from "axios";
 import React from "react";
-import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = ({ role }) => {
+  const navigate = useNavigate();
+  // const user = useSelector((state) => state.user);
+  // hardcodeado para probar
+  const user = { email: "b" };
+  const handleButtonRigth = () => {
+    user.email
+      ? axios
+          .post(`http://localhost:3001/api/users/logout`, {
+            withCredentials: true,
+          })
+          .then(() => navigate("/client/login"))
+          .catch((err) => console.error(err))
+      : navigate("/client/register");
+  };
   return (
     <div>
       {role === "final-client" ? (
         <div>
           <div className="navbar">
-            <div>
-              <Link to={"/client/newReservation"}>
-                <button className="navbar-button">
-                  <h4 className="h4-navbar">Reservar</h4>
-                </button>
-              </Link>
-            </div>
+            {user.email ? (
+              <div>
+                <Link to={"/client/newReservation"}>
+                  <button className="navbar-button">
+                    <h4 className="h4-navbar">Reservar</h4>
+                  </button>
+                </Link>
+              </div>
+            ) : (
+              <div></div>
+            )}
+
             <div className="div-navbar-text">
               <Link to={"/client/reservations"}>
                 <div style={{ display: "flex", alignItems: "center" }}>
@@ -49,6 +70,13 @@ const Navbar = ({ role }) => {
                   </svg>
                 </div>
               </Link>
+              <div style={{ margin: "0px 0px 0px 35px" }}>
+                <button className="navbar-button" onClick={handleButtonRigth}>
+                  <h4 className="h4-navbar">
+                    {user.email ? `Logout` : `Register`}
+                  </h4>
+                </button>
+              </div>
             </div>
           </div>
         </div>
