@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate, useParams } from "react-router";
 
-const PopupReservation = ({ state }) => {
+const PopupReservation = ({ state, option }) => {
   const navigate = useNavigate();
   const params = useParams();
   // cambia el h1 con el mensaje
@@ -25,13 +25,23 @@ const PopupReservation = ({ state }) => {
                 fill="green"
               />
             </svg>
-            <h1 className="h1-popup-text">Turno {action} con exito</h1>
+            <h1 className="h1-popup-text">
+              {!option
+                ? `Turno ${action} con exito`
+                : `Contraseña modificada con exito`}
+            </h1>
             <p className="p-popup-text">
-              Gracias por confiar en nuestro servicio
+              {!option
+                ? `Gracias por confiar en nuestro servicio`
+                : `Haz click en continuar para iniciar sesion`}
             </p>
             <button
               className="popup-button"
-              onClick={() => navigate("/client/reservationConfirmed")}
+              onClick={() => {
+                !option
+                  ? navigate("/client/reservationConfirmed")
+                  : navigate("/client/login");
+              }}
             >
               Continuar
             </button>
@@ -56,10 +66,23 @@ const PopupReservation = ({ state }) => {
             </svg>
             <h1 className="h1-popup-text">No se pudo realizar el cambio</h1>
             <p className="p-popup-text">
-              Este turno ya fue ocupado, vuelve a intentarlo más tarde o
-              modificando algún parámetro
+              {!option
+                ? `Este turno ya fue ocupado, vuelve a intentarlo más tarde o
+              modificando algún parámetro`
+                : `Ha ocurrido un problema inesperado y no tenemos soporte asique siga intentando`}
             </p>
-            <button className="popup-button">Volver a intentar</button>
+            <button
+              className="popup-button"
+              onClick={() => {
+                !option
+                  ? console.log(
+                      "no estoy seguro que deberia hacer aca asi que por ahora lo deje vacio"
+                    )
+                  : window.location.reload();
+              }}
+            >
+              Volver a intentar
+            </button>
           </div>
         </div>
       )}
