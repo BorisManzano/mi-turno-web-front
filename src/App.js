@@ -9,6 +9,8 @@ import ClientProfileEdit from "./components/ClientProfileEdition/ClientProfileEd
 import { AdministratorSucursalesList } from "./components/AdministratorSucursalesList";
 import { AdministratorOperatorsList } from "./components/AdministratorOperatorsList";
 import RecoverPassword from "./components/RecoverPassword";
+import CreateOperator from "./components/CreateOperator";
+import { CancelReservation } from "./components/CancelReservation";
 
 function App() {
   return (
@@ -29,6 +31,14 @@ function App() {
         />
         <Route path="/client/myAccount" element={<ClientProfileEdit />} />
         <Route
+          path="/client/cancelReservation/:reservationId"
+          element={<CancelReservation />}
+        />
+        {/* <Route //ruta pendiente
+          path="/client/editReservation/:reservationId"
+          element={< />}
+        /> */}
+        <Route
           path="/admin/allBranches"
           element={<AdministratorSucursalesList />}
         />
@@ -37,6 +47,11 @@ function App() {
           element={<AdministratorOperatorsList />}
         />
         <Route path="/client/recoverPassword" element={<RecoverPassword />} />
+        <Route
+          path="/admin/create-operator"
+          element={<CreateOperator />}
+        ></Route>
+
       </Routes>
     </div>
   );
