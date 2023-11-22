@@ -8,6 +8,7 @@ import UserReservationHistory from "./components/UserReservationHistory/index";
 import ClientProfileEdit from "./components/ClientProfileEdition/ClientProfileEdit";
 import { AdministratorSucursalesList } from "./components/AdministratorSucursalesList";
 import { AdministratorOperatorsList } from "./components/AdministratorOperatorsList";
+import RecoverPassword from "./components/RecoverPassword";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
           path="/admin/operators"
           element={<AdministratorOperatorsList />}
         />
+        <Route path="/client/recoverPassword" element={<RecoverPassword />} />
       </Routes>
     </div>
   );
