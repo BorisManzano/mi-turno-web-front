@@ -35,26 +35,34 @@ export default function ReservationPanel() {
   const [date, setDate] = React.useState(null);
   const [enabled, setEnabled] = React.useState(false);
   const [branches, setBranches] = React.useState([]);
+  const [capacity, setCapacity] = React.useState(0);
+  const [editing, setEditing] = React.useState(false);
+  // const reservationId = "$2b$13$6gereWFdASfy8hWSdcuTgu ";
+  const { reservationId } = useParams();
 
-  const reservationId = useParams();
+  console.log("ESTO ES EL RESERVATION ID---->", reservationId);
   function handleNext() {
     setActiveStep((prev) => prev + 1);
   }
   //TRAIGO DATOS DE LA RESERVA PARA EDITAR y SUCURSALES DEL BACK--------------------------
   React.useEffect(() => {
-    if (!appointment.reservationId && reservationId) {
-      axios
-        .get(`http://localhost:3001/api/users/appointment/${reservationId}`)
-        .then((result) => {
-          const data = {
-            branchId: result.branchId,
-            branchName: result.branchName,
-            date: result.date,
-            schedule: result.schedule,
-          };
-          setAppointment(data);
-        });
-    }
+    // if (!appointment.reservationId && reservationId) {
+    //   setEditing(true);
+    //   axios
+    //     .get(`http://localhost:3001/api/users/appointment/${reservationId}`)
+    //     .then((result) => {
+    //       const data = {
+    //         branchId: result.branchId,
+    //         branchName: result.branchName,
+    //         date: result.date,
+    //         schedule: result.schedule,
+    //       };
+    //       setAppointment(data);
+    //     })
+    //     .catch((error) => console.log("ERROR AXIOS RESERVATION"));
+    // } else {
+    //   setEditing(false);
+    // }
 
     axios
       .get(`http://localhost:3001/api/branches/allBranches`)
@@ -62,7 +70,7 @@ export default function ReservationPanel() {
         console.log("BRANCHES LLEGA----", result);
         setBranches(result.data);
       })
-      .catch((error) => console.log(error));
+      .catch((error) => console.log("NO BRANCHES AVAILABLE"));
   }, [reservationId]);
 
   //---------------------------------------------
@@ -81,15 +89,17 @@ export default function ReservationPanel() {
   //----------------------------------------------------------
 
   const [activeStep, setActiveStep] = React.useState(
-    !appointment.email ? 0 : steps.length
+    !editing ? 0 : steps.length
+    // !appointment.email ? 0 : steps.length
   );
   //--------------------------------------------------------
 
   function handleSelection(e) {
     e.preventDefault();
-    const [id, name] = e.target.value.split("-");
+    const [id, name, capacity] = e.target.value.split("-");
     setBranchName(name);
     setBranchId(id);
+    setCapacity(capacity);
     handleNext();
   }
   function handleScheduleSelection(e) {
@@ -304,7 +314,7 @@ export default function ReservationPanel() {
                   {branches.map((branch) => (
                     <option
                       key={branch.id}
-                      value={`${branch.id}-${branch.name}`}
+                      value={`${branch.id}-${branch.name}-${branch.capacity}`}
                     >
                       {branch.name}
                     </option>
@@ -414,7 +424,7 @@ export default function ReservationPanel() {
                     className="form-control"
                     onChange={handleChanges}
                   />
-                  {appointment.schedule ? (
+                  {editing ? (
                     <Button
                       variant="contained"
                       enabled
@@ -459,7 +469,7 @@ export default function ReservationPanel() {
               width: "fixed",
             }}
           >
-            {activeStep === 1 || appointment.date ? (
+            {activeStep === 1 || editing ? (
               <LocalizationProvider dateAdapter={AdapterDayjs} id="calendar">
                 <DateCalendar
                   sx={{ color: "#A442F1" }}
