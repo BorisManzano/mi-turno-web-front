@@ -296,12 +296,9 @@
   align-items: flex-start;
   gap: 2px;
   align-self: stretch;
-  label {
-    width: 100%;
-  }
   input {
     outline: none;
-    width: 560px;
+
     border-radius: 8px;
     border: 1px solid var(--Grey-3, #e1e1e1);
     display: flex;
@@ -317,6 +314,9 @@
   }
   input:focus {
     border: 1px solid var(--Principal, #a442f1);
+  }
+  label {
+    width: 100%;
   }
 }
 
@@ -348,4 +348,8 @@
 
 .succes {
   color: var(--xito, #00a541);
+}
+
+.ancho {
+  width: 1000px;
 }

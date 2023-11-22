@@ -21,7 +21,6 @@ export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [focus, setFocus] = useState(false);
-  const [dni, setDNI] = useState("");
   const [checklist, setChecklist] = useState({
     uppercaseLetter: false,
     lowercaseLetter: false,
@@ -50,21 +49,18 @@ export default function Register() {
   const handleInputPassword = (e) => {
     const newValue = e.target.value;
     setPassword(newValue);
-    data.password = newValue;
+    setData({ ...data, password: newValue });
     setChecklist({
       uppercaseLetter: /[A-ZÑ]/.test(newValue),
       lowercaseLetter: /[a-zñ]/.test(newValue),
       oneNumber: /\d/.test(newValue),
       large: newValue.length >= 8,
+      validation:
+        /[A-ZÑ]/.test(newValue) &&
+        /[a-zñ]/.test(newValue) &&
+        /\d/.test(newValue) &&
+        newValue.length >= 8,
     });
-    if (
-      checklist.large &&
-      checklist.lowercaseLetter &&
-      checklist.oneNumber &&
-      checklist.uppercaseLetter
-    ) {
-      setChecklist({ validation: true });
-    }
   };
 
   const handleInputChange = (e) => {
@@ -85,16 +81,22 @@ export default function Register() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios
-      .post("http://localhost:3001/api/users/register", data)
-      .then(() => {
-        console.log("Registro exitoso");
-        navigate("/client/login");
-      })
-      .catch((err) => {
-        console.error("Error en el registro:", err);
-        alert("Error en el registro:", err);
-      });
+    if (!checklist.validation) {
+      alert("validation");
+    } else if (data.password !== confirmPswd) {
+      alert("Las contraseñas deben ser iguales");
+    } else {
+      axios
+        .post("http://localhost:3001/api/users/register", data)
+        .then(() => {
+          console.log("Registro exitoso");
+          navigate("/client/login");
+        })
+        .catch((err) => {
+          console.error("Error en el registro:", err);
+          alert("Error en el registro:", err);
+        });
+    }
   };
 
   return (
@@ -106,24 +108,10 @@ export default function Register() {
               <ArrowLeft className={s.none} />
               Atras
             </button>
-            <h1 className={s.textTittle}>Create account</h1>
+            <h1 className={s.textTittle}>Crear cuenta</h1>
           </div>
           <div className={s.inputs}>
             <div className={s.rowForm}>
-              {/* <div>
-                <label htmlFor="name" className={s.textInputs}>
-                  Nombre y Apellido
-                </label>
-                <input
-                  type="text"
-                  name="nameAndLast_name"
-                  id="fn"
-                  value={data.name}
-                  placeholder="Nombre Apellido"
-                  className={s.inputArea}
-                  onChange={handleInputChange}
-                />
-              </div> */}
               <Fullname
                 value={data.name}
                 handleInputChange={handleInputChange}
@@ -166,9 +154,9 @@ export default function Register() {
                 </label>
                 <div
                   className={
-                    focus && password === confirmPswd
+                    focus && data.password === confirmPswd
                       ? s.focus
-                      : password !== confirmPswd
+                      : data.password !== confirmPswd
                       ? s.err
                       : s.inputArea
                   }
@@ -180,6 +168,7 @@ export default function Register() {
                     placeholder="Contraseña"
                     value={data.password}
                     className={s.inputPassword}
+                    autoComplete="new-password"
                     onChange={handleInputPassword}
                     onFocus={handleToggleFocus}
                     onBlur={handleToggleFocus}
@@ -195,9 +184,9 @@ export default function Register() {
                 </label>
                 <div
                   className={
-                    focus && password === confirmPswd
+                    focus && data.password === confirmPswd
                       ? s.focus
-                      : password !== confirmPswd
+                      : data.password !== confirmPswd
                       ? s.err
                       : s.inputArea
                   }
@@ -209,6 +198,7 @@ export default function Register() {
                     placeholder="Contraseña"
                     value={confirmPswd}
                     className={s.inputPassword}
+                    autoComplete="new-password"
                     onChange={handleInputConfirmPswd}
                     onFocus={handleToggleFocus}
                     onBlur={handleToggleFocus}
@@ -221,7 +211,7 @@ export default function Register() {
             </div>
           </div>
           <div className={s.warning}>
-            {password === "" ? (
+            {data.password === "" ? (
               <p className={s.marg2}>La contraseña debe contener:</p>
             ) : (
               <p className={s.marg}>La contraseña debe contener:</p>
@@ -230,7 +220,7 @@ export default function Register() {
             <div className={s.bBorder}></div>
             <div className={s.container}>
               <div className={s.rowOne}>
-                {password === "" ? (
+                {data.password === "" ? (
                   <>
                     <div className={s.row3}>
                       <p>ABC</p> <p>Una letra mayúscula</p>
@@ -263,7 +253,7 @@ export default function Register() {
                 )}
               </div>
               <div className={s.rowOne}>
-                {password === "" ? (
+                {data.password === "" ? (
                   <>
                     <div className={s.row3}>
                       <p>123</p> <p>Un número</p>
