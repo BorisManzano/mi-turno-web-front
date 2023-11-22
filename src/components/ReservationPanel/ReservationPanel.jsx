@@ -1,8 +1,7 @@
 import * as React from "react";
 import "../ReservationPanel/ReservationPanel.scss";
 import Navbar from "../../commons/Navbar/Navbar";
-
-import { useDispatch, useSelector } from "react-redux";
+import PopupReservation from "../../commons/popup-reservation";
 import {
   Box,
   FormControl,
@@ -19,55 +18,95 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 
 import axios from "axios";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 
-export default function PanelPrueba() {
-  // const dispatch = useDispatch();
+export default function ReservationPanel() {
   const navigate = useNavigate();
-  const [activeStep, setActiveStep] = React.useState(0);
-  const [selectedDate, setSelectedDate] = React.useState(null);
+  // variable para renderizas popup exitoso o de error
+  let state = true;
+
+  const [appointment, setAppointment] = React.useState({
+    reservationId: "",
+    branchId: "",
+    branchName: "",
+    date: "",
+    schedule: "",
+  });
+  const [date, setDate] = React.useState(null);
   const [enabled, setEnabled] = React.useState(false);
+  const [branches, setBranches] = React.useState([]);
 
-  // const appointment = useSelector((state) => state.appointment);
-
+  const reservationId = useParams();
   function handleNext() {
     setActiveStep((prev) => prev + 1);
   }
-  //HARDCODEO SUCURSALES-------------------------------
-  const branches = ["Villa Crespo", "Palermo", "Montevideo", "Cachirulo"];
+  //TRAIGO DATOS DE LA RESERVA PARA EDITAR y SUCURSALES DEL BACK--------------------------
+  React.useEffect(() => {
+    if (!appointment.reservationId && reservationId) {
+      axios
+        .get(`http://localhost:3001/api/users/appointment/${reservationId}`)
+        .then((result) => {
+          const data = {
+            branchId: result.branchId,
+            branchName: result.branchName,
+            date: result.date,
+            schedule: result.schedule,
+          };
+          setAppointment(data);
+        });
+    }
+
+    axios
+      .get(`http://localhost:3001/api/branches/allBranches`)
+      .then((result) => {
+        console.log("BRANCHES LLEGA----", result);
+        setBranches(result.data);
+      })
+      .catch((error) => console.log(error));
+  }, [reservationId]);
+
   //---------------------------------------------
-  const [selectedBranch, setSelectedBranch] = React.useState("");
+  const [branchName, setBranchName] = React.useState("");
   //-------------------------------------------------------------
-  const [selectedSchedule, setSelectedSchedule] = React.useState("");
+  const [branchId, setBranchId] = React.useState(0);
+  const [schedule, setSchedule] = React.useState("");
   //HARDCODEO HORARIOS------------------------------------------------------
-  const schedules = ["10 a 10.15 hs", "11 a 11.15 hs", "12 a 13 hs", "13 a 14"];
+  const schedules = ["10:00", "11:00", "12:00", "12:15"];
   //---------------------------------------
   const steps = [
     "Elegí tu sucursal",
     "Seleccioná el día",
     "Completá el formulario",
   ];
+  //----------------------------------------------------------
+
+  const [activeStep, setActiveStep] = React.useState(
+    !appointment.email ? 0 : steps.length
+  );
+  //--------------------------------------------------------
 
   function handleSelection(e) {
     e.preventDefault();
-    setSelectedBranch(e.target.value);
+    const [id, name] = e.target.value.split("-");
+    setBranchName(name);
+    setBranchId(id);
     handleNext();
   }
   function handleScheduleSelection(e) {
     e.preventDefault();
-    setSelectedSchedule(e.target.value);
+    setSchedule(e.target.value);
     handleNext();
   }
   function handleDaySelector(e) {
-    setSelectedDate(e.$d);
+    setDate(e.$d);
 
     handleNext();
   }
 
   const [data, setData] = React.useState({
-    nombreYApellido: "",
-    telefono: "",
-    email: "",
+    fullname: appointment.fullname,
+    telephone: appointment.telephone,
+    email: appointment.email,
   });
 
   function handleChanges(e) {
@@ -79,23 +118,68 @@ export default function PanelPrueba() {
     });
     setEnabled(true);
   }
-  const inputs = { selectedBranch, selectedSchedule, selectedDate, ...data };
-  // dispatch(setAppointment(inputs));
-  // console.log("APPOINTMENT------------->", inputs);
+
+  const inputs = { branchId, branchName, schedule, date, ...data };
+
+  // console.log("INPUTS------------>", inputs);
+
+  //FUNCION HANDLE-SUBMIT--------------------------------------------------------
   function handleSubmit(e) {
     e.preventDefault();
 
     axios
-      .post("/api/users/newAppointment", inputs)
-      .then((res) => {
-        console.log(res);
+      .post("http://localhost:3001/api/users/newAppointment", { ...inputs }) //en funcionamiento.
+      .then(() => {
+        const newAppointment = {
+          branchId: inputs.branchId,
+          branchName: inputs.branchName,
+          date: inputs.date.toISOString(),
+          schedule: inputs.schedule,
+        };
+
+        document
+          .querySelector(".body")
+          .classList.add("make-reservation-container-inactive");
+        document
+          .querySelector(".fake-container-popup")
+          .classList.remove("fake-container-popup-inactive");
+        document
+          .querySelector(".fake-container-popup")
+          .classList.add("fake-container-popup-active");
+        setAppointment(newAppointment);
+      })
+      .catch(function (error) {
+        state = false;
+        console.log(error);
+      });
+
+    navigate(); //VUELVE A RENDERIZAR LA PÁGINA CON LOS NUEVOS DATOS
+  }
+  //HANDLEEDITION------------------------------------------
+  function handleEdition(e) {
+    e.preventDefault();
+
+    axios
+      .put("http://localhost:3001/api/users/newAppointment", {
+        ...inputs,
+        reservationId,
+      })
+      .then(() => {
+        const newAppointment = {
+          branchId: inputs.branchId,
+          branchName: inputs.branchName,
+          date: inputs.date,
+          schedule: inputs.schedule,
+        };
+        setAppointment(newAppointment);
       })
       .catch(function (error) {
         console.log(error);
       });
 
-    navigate("/client/reservationConfirmed");
+    navigate("/client/reservations");
   }
+  //--------------------------------------------------------
 
   return (
     <div>
@@ -104,10 +188,10 @@ export default function PanelPrueba() {
       <Box
         className="body"
         sx={{
-          height: "100vh",
+          height: "85vh",
           width: "fixed",
 
-          paddingTop: "7%",
+          paddingTop: "2.5%",
 
           paddingLeft: "10%",
           backgroundColor: " #f1ebeb",
@@ -116,6 +200,7 @@ export default function PanelPrueba() {
           margin: "auto",
         }}
       >
+        {" "}
         <h1
           className="title"
           style={{ display: "flex", alignItems: "flex-start" }}
@@ -217,8 +302,11 @@ export default function PanelPrueba() {
                 >
                   <option value=""></option>
                   {branches.map((branch) => (
-                    <option key={branch} value={branch}>
-                      {branch}
+                    <option
+                      key={branch.id}
+                      value={`${branch.id}-${branch.name}`}
+                    >
+                      {branch.name}
                     </option>
                   ))}
                 </select>
@@ -226,7 +314,7 @@ export default function PanelPrueba() {
                 ""
               )}
               <br />
-              {activeStep >= 2 ? (
+              {activeStep >= 2 && (
                 <div
                   xs={12}
                   sx={{
@@ -284,8 +372,8 @@ export default function PanelPrueba() {
                       <br />
                       <input
                         style={{ width: "90%", height: "30px" }}
-                        name="nombreYApellido"
-                        value={data.nombreYApellido}
+                        name="fullname"
+                        value={data.fullname}
                         type="text"
                         className="form-control"
                         onChange={handleChanges}
@@ -304,8 +392,8 @@ export default function PanelPrueba() {
                       <br />
                       <input
                         style={{ width: "100%", height: "30px" }}
-                        name="telefono"
-                        value={data.telefono}
+                        name="telephone"
+                        value={data.telephone}
                         type="text"
                         className="input"
                         onChange={handleChanges}
@@ -326,7 +414,20 @@ export default function PanelPrueba() {
                     className="form-control"
                     onChange={handleChanges}
                   />
-                  {
+                  {appointment.schedule ? (
+                    <Button
+                      variant="contained"
+                      enabled
+                      onClick={handleEdition}
+                      sx={{
+                        marginTop: "5%",
+                        marginBottom: "5%",
+                        background: "#A442F1",
+                      }}
+                    >
+                      Confirmar edición
+                    </Button>
+                  ) : (
                     <Button
                       variant="contained"
                       disabled={activeStep < 2 || !enabled}
@@ -339,21 +440,8 @@ export default function PanelPrueba() {
                     >
                       Confirmar reserva
                     </Button>
-                  }
+                  )}
                 </div>
-              ) : (
-                <Button
-                  variant="contained"
-                  disabled={activeStep < 2 || !enabled}
-                  sx={{
-                    width: "200px",
-                    marginTop: "5%",
-                    marginBottom: "5%",
-                    background: "#A442F1",
-                  }}
-                >
-                  Confirmar reserva
-                </Button>
               )}
             </FormControl>
           </Grid>
@@ -371,7 +459,7 @@ export default function PanelPrueba() {
               width: "fixed",
             }}
           >
-            {activeStep === 1 ? (
+            {activeStep === 1 || appointment.date ? (
               <LocalizationProvider dateAdapter={AdapterDayjs} id="calendar">
                 <DateCalendar
                   sx={{ color: "#A442F1" }}
@@ -385,7 +473,6 @@ export default function PanelPrueba() {
             )}
           </Grid>
         </Grid>
-
         <Grid
           container
           sx={{
@@ -406,6 +493,7 @@ export default function PanelPrueba() {
           </Button>
         </Grid>
       </Box>
+      <PopupReservation state={state} />
     </div>
   );
 }
