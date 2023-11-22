@@ -1,6 +1,7 @@
 import * as React from "react";
 import "../ReservationPanel/ReservationPanel.scss";
 import Navbar from "../../commons/Navbar/Navbar";
+import Countdown from "../../commons/Countdown";
 import PopupReservation from "../../commons/popup-reservation";
 import {
   Box,
@@ -499,7 +500,7 @@ export default function ReservationPanel() {
               color: "white",
             }}
           >
-            Quedan 4:52
+            <Countdown />
           </Button>
         </Grid>
       </Box>
