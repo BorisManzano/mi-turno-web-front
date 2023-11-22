@@ -9,6 +9,7 @@ import ClientProfileEdit from "./components/ClientProfileEdition/ClientProfileEd
 import { AdministratorSucursalesList } from "./components/AdministratorSucursalesList";
 import { AdministratorOperatorsList } from "./components/AdministratorOperatorsList";
 import CreateOperator from "./components/CreateOperator";
+import { CancelReservation } from "./components/CancelReservation";
 
 function App() {
   return (
@@ -28,6 +29,14 @@ function App() {
           element={<UserReservationHistory />}
         />
         <Route path="/client/myAccount" element={<ClientProfileEdit />} />
+        <Route
+          path="/client/cancelReservation/:reservationId"
+          element={<CancelReservation />}
+        />
+        {/* <Route //ruta pendiente
+          path="/client/editReservation/:reservationId"
+          element={< />}
+        /> */}
         <Route
           path="/admin/allBranches"
           element={<AdministratorSucursalesList />}

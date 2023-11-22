@@ -1,14 +1,14 @@
 import React from "react";
+import { useNavigate, useParams } from "react-router";
 
-const PopUpSuccessful = () => {
+const PopupReservation = ({ state }) => {
+  const navigate = useNavigate();
+  const params = useParams();
   // cambia el h1 con el mensaje
-  const action = "reservado";
-  // cambia el estado del popup. exitoso = "successfull", o error = "error"
-  const estado = "error";
-
+  const action = params.reservationNumber ? "modificado" : "reservado";
   return (
-    <div className="fake-container-popup">
-      {estado === "successful" ? (
+    <div className="fake-container-popup fake-container-popup-inactive">
+      {state ? (
         <div className="popup-container">
           <div className="popup-content-container">
             <svg
@@ -29,7 +29,12 @@ const PopUpSuccessful = () => {
             <p className="p-popup-text">
               Gracias por confiar en nuestro servicio
             </p>
-            <button className="popup-button">Continuar</button>
+            <button
+              className="popup-button"
+              onClick={() => navigate("/client/reservationConfirmed")}
+            >
+              Continuar
+            </button>
           </div>
         </div>
       ) : (
@@ -62,4 +67,4 @@ const PopUpSuccessful = () => {
   );
 };
 
-export default PopUpSuccessful;
+export default PopupReservation;
