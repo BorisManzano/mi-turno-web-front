@@ -8,23 +8,27 @@ const Login = () => {
   const navigate = useNavigate();
   const [userInputValue, setUserInputValue] = useState();
   const [passwordInputValue, setPasswordInputValue] = useState();
+  const [invalidInformation, setInvalidInformation] = useState();
   const handleSubmit = (e) => {
-    // axios
-    //   .post(
-    //     "http://localhost:3001/api/users/login",
-    //     {
-    //       email: userInputValue,
-    //       password: passwordInputValue,
-    //     },
-    //     {
-    //       withCredentials: true,
-    //     }
-    //   )
-    //   .then((response) => {
-    //     console.log(response);
-    navigate("/client/newReservation");
-    // })
-    // .catch((err) => console.error(err));
+    axios
+      .post(
+        "http://localhost:3001/api/users/login",
+        {
+          email: userInputValue,
+          password: passwordInputValue,
+        },
+        {
+          withCredentials: true,
+        }
+      )
+      .then((response) => {
+        console.log(response);
+        navigate("/client/newReservation");
+      })
+      .catch((err) => {
+        setInvalidInformation("¡Email o contraseña incorrectos!");
+        console.error(err);
+      });
   };
   return (
     <div>
@@ -45,6 +49,7 @@ const Login = () => {
               type="password"
               onChange={(e) => setPasswordInputValue(e.target.value)}
             />
+            <p className="p-validation-error-login">{invalidInformation}</p>
             <h4 className="h4-form-login">¿Olvidaste tu contraseña?</h4>
             <button className="login-button" onClick={() => handleSubmit()}>
               Ingresar

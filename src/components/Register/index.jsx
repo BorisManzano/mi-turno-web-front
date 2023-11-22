@@ -1,14 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import s from "./style.module.scss";
 import Eye from "../../assets/Eye";
 import Check from "../../assets/Check";
 import Wrong from "../../assets/Wrong";
 import ArrowLeft from "../../assets/ArrowLeft";
-import Navbar from "../../commons/Navbar/Navbar";
+import { useNavigate } from "react-router";
+import axios from "axios";
 import Fullname from "../../commons/Form/Fullname";
-import Email from "../../commons/Form/Email";
 
 export default function Register() {
+  const navigate = useNavigate();
+  const [data, setData] = useState({
+    nameAndLast_name: "",
+    DNI: "",
+    email: "",
+    password: "",
+  });
   const [password, setPassword] = useState("");
   const [confirmPswd, setConfirmPswd] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -20,6 +27,7 @@ export default function Register() {
     lowercaseLetter: false,
     oneNumber: false,
     large: false,
+    validation: false,
   });
 
   const handleToggleFocus = () => {
@@ -42,24 +50,57 @@ export default function Register() {
   const handleInputPassword = (e) => {
     const newValue = e.target.value;
     setPassword(newValue);
+    data.password = newValue;
     setChecklist({
       uppercaseLetter: /[A-ZÑ]/.test(newValue),
       lowercaseLetter: /[a-zñ]/.test(newValue),
       oneNumber: /\d/.test(newValue),
       large: newValue.length >= 8,
     });
+    if (
+      checklist.large &&
+      checklist.lowercaseLetter &&
+      checklist.oneNumber &&
+      checklist.uppercaseLetter
+    ) {
+      setChecklist({ validation: true });
+    }
   };
 
   const handleInputChange = (e) => {
-    const newValue = e.target.value.replace(/[^0-9]/g, "");
-    setDNI(newValue);
+    const { name, value } = e.target;
+    if (name === "DNI") {
+      const nums = value.replace(/[^0-9]/g, "");
+      setData({
+        ...data,
+        [name]: parseInt(nums),
+      });
+    } else {
+      setData({
+        ...data,
+        [name]: value,
+      });
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    axios
+      .post("http://localhost:3001/api/users/register", data)
+      .then(() => {
+        console.log("Registro exitoso");
+        navigate("/client/login");
+      })
+      .catch((err) => {
+        console.error("Error en el registro:", err);
+        alert("Error en el registro:", err);
+      });
   };
 
   return (
     <>
-      <Navbar />
       <div className={s.divs}>
-        <form className={s.f}>
+        <form className={s.f} onSubmit={handleSubmit}>
           <div className={s.head}>
             <button className={s.none}>
               <ArrowLeft className={s.none} />
@@ -69,25 +110,55 @@ export default function Register() {
           </div>
           <div className={s.inputs}>
             <div className={s.rowForm}>
-              <Fullname />
+              {/* <div>
+                <label htmlFor="name" className={s.textInputs}>
+                  Nombre y Apellido
+                </label>
+                <input
+                  type="text"
+                  name="nameAndLast_name"
+                  id="fn"
+                  value={data.name}
+                  placeholder="Nombre Apellido"
+                  className={s.inputArea}
+                  onChange={handleInputChange}
+                />
+              </div> */}
+              <Fullname
+                value={data.name}
+                handleInputChange={handleInputChange}
+              />
               <div>
-                <label htmlFor="dni" className={s.textInputs}>
+                <label htmlFor="DNI" className={s.textInputs}>
                   DNI
                 </label>
                 <input
                   type="text"
-                  id="dni"
-                  name="dni"
+                  id="DNI"
+                  name="DNI"
                   maxLength="8"
-                  pattern="[0-9]{1,8}"
+                  pattern="[0-9]{7,8}"
                   placeholder="9999999"
-                  value={dni}
+                  value={data.DNI}
                   onChange={handleInputChange}
                   className={s.inputArea}
                 />
               </div>
             </div>
-            <Email />
+            <div className={s.inputMail}>
+              <label htmlFor="email" className={s.textInputs}>
+                Mail
+              </label>
+              <input
+                type="email"
+                name="email"
+                id="em"
+                value={data.email}
+                autoComplete="username"
+                placeholder="ejemplo_nombre@ejemplo.com"
+                onChange={handleInputChange}
+              />
+            </div>
             <div className={s.rowForm}>
               <div>
                 <label htmlFor="password" className={s.textInputs}>
@@ -97,9 +168,9 @@ export default function Register() {
                   className={
                     focus && password === confirmPswd
                       ? s.focus
-                      : password === ""
-                      ? s.inputArea
-                      : s.err
+                      : password !== confirmPswd
+                      ? s.err
+                      : s.inputArea
                   }
                 >
                   <input
@@ -107,7 +178,7 @@ export default function Register() {
                     name="password"
                     id="password"
                     placeholder="Contraseña"
-                    value={password}
+                    value={data.password}
                     className={s.inputPassword}
                     onChange={handleInputPassword}
                     onFocus={handleToggleFocus}
@@ -176,7 +247,7 @@ export default function Register() {
                       </div>
                     ) : (
                       <div className={s.row2}>
-                        <Wrong /> <p>ABC</p> <p>Una letra minúscula</p>
+                        <Wrong /> <p>ABC</p> <p>Una letra mayúscula</p>
                       </div>
                     )}
                     {checklist.lowercaseLetter ? (
@@ -205,7 +276,7 @@ export default function Register() {
                   <>
                     {checklist.oneNumber ? (
                       <div className={s.row1}>
-                        <Wrong /> <p>123</p> <p>Un número</p>
+                        <Check /> <p>123</p> <p>Un número</p>
                       </div>
                     ) : (
                       <div className={s.row2}>
@@ -226,7 +297,7 @@ export default function Register() {
               </div>
             </div>
           </div>
-          <button className={s.btnSingIn}>
+          <button className={s.btnSingIn} type="submit">
             <h3>Registrarme</h3>
           </button>
           <div className={s.bBorder}></div>
