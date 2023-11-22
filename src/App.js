@@ -8,6 +8,7 @@ import UserReservationHistory from "./components/UserReservationHistory/index";
 import ClientProfileEdit from "./components/ClientProfileEdition/ClientProfileEdit";
 import { AdministratorSucursalesList } from "./components/AdministratorSucursalesList";
 import { AdministratorOperatorsList } from "./components/AdministratorOperatorsList";
+import CreateOperator from "./components/CreateOperator";
 import { CancelReservation } from "./components/CancelReservation";
 
 function App() {
@@ -44,6 +45,10 @@ function App() {
           path="/admin/operators"
           element={<AdministratorOperatorsList />}
         />
+        <Route
+          path="/admin/create-operator"
+          element={<CreateOperator />}
+        ></Route>
       </Routes>
     </div>
   );
