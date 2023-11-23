@@ -33,10 +33,10 @@ function App() {
           path="/client/cancelReservation/:reservationId"
           element={<CancelReservation />}
         />
-        {/* <Route //ruta pendiente
+        <Route
           path="/client/editReservation/:reservationId"
-          element={< />}
-        /> */}
+          element={<ReservationPanel />}
+        />
         <Route
           path="/admin/allBranches"
           element={<AdministratorSucursalesList />}
