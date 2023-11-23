@@ -47,11 +47,7 @@ function App() {
           element={<AdministratorOperatorsList />}
         />
         <Route path="/client/recoverPassword" element={<RecoverPassword />} />
-        <Route
-          path="/admin/create-operator"
-          element={<CreateOperator />}
-        ></Route>
-
+        <Route path="/admin/create-operator" element={<CreateOperator />} />
       </Routes>
     </div>
   );
