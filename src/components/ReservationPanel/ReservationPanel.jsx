@@ -168,7 +168,7 @@ export default function ReservationPanel() {
   //HANDLEEDITION------------------------------------------
   function handleEdition(e) {
     e.preventDefault();
-    const toPut = { reservationId: reservationId };
+    const toPut = { reservationId: reservationId, email: appointment.email };
     for (const key in inputs) {
       if (
         inputs.hasOwnProperty(key) &&
