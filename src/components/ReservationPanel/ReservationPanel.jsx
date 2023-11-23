@@ -2,6 +2,7 @@ import * as React from "react";
 import "../ReservationPanel/ReservationPanel.scss";
 import Navbar from "../../commons/Navbar/Navbar";
 import PopupReservation from "../../commons/popup-reservation";
+
 import {
   Box,
   FormControl,
@@ -32,13 +33,16 @@ export default function ReservationPanel() {
     branchName: "",
     date: "",
     schedule: "",
+    fullname: "",
+    telephone: "",
+    email: "",
   });
   const [date, setDate] = React.useState(null);
   const [enabled, setEnabled] = React.useState(false);
   const [branches, setBranches] = React.useState([]);
   const [capacity, setCapacity] = React.useState(0);
   const [editing, setEditing] = React.useState(false);
-  // const reservationId = "$2b$13$6gereWFdASfy8hWSdcuTgu ";
+
   const { reservationId } = useParams();
 
   console.log("ESTO ES EL RESERVATION ID---->", reservationId);
@@ -47,28 +51,33 @@ export default function ReservationPanel() {
   }
   //TRAIGO DATOS DE LA RESERVA PARA EDITAR y SUCURSALES DEL BACK--------------------------
   React.useEffect(() => {
-    // if (!appointment.reservationId && reservationId) {
-    //   setEditing(true);
-    //   axios
-    //     .get(`http://localhost:3001/api/users/appointment/${reservationId}`)
-    //     .then((result) => {
-    //       const data = {
-    //         branchId: result.branchId,
-    //         branchName: result.branchName,
-    //         date: result.date,
-    //         schedule: result.schedule,
-    //       };
-    //       setAppointment(data);
-    //     })
-    //     .catch((error) => console.log("ERROR AXIOS RESERVATION"));
-    // } else {
-    //   setEditing(false);
-    // }
+    if (reservationId) {
+      setEditing(true);
+      axios
+        .get(`http://localhost:3001/api/users/appointment/${reservationId}`)
+        .then((result) => {
+          console.log("ESTO TRAE RESERVATION ID AXIOS", result);
+          const data = {
+            reservationId: reservationId,
+            branchId: result.data.branchId,
+            branchName: result.data.branchName,
+            date: result.data.date,
+            schedule: result.data.schedule,
+            fullname: result.data.createdBy.nameAndLast_name,
+            telephone: result.data.createdBy.telephone,
+            email: result.data.createdBy.email,
+          };
+
+          setAppointment(data);
+        })
+        .catch((error) => console.log("ERROR AXIOS RESERVATION"));
+    } else {
+      setEditing(false);
+    }
 
     axios
       .get(`http://localhost:3001/api/branches/allBranches`)
       .then((result) => {
-        console.log("BRANCHES LLEGA----", result);
         setBranches(result.data);
       })
       .catch((error) => console.log("NO BRANCHES AVAILABLE"));
@@ -90,14 +99,14 @@ export default function ReservationPanel() {
   //----------------------------------------------------------
 
   const [activeStep, setActiveStep] = React.useState(
-    !editing ? 0 : steps.length
-    // !appointment.email ? 0 : steps.length
+    reservationId ? steps.length : 0
   );
   //--------------------------------------------------------
 
   function handleSelection(e) {
     e.preventDefault();
     const [id, name, capacity] = e.target.value.split("-");
+
     setBranchName(name);
     setBranchId(id);
     setCapacity(capacity);
@@ -105,12 +114,13 @@ export default function ReservationPanel() {
   }
   function handleScheduleSelection(e) {
     e.preventDefault();
+
     setSchedule(e.target.value);
+
     handleNext();
   }
   function handleDaySelector(e) {
     setDate(e.$d);
-
     handleNext();
   }
 
@@ -132,22 +142,13 @@ export default function ReservationPanel() {
 
   const inputs = { branchId, branchName, schedule, date, ...data };
 
-  // console.log("INPUTS------------>", inputs);
-
   //FUNCION HANDLE-SUBMIT--------------------------------------------------------
   function handleSubmit(e) {
     e.preventDefault();
 
     axios
-      .post("http://localhost:3001/api/users/newAppointment", { ...inputs }) //en funcionamiento.
+      .post("http://localhost:3001/api/users/newAppointment", { ...inputs })
       .then(() => {
-        const newAppointment = {
-          branchId: inputs.branchId,
-          branchName: inputs.branchName,
-          date: inputs.date.toISOString(),
-          schedule: inputs.schedule,
-        };
-
         document
           .querySelector(".body")
           .classList.add("make-reservation-container-inactive");
@@ -157,38 +158,37 @@ export default function ReservationPanel() {
         document
           .querySelector(".fake-container-popup")
           .classList.add("fake-container-popup-active");
-        setAppointment(newAppointment);
       })
       .catch(function (error) {
         state = false;
         console.log(error);
       });
-
-    navigate(); //VUELVE A RENDERIZAR LA PÁGINA CON LOS NUEVOS DATOS
   }
+
   //HANDLEEDITION------------------------------------------
   function handleEdition(e) {
     e.preventDefault();
+    const toPut = { reservationId: reservationId };
+    for (const key in inputs) {
+      if (
+        inputs.hasOwnProperty(key) &&
+        inputs[key] &&
+        inputs[key] !== appointment[key]
+      ) {
+        toPut[key] = inputs[key];
+      }
+    }
 
     axios
       .put("http://localhost:3001/api/users/newAppointment", {
-        ...inputs,
-        reservationId,
+        ...toPut,
       })
       .then(() => {
-        const newAppointment = {
-          branchId: inputs.branchId,
-          branchName: inputs.branchName,
-          date: inputs.date,
-          schedule: inputs.schedule,
-        };
-        setAppointment(newAppointment);
+        navigate("/client/reservationConfirmed");
       })
       .catch(function (error) {
         console.log(error);
       });
-
-    navigate("/client/reservations");
   }
   //--------------------------------------------------------
 
@@ -311,7 +311,9 @@ export default function ReservationPanel() {
                   }}
                   onChange={handleSelection}
                 >
-                  <option value=""></option>
+                  <option value="">
+                    {reservationId ? appointment.branchName : ""}
+                  </option>
                   {branches.map((branch) => (
                     <option
                       key={branch.id}
@@ -352,7 +354,9 @@ export default function ReservationPanel() {
                       style={{ width: "100%", height: "35px" }}
                       onChange={handleScheduleSelection}
                     >
-                      <option value=""></option>
+                      <option value="">
+                        {reservationId ? appointment.schedule : data.schedule}
+                      </option>
                       {schedules.map((schedule) => (
                         <option key={schedule} value={schedule}>
                           {schedule}
@@ -381,10 +385,14 @@ export default function ReservationPanel() {
                       </FormLabel>
 
                       <br />
+                      {console.log(
+                        "ESTE ESL ELDATA FULLNAME LINEA 392",
+                        appointment.fullname
+                      )}
                       <input
                         style={{ width: "90%", height: "30px" }}
                         name="fullname"
-                        value={data.fullname}
+                        defaultValue={reservationId ? appointment.fullname : ""}
                         type="text"
                         className="form-control"
                         onChange={handleChanges}
@@ -404,7 +412,9 @@ export default function ReservationPanel() {
                       <input
                         style={{ width: "100%", height: "30px" }}
                         name="telephone"
-                        value={data.telephone}
+                        defaultValue={
+                          reservationId ? appointment.telephone : ""
+                        }
                         type="text"
                         className="input"
                         onChange={handleChanges}
@@ -420,7 +430,7 @@ export default function ReservationPanel() {
                   <input
                     style={{ width: "100%", height: "30px" }}
                     name="email"
-                    value={data.email}
+                    defaultValue={reservationId ? appointment.email : ""}
                     type="text"
                     className="form-control"
                     onChange={handleChanges}
