@@ -8,6 +8,7 @@ import UserReservationHistory from "./components/UserReservationHistory/index";
 import ClientProfileEdit from "./components/ClientProfileEdition/ClientProfileEdit";
 import { AdministratorSucursalesList } from "./components/AdministratorSucursalesList";
 import { AdministratorOperatorsList } from "./components/AdministratorOperatorsList";
+import RecoverPassword from "./components/RecoverPassword";
 import CreateOperator from "./components/CreateOperator";
 import { CancelReservation } from "./components/CancelReservation";
 import { OperatorReservationsList } from "./components/OperatorReservationsList";
@@ -52,6 +53,7 @@ function App() {
           path="/admin/operators"
           element={<AdministratorOperatorsList />}
         />
+
         <Route
           path="/admin/create-operator"
           element={<CreateOperator />}
@@ -64,6 +66,10 @@ function App() {
           path="/admin/edit-sucursal/:id"
           element={<CreateBranches />}
         ></Route>
+
+        <Route path="/client/recoverPassword" element={<RecoverPassword />} />
+        
+
       </Routes>
     </div>
   );
