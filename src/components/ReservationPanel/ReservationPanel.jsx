@@ -19,6 +19,7 @@ import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 
 import axios from "axios";
 import { useNavigate, useParams } from "react-router";
+import Countdown from "../../commons/Countdown";
 
 export default function ReservationPanel() {
   const navigate = useNavigate();
@@ -499,7 +500,7 @@ export default function ReservationPanel() {
               color: "white",
             }}
           >
-            Quedan 4:52
+            <Countdown />
           </Button>
         </Grid>
       </Box>
