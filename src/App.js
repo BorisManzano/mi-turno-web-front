@@ -10,6 +10,8 @@ import { AdministratorSucursalesList } from "./components/AdministratorSucursale
 import { AdministratorOperatorsList } from "./components/AdministratorOperatorsList";
 import CreateOperator from "./components/CreateOperator";
 import { CancelReservation } from "./components/CancelReservation";
+import { OperatorReservationsList } from "./components/OperatorReservationsList";
+import CreateBranches from "./components/CreateBranches";
 
 function App() {
   return (
@@ -38,6 +40,11 @@ function App() {
           element={< />}
         /> */}
         <Route
+          path="/operator/reservationsList"
+          element={<OperatorReservationsList />}
+        />
+
+        <Route
           path="/admin/allBranches"
           element={<AdministratorSucursalesList />}
         />
@@ -48,6 +55,14 @@ function App() {
         <Route
           path="/admin/create-operator"
           element={<CreateOperator />}
+        ></Route>
+        <Route
+          path="/admin/edit-operator/:dni"
+          element={<CreateOperator />}
+        ></Route>
+        <Route
+          path="/admin/edit-sucursal/:id"
+          element={<CreateBranches />}
         ></Route>
       </Routes>
     </div>
