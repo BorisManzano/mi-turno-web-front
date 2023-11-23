@@ -7,11 +7,12 @@ import { Button } from "@mui/material";
 import { useNavigate } from "react-router";
 
 export const UserReservationHistory = () => {
-  const user = useSelector((state) => state.user);
+  let user = useSelector((state) => state.user);
   const [reservations, setReservations] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   useEffect(() => {
+    console.log(user);
     axios
       .get("http://localhost:3001/api/users/appointmentList", {
         DNI: user.DNI,

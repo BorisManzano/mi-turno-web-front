@@ -6,7 +6,7 @@ import { Button } from "@mui/material";
 import { useNavigate } from "react-router";
 
 export const AdministratorOperatorsList = () => {
-  const [allData, setAllData] = useState();
+  const [allData, setAllData] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   useEffect(() => {

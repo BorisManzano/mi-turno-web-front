@@ -6,7 +6,7 @@ import s from "./index.scss";
 import { useNavigate } from "react-router";
 
 export const AdministratorSucursalesList = () => {
-  const [allData, setAllData] = useState();
+  const [allData, setAllData] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   useEffect(() => {
