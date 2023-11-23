@@ -11,6 +11,8 @@ import { AdministratorOperatorsList } from "./components/AdministratorOperatorsL
 import RecoverPassword from "./components/RecoverPassword";
 import CreateOperator from "./components/CreateOperator";
 import { CancelReservation } from "./components/CancelReservation";
+import { OperatorReservationsList } from "./components/OperatorReservationsList";
+import CreateBranches from "./components/CreateBranches";
 
 function App() {
   return (
@@ -39,6 +41,11 @@ function App() {
           element={< />}
         /> */}
         <Route
+          path="/operator/reservationsList"
+          element={<OperatorReservationsList />}
+        />
+
+        <Route
           path="/admin/allBranches"
           element={<AdministratorSucursalesList />}
         />
@@ -46,8 +53,23 @@ function App() {
           path="/admin/operators"
           element={<AdministratorOperatorsList />}
         />
+
+        <Route
+          path="/admin/create-operator"
+          element={<CreateOperator />}
+        ></Route>
+        <Route
+          path="/admin/edit-operator/:dni"
+          element={<CreateOperator />}
+        ></Route>
+        <Route
+          path="/admin/edit-sucursal/:id"
+          element={<CreateBranches />}
+        ></Route>
+
         <Route path="/client/recoverPassword" element={<RecoverPassword />} />
-        <Route path="/admin/create-operator" element={<CreateOperator />} />
+        
+
       </Routes>
     </div>
   );

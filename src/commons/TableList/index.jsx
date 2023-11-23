@@ -9,6 +9,7 @@ import { useNavigate } from "react-router";
 export const TableList = ({ datatype, data }) => {
   const navigate = useNavigate();
   const handleOnClickEdit = (rid, e) => {
+    //validar para distintos botones
     e.preventDefault();
     navigate(`/client/editReservation/${rid}`);
   };
@@ -27,18 +28,23 @@ export const TableList = ({ datatype, data }) => {
   if (dataType == "Sucursales") {
     column1 = "Nombre";
     column2 = "Correo";
-    column3 = "Telefono";
+    column3 = "Capacidad";
     column4 = "Horario de Inicio y cierre";
   } else if (dataType == "Operadores") {
     column1 = "Nombre y Apellido";
     column2 = "Mail";
-    column3 = "DNI";
-    column4 = "Contraseña";
-  } else if (dataType == "Reservas" || dataType == "OperatorReservas") {
-    column1 = "Fecha de solicitud";
-    column2 = "Reserva";
     column3 = "Sucursal";
-    column4 = "N° de la reserva";
+    column4 = "DNI";
+  } else if (dataType == "Reservas" || dataType == "OperatorReservas") {
+    column1 = "N° reserva";
+    column2 = "Sucursal";
+    column3 = "Fecha y hora";
+    column4 = "Teléfono";
+  } else if (dataType == "OperatorReservas") {
+    column1 = "Usuario";
+    column2 = "N° reserva";
+    column3 = "Fecha y hora";
+    column4 = "Sucursal";
   }
   //puede ser operadores, sucursales o historial de reservas.
   return (
@@ -60,14 +66,58 @@ export const TableList = ({ datatype, data }) => {
                 </div>
                 <div className={s.rowItem}>
                   <p>{column3}</p>
-                  <b>{objIns[objKeys[2]]}</b>
+                  <b>
+                    {dataType.includes("Reservas") ? (
+                      <>
+                        <>{objIns[objKeys[2]].split("T")[0]} </>
+                        &nbsp; · &nbsp;
+                        <>{objIns[objKeys[2]].split("T")[1].split(".")[0]}</>
+                      </>
+                    ) : (
+                      objIns[objKeys[2]]
+                    )}
+                  </b>
                 </div>
                 <div className={s.rowItem}>
                   <p>{column4}</p>
                   <b>{objIns[objKeys[3]]}</b>
                 </div>
                 <div className={s.rowItem}>
-                  {dataType == "OperatorReservas" ? (
+                  {datatype == "Operadores" && (
+                    <Button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        navigate(`/admin/edit-operator/${objIns[objKeys[3]]}`);
+                      }}
+                      variant="contained"
+                      style={{
+                        backgroundColor: "#F5F5F5",
+                        color: "#A442F1",
+                        textTransform: "none",
+                        padding: "0 !important",
+                      }}
+                    >
+                      Editar
+                    </Button>
+                  )}
+                  {datatype == "Sucursales" && (
+                    <Button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        navigate(`/admin/edit-sucursal/${objIns[objKeys[4]]}`); //recibe adicion almente el id de la sucursal
+                      }}
+                      variant="contained"
+                      style={{
+                        backgroundColor: "#F5F5F5",
+                        color: "#A442F1",
+                        textTransform: "none",
+                        padding: "0 !important",
+                      }}
+                    >
+                      Editar
+                    </Button>
+                  )}
+                  {dataType == "OperatorReservas" && (
                     <Button
                       variant="contained"
                       style={{
@@ -79,7 +129,9 @@ export const TableList = ({ datatype, data }) => {
                     >
                       Confirmar
                     </Button>
-                  ) : (
+                  )}
+
+                  {dataType == "Reservas" && (
                     <div className="horiz">
                       <Button
                         onClick={(event) =>
@@ -98,7 +150,7 @@ export const TableList = ({ datatype, data }) => {
                       &nbsp; &nbsp;
                       <Button
                         onClick={(event) =>
-                          handleOnClickCancel(objIns[objKeys[3]], event)
+                          handleOnClickCancel(objIns[objKeys[0]], event)
                         }
                         variant="contained"
                         style={{
