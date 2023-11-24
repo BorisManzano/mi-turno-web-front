@@ -1,13 +1,14 @@
 import { createAction, createReducer } from "@reduxjs/toolkit";
 
-
 export const login = createAction("LOGIN");
 export const logout = createAction("LOGOUT");
 const initialState = {
-  fullname:null,
-  email:null,
-  dni:null,
+  fullname: null,
+  email: null,
+  dni: null,
   phoneNumber: null,
+  isAdmin: false,
+  isOperator: false,
 };
 
 const userReducer = createReducer(initialState, {

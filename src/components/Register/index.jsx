@@ -63,6 +63,10 @@ export default function Register() {
     });
   };
 
+  const returnLogin = () => {
+    navigate("/client/login");
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     if (name === "DNI") {
@@ -104,7 +108,7 @@ export default function Register() {
       <div className={s.divs}>
         <form className={s.f} onSubmit={handleSubmit}>
           <div className={s.head}>
-            <button className={s.none}>
+            <button onClick={returnLogin} className={s.none}>
               <ArrowLeft className={s.none} />
               Atras
             </button>
@@ -291,7 +295,9 @@ export default function Register() {
             <h3>Registrarme</h3>
           </button>
           <div className={s.bBorder}></div>
-          <button className={s.btnLog}>¿Ya tenés cuenta? Iniciá sesión</button>
+          <button onClick={returnLogin} className={s.btnLog}>
+            ¿Ya tenés cuenta? Iniciá sesión
+          </button>
         </form>
       </div>
     </>
