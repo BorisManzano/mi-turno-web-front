@@ -1,11 +1,11 @@
 import React from "react";
 import { useNavigate, useParams } from "react-router";
 
-const PopupReservation = ({ state, option, reservationId }) => {
+const PopupReservation = ({ state, option, reservationId, editing }) => {
   const navigate = useNavigate();
   const params = useParams();
   // cambia el h1 con el mensaje
-  const action = reservationId ? "modificado" : "reservado";
+  const action = editing ? "modificado" : "reservado";
 
   return (
     <div className="fake-container-popup fake-container-popup-inactive">
@@ -40,10 +40,13 @@ const PopupReservation = ({ state, option, reservationId }) => {
               className="popup-button"
               onClick={() => {
                 !option
-                  ? reservationId
-                    ? navigate(`/client/reservationConfirmed/${reservationId}`)
-                    : navigate("/client/reservationConfirmed")
+                  ? navigate(`/client/reservationConfirmed/${reservationId}`)
                   : navigate("/client/login");
+                // !option
+                //   ? reservationId
+                //     ? navigate(`/client/reservationConfirmed/${reservationId}`)
+                //     : navigate("/client/reservationConfirmed")
+                //   : navigate("/client/login");
               }}
             >
               Continuar

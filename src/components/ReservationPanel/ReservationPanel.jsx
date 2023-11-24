@@ -42,6 +42,7 @@ export default function ReservationPanel() {
   const [branches, setBranches] = React.useState([]);
   const [capacity, setCapacity] = React.useState(0);
   const [editing, setEditing] = React.useState(false);
+  const [reservationIdParams, setReservationIdParams] = React.useState();
 
   const { reservationId } = useParams();
   console.log("este es el resevation id", reservationId);
@@ -148,7 +149,9 @@ export default function ReservationPanel() {
 
     axios
       .post("http://localhost:3001/api/users/newAppointment", { ...inputs })
-      .then(() => {
+      .then((res) => {
+        setReservationIdParams(res.data.reservationId);
+        console.log("esta es la respuesta", reservationIdParams);
         document
           .querySelector(".body")
           .classList.add("make-reservation-container-inactive");
@@ -193,14 +196,12 @@ export default function ReservationPanel() {
         document
           .querySelector(".fake-container-popup")
           .classList.add("fake-container-popup-active");
-        // navigate("/client/reservationConfirmed");
       })
       .catch(function (error) {
         console.log(error);
       });
   }
   //--------------------------------------------------------
-
   return (
     <div>
       <Navbar Navbar role={"final-client"} />
@@ -523,7 +524,11 @@ export default function ReservationPanel() {
           </Button>
         </Grid>
       </Box>
-      <PopupReservation state={state} reservationId={reservationId} />
+      <PopupReservation
+        state={state}
+        reservationId={reservationIdParams || reservationId}
+        editing={editing}
+      />
     </div>
   );
 }
