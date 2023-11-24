@@ -8,7 +8,6 @@ import axios from "axios";
 export default function ClientProfileEdit() {
   const user = useSelector((state) => state.user);
   const [disabled, setDisabled] = useState(true);
-
   const [data, setData] = useState({
     fullname: user.fullname,
     email: user.email,
@@ -71,7 +70,7 @@ export default function ClientProfileEdit() {
             <p className="p-form-client">Nombre</p>
             <input
               name="name"
-              value={user.fullname}
+              defaultValue={user.fullname}
               className="input"
               type="text"
               onChange={handleChanges}
@@ -79,7 +78,7 @@ export default function ClientProfileEdit() {
             <p className="p-form-client">Mail</p>
             <input
               name="mail"
-              value={user.email}
+              defaultValue={user.email}
               className="input"
               type="mail"
               onChange={handleChanges}
@@ -102,7 +101,7 @@ export default function ClientProfileEdit() {
                 <input
                   style={{ width: "100%" }}
                   name="dni"
-                  value={user.dni}
+                  defaultValue={user.dni}
                   className="input"
                   type="text"
                   onChange={handleChanges}
@@ -113,7 +112,7 @@ export default function ClientProfileEdit() {
                 <input
                   style={{ width: "98.5%" }}
                   name="phoneNumber"
-                  value={user.phoneNumber}
+                  defaultValue={user.phoneNumber}
                   className="input"
                   type="text"
                   onChange={handleChanges}
@@ -127,7 +126,7 @@ export default function ClientProfileEdit() {
                 <input
                   disabled={disabled}
                   name="password"
-                  value={user.password}
+                  defaultValue={user.password}
                   className="input"
                   type="text"
                   onChange={handleChanges}
@@ -139,7 +138,7 @@ export default function ClientProfileEdit() {
                 <input
                   disabled={disabled}
                   name="newPassword"
-                  value={user.newPassword}
+                  defaultValue={user.newPassword}
                   className="input"
                   type="text"
                   onChange={handleChanges}
@@ -149,7 +148,7 @@ export default function ClientProfileEdit() {
                 </p>
                 <input
                   name="newPasswordConfirm"
-                  value={user.newPasswordConfirm}
+                  defaultValue={user.newPasswordConfirm}
                   className="input"
                   type="text"
                   onChange={handleChanges}
