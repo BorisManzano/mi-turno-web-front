@@ -44,7 +44,7 @@ export default function ReservationPanel() {
   const [editing, setEditing] = React.useState(false);
 
   const { reservationId } = useParams();
-
+  console.log("este es el resevation id", reservationId);
   console.log("ESTO ES EL RESERVATION ID---->", reservationId);
   function handleNext() {
     setActiveStep((prev) => prev + 1);
@@ -184,7 +184,16 @@ export default function ReservationPanel() {
         ...toPut,
       })
       .then(() => {
-        navigate("/client/reservationConfirmed");
+        document
+          .querySelector(".body")
+          .classList.add("make-reservation-container-inactive");
+        document
+          .querySelector(".fake-container-popup")
+          .classList.remove("fake-container-popup-inactive");
+        document
+          .querySelector(".fake-container-popup")
+          .classList.add("fake-container-popup-active");
+        // navigate("/client/reservationConfirmed");
       })
       .catch(function (error) {
         console.log(error);
@@ -514,7 +523,7 @@ export default function ReservationPanel() {
           </Button>
         </Grid>
       </Box>
-      <PopupReservation state={state} />
+      <PopupReservation state={state} reservationId={reservationId} />
     </div>
   );
 }
