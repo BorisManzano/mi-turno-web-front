@@ -9,7 +9,6 @@ import { useEffect } from "react";
 import axios from "axios";
 import { login } from "./state/user";
 
-
 function App() {
   const location = useLocation();
   const { pathname } = location;
@@ -67,12 +66,10 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/client/*" element={<ClientRoutes />} />
         {user.isOperator && (
-             <Route path="/operator/*" element={<OperatorRoutes />} />
+          <Route path="/operator/*" element={<OperatorRoutes />} />
         )}
 
-        {user.isAdmin && (
-               <Route path="/admin/*" element={<AdminRoutes />} />
-        )}
+        {user.isAdmin && <Route path="/admin/*" element={<AdminRoutes />} />}
       </Routes>
     </div>
   );

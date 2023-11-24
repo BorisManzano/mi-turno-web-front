@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../../commons/Navbar/Navbar";
 import axios from "axios";
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Login = () => {
+  const user = useSelector((state) => state.user);
   const navigate = useNavigate();
   const [userInputValue, setUserInputValue] = useState();
   const [passwordInputValue, setPasswordInputValue] = useState();
@@ -22,14 +24,30 @@ const Login = () => {
         }
       )
       .then((response) => {
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+        handlePath();
         console.log(response);
-        navigate("/client/newReservation");
       })
       .catch((err) => {
         setInvalidInformation("¡Email o contraseña incorrectos!");
         console.error(err);
       });
   };
+
+  const handlePath = () => {
+    if (user.isAdmin) {
+      navigate("/admin/allBranches");
+    } else if (user.isOperator) {
+      navigate("/operator/reservationsList");
+    } else if (!user.isAdmin && !user.isOperator && user.email) {
+      navigate("/client/newReservation");
+    } else {
+      navigate("/");
+    }
+  };
+
   return (
     <div>
       <Navbar role={"final-client"} />
