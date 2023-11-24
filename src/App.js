@@ -81,35 +81,34 @@ function App() {
           path="/client/editReservation/:reservationId" element={<ReservationPanel />}
         />
         <Route path="/client/recoverPassword" element={<RecoverPassword />} />
-                  <Route
+        <Route
           path="/operator/reservationsList"
           element={<OperatorReservationsList />}
         />
-          element={< />}
-        /> */}
+
         {user.isAdmin && (
           <>
-        <Route
-          path="/admin/allBranches"
-          element={<AdministratorSucursalesList />}
-        />
-        <Route
-          path="/admin/operators"
-          element={<AdministratorOperatorsList />}
-        />
+            <Route
+              path="/admin/allBranches"
+              element={<AdministratorSucursalesList />}
+            />
+            <Route
+              path="/admin/operators"
+              element={<AdministratorOperatorsList />}
+            />
 
-        <Route
-          path="/admin/create-operator"
-          element={<CreateOperator />}
-        ></Route>
-        <Route
-          path="/admin/edit-operator/:dni"
-          element={<CreateOperator />}
-        ></Route>
-        <Route
-          path="/admin/edit-sucursal/:id"
-          element={<CreateBranches />}
-        ></Route>
+            <Route
+              path="/admin/create-operator"
+              element={<CreateOperator />}
+            ></Route>
+            <Route
+              path="/admin/edit-operator/:dni"
+              element={<CreateOperator />}
+            ></Route>
+            <Route
+              path="/admin/edit-sucursal/:id"
+              element={<CreateBranches />}
+            ></Route>
           </>
         )}
       </Routes>
