@@ -4,7 +4,9 @@ const PromotionalMessage = () => {
   return (
     <div>
       <div className="div-promotion-message">
-        <p className="p-promotion-message">Mensaje Promocional</p>
+        <p className="p-promotion-message">
+          Project made by: Hernan - Luis - Rosmari - Boris - Bautista
+        </p>
       </div>
     </div>
   );

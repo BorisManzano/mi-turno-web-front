@@ -38,14 +38,23 @@
   flex: 1 0 0;
   color: var(--Principal, #a442f1);
   font-variant-numeric: slashed-zero;
-  font-size: 14px;
+  font-size: 1.4rem;
+  letter-spacing: 1px;
   font-style: normal;
   font-weight: 600;
   line-height: 16px;
+  svg > path {
+    transition: none;
+  }
 }
 
 .none:hover {
-  color: var(--Secundario, #cc6aff);
+  color: var(--Secundario, #8817c5);
+  text-decoration: underline 3px;
+  svg > path {
+    fill: #8817c5;
+    transition: none;
+  }
 }
 
 .none:active {
@@ -237,10 +246,12 @@
   border: none;
   border-radius: 8px;
   background: var(--Principal, #a442f1);
+  transition: all 0.5s ease;
 }
 
 .btnSingIn:hover {
-  background: var(--Secundario, #cc6aff);
+  background: var(--Principal, #8631c7);
+  transform: scale(1.05);
 }
 
 .btnSingIn:active {
@@ -266,10 +277,12 @@
   font-style: normal;
   font-weight: 600;
   line-height: 20px;
+  transition: all 0.5s ease;
 }
 
 .btnLog:hover {
   background: rgba(164, 66, 241, 0.2);
+  transform: scale(1.05);
 }
 
 .btnLog:active {

@@ -12,6 +12,10 @@ div {
   //background-color: #cff0f2;
   margin: 20px;
   flex-direction: column;
+  p {
+    margin: 3px;
+    font-size: 14px;
+  }
 }
 
 .divright {
@@ -21,6 +25,10 @@ div {
   margin: 20px;
   padding: 20px;
   flex-direction: column;
+  p {
+    margin: 3px;
+    font-size: 14px;
+  }
 }
 
 .container {
@@ -58,11 +66,6 @@ h3 {
   background-color: #e5e5e5;
   border-radius: 10px;
   padding: 20px;
-}
-
-p {
-  margin: 3px;
-  font-size: 14px;
 }
 
 .Info {
