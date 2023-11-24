@@ -30,6 +30,14 @@ function App() {
       .get("http://localhost:3001/api/users/me", { withCredentials: true })
       .then((res) => {
         if (res.data) {
+          const userData = {
+            fullname: res.data.nameAndLast_name,
+            email: res.data.email,
+            dni: res.data.DNI,
+            isAdmin: res.data.isAdmin,
+            isOperator: res.data.isOperator,
+          };
+          console.log(userData);
           const data = res.data;
           dispatch(login(res.data));
         }
@@ -42,16 +50,22 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (pathname.includes("/admin") && user && !user.isAdmin) {
+    if (pathname.includes("/admin/") && user && !user.isAdmin) {
       navigate("/");
     }
-    if (user.email && pathname === "/client/login") {
-      navigate("/client/newReservation");
+    if (pathname.includes("/operator/") && user && !user.isOperator) {
+      navigate("/");
     }
-    if (user.email && pathname === "/client/register") {
-      navigate("/client/newReservation");
+    if ((pathname.includes("/client/") && user.isAdmin) || user.isOperator) {
+      navigate("/");
     }
-    if (user.email && pathname === "/") {
+    if (pathname === "/" && user.isAdmin) {
+      navigate("/admin/allBranches");
+    }
+    if (pathname === "/" && user.isOperator) {
+      navigate("/operator/reservationsList");
+    }
+    if (pathname === "/" && !user.isOperator && !user.isAdmin && user.email) {
       navigate("/client/newReservation");
     }
   }, [pathname, user]);
@@ -78,38 +92,39 @@ function App() {
           element={<CancelReservation />}
         />
         <Route
-          path="/client/editReservation/:reservationId" element={<ReservationPanel />}
+          path="/client/editReservation/:reservationId"
+          element={<ReservationPanel />}
         />
         <Route path="/client/recoverPassword" element={<RecoverPassword />} />
-                  <Route
-          path="/operator/reservationsList"
-          element={<OperatorReservationsList />}
-        />
-          element={< />}
-        /> */}
+        {user.isOperator && (
+          <Route
+            path="/operator/reservationsList"
+            element={<OperatorReservationsList />}
+          />
+        )}
+
         {user.isAdmin && (
           <>
-        <Route
-          path="/admin/allBranches"
-          element={<AdministratorSucursalesList />}
-        />
-        <Route
-          path="/admin/operators"
-          element={<AdministratorOperatorsList />}
-        />
-
-        <Route
-          path="/admin/create-operator"
-          element={<CreateOperator />}
-        ></Route>
-        <Route
-          path="/admin/edit-operator/:dni"
-          element={<CreateOperator />}
-        ></Route>
-        <Route
-          path="/admin/edit-sucursal/:id"
-          element={<CreateBranches />}
-        ></Route>
+            <Route
+              path="/admin/allBranches"
+              element={<AdministratorSucursalesList />}
+            />
+            <Route
+              path="/admin/operators"
+              element={<AdministratorOperatorsList />}
+            />
+            <Route
+              path="/admin/create-operator"
+              element={<CreateOperator />}
+            ></Route>
+            <Route
+              path="/admin/edit-operator/:dni"
+              element={<CreateOperator />}
+            ></Route>
+            <Route
+              path="/admin/edit-sucursal/:id"
+              element={<CreateBranches />}
+            ></Route>
           </>
         )}
       </Routes>
