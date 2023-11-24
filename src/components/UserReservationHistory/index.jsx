@@ -7,17 +7,17 @@ import { Button } from "@mui/material";
 import { useNavigate } from "react-router";
 
 export const UserReservationHistory = () => {
-  let user = useSelector((state) => state.user);
+  let user;
+  user = useSelector((state) => state.user);
   const [reservations, setReservations] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   useEffect(() => {
     console.log(user);
     axios
-      .get("http://localhost:3001/api/users/appointmentList", {
-        DNI: user.DNI,
-      })
+      .get(`http://localhost:3001/api/users/appointmentList/${user.dni}`)
       .then((res) => {
+        console.log(res.data);
         setReservations(
           res.data.map((obj) => {
             const { branch, reservationId, date } = obj;
@@ -34,7 +34,7 @@ export const UserReservationHistory = () => {
         setLoading(false);
         console.error(error);
       });
-  }, []);
+  }, [user]);
   if (loading) return <>Loading...</>;
   else if (reservations.length == 0)
     return (
