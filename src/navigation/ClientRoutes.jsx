@@ -18,7 +18,7 @@ const ClientRoutes = () => {
       <Route path="/reservationConfirmed" element={<ReservationConfirmed />} />
       <Route path="/reservations" element={<UserReservationHistory />} />
       <Route
-        path="/client/editReservation/:reservationId"
+        path="/editReservation/:reservationId"
         element={<ReservationPanel />}
       />
       <Route

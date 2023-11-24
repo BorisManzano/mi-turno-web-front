@@ -6,7 +6,7 @@ import OperatorProfile from "../components/OperatorProfile";
 const OperatorRoutes = () => {
   return (
     <Routes>
-      <Route path="/reservations" element={<OperatorReservationsList />} />
+      <Route path="/reservationsList" element={<OperatorReservationsList />} />
       <Route path="/profile" element={<OperatorProfile />} />
     </Routes>
   );

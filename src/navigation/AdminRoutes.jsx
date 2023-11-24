@@ -14,7 +14,7 @@ const AdminRoutes = () => {
       <Route path="/operators" element={<AdministratorOperatorsList />} />
       <Route path="/create/branch" element={<CreateBranches />} />
       <Route path="/admin/edit-sucursal/:id" element={<CreateBranches />} />
-      <Route path="/create/operator" element={<CreateOperator />} />
+      <Route path="/create-operator" element={<CreateOperator />} />
       <Route path="/admin/edit-operator/:dni" element={<CreateOperator />} />
     </Routes>
   );
