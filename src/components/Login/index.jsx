@@ -42,6 +42,7 @@ const Login = () => {
               className="input"
               type="text"
               onChange={(e) => setUserInputValue(e.target.value)}
+              autoComplete="username"
             />
             <p className="p-form-login">Contraseña</p>
             <input
