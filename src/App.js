@@ -37,9 +37,7 @@ function App() {
             isAdmin: res.data.isAdmin,
             isOperator: res.data.isOperator,
           };
-          console.log(userData);
-          const data = res.data;
-          dispatch(login(res.data));
+          dispatch(login(userData));
         }
       })
       .catch((err) => {
