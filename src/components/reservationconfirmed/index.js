@@ -6,14 +6,14 @@ import { useParams } from 'react-router-dom';
 import axios from "axios"
 const ReservationConfirmed = function () {
 
-  let { id } = useParams();
+  let {reservationId} = useParams();
 
   const [reservation, setReservation] = useState({})
   
   useEffect(()=>{
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://localhost:3001/api/users/appointment/${id}`);
+        const response = await axios.get(`http://localhost:3001/api/users/appointment/${reservationId}`);
         setReservation(response.data);
         console.log(response);
       } catch (error) {
@@ -24,9 +24,6 @@ const ReservationConfirmed = function () {
     fetchData();
 
   },[])
-  // const {email, nameAndLast_name,telephone } = reservation.createdBy
-  // const {date, schedule, reservationId} = reservation 
-  // const {name} = reservation.branch 
 
   return (
     <div className="bodyComponent">
@@ -47,11 +44,11 @@ const ReservationConfirmed = function () {
           <div className="itemPedido">
             <div className="subitemPedido">
           
-              <h2>RESERVA</h2> <p className="numeroR"> {reservation.createdBy ? reservation.reservationId : ""}</p>
+              <h2>RESERVA</h2> <p className="numeroR"> {reservation.createdBy ? "#" + reservation.reservationId : ""}</p>
             </div>
 
             <p>
-              Hecho el 10/10/2022 a las 11:35 hs para el {reservation.createdBy ? reservation.date : ""} a las {reservation.createdBy ? reservation.schedule : ""}
+               Para el {reservation.createdBy ? reservation.date.slice(0,10) : ""} a las {reservation.createdBy ? reservation.schedule : ""}
               hs
             </p>
           </div>
@@ -70,16 +67,16 @@ const ReservationConfirmed = function () {
         <section className="contentInfo">
           <div className="item1">
             <h2>{reservation.createdBy ? reservation.createdBy.nameAndLast_name : ""}</h2>
-            <p>Email : {reservation.createdBy ? reservation.createdBy.email : ""}</p>
+            <p>Email: {reservation.createdBy ? reservation.createdBy.email : ""}</p>
 
-            <p>Telefono :{reservation.createdBy ? reservation.createdBy.telephone : ""}</p>
+            <p>Telefono:{reservation.createdBy ? reservation.createdBy.telephone : ""}</p>
           </div>
 
           <div className="item2">
             <h2>Reserva</h2>
-            <p>Sucursal :{reservation.createdBy ? reservation.branch.name : ""}</p>
+            <p>Sucursal:{reservation.createdBy ? reservation.branch.name : ""}</p>
 
-            <p>Horario : {reservation.createdBy ? reservation.schedule : ""}hs</p>
+            <p>Horario: {reservation.createdBy ? reservation.schedule : ""}hs</p>
           </div>
 
           {/* <div className="item3"></div> */}
