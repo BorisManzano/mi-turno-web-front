@@ -78,7 +78,10 @@
   border-style: none;
   transition: all 0.5s ease;
 }
-.login-button:hover,
+.login-button:hover {
+  transform: scale(1.05);
+  background: var(--Principal, #8631c7);
+}
 .go-to-register-button:hover {
   transform: scale(1.05);
 }

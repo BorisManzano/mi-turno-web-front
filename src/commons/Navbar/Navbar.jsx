@@ -1,22 +1,27 @@
 import axios from "axios";
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import { logout } from "../../state/user";
 
 const Navbar = ({ role }) => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   // const user = useSelector((state) => state.user);
   // hardcodeado para probar
   const user = { email: "b" };
-  const handleButtonRigth = () => {
-    user.email
-      ? axios
-          .post(`http://localhost:3001/api/users/logout`, {
-            withCredentials: true,
-          })
-          .then(() => navigate("/client/login"))
-          .catch((err) => console.error(err))
-      : navigate("/client/register");
+  const handleButtonRigth = (e) => {
+    e.preventDefault();
+
+    axios
+      .post(`http://localhost:3001/api/users/logout`, null, {
+        withCredentials: true,
+      })
+      .then(() => {
+        dispatch(logout());
+        navigate("/client/login");
+      })
+      .catch((err) => console.error(err));
   };
   return (
     <div>
