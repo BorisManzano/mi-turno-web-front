@@ -6,17 +6,33 @@ import Button from "@mui/material/Button";
 import { red } from "@mui/material/colors";
 import Navbar from "../../commons/Navbar/Navbar.jsx";
 import axios from "axios";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { useSelector } from "react-redux";
 
-export const CancelReservation = ({ reservation }) => {
+export const CancelReservation = () => {
+  const [reservation, setReservation] = useState({ createdBy: {}, branch: {} });
+  const [loading, setLoading] = useState(true);
+  const { reservationId } = useParams();
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:3001/api/users/appointment/${reservationId}`)
+      .then((res) => {
+        setReservation(res.data);
+      })
+      .then(() => setLoading(false))
+      .catch((error) => console.error(error));
+  }, []);
+
   const user = useSelector((state) => state.user);
   const navigate = useNavigate();
 
   const handleOnClick = (e) => {
     e.preventDefault();
     axios
-      .delete(`/api/users/removeAppointment/${reservation.reservationId}`)
+      .delete(
+        `http://localhost:3001/api/users/removeAppointment/${reservationId}`
+      )
       .then((res) => {
         alert("Se eliminó la reserva");
         navigate("/client/reservations");
@@ -51,12 +67,18 @@ export const CancelReservation = ({ reservation }) => {
     "Me cancelaron",
     "Otro",
   ];
+
+  if (loading) return <>Loading...</>;
   return (
     <>
       <div className={s.container}>
         <div className={s.divleft}>
           <div className={s.horiz}>
             <Button
+              onClick={(e) => {
+                e.preventDefault();
+                navigate("/client/reservations");
+              }}
               variant="outlined"
               style={{
                 color: "#A442F1",
@@ -85,7 +107,7 @@ export const CancelReservation = ({ reservation }) => {
           <h1>Cancelar Reserva</h1>
           <br />
           <br />
-          <p>Hola {user.name},</p>
+          <p>Hola {reservation.createdBy.nameAndLast_name},</p>
 
           <h3>¿Por qué desea cancelar su reserva?</h3>
 
@@ -141,7 +163,7 @@ export const CancelReservation = ({ reservation }) => {
         <div className={s.divright}>
           <br />
           <p className={s.Info}>Información de la reserva</p>
-          <h2>{user.name}</h2>
+          <h2>{reservation.createdBy.nameAndLast_name}</h2>
           <div style={{ marginTop: "10px" }}>
             <div className={s.horiz}>
               <p>Día: </p>
@@ -155,7 +177,7 @@ export const CancelReservation = ({ reservation }) => {
             </div>
             <div className={s.horiz}>
               <p>Sucursal: </p>
-              <p className={s.Info}>{reservation.branchName}</p>
+              <p className={s.Info}>{reservation.branch.name}</p>
             </div>
           </div>
           <div className={s.line}></div>

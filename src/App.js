@@ -15,6 +15,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import axios from "axios";
 import { login } from "./state/user";
+import { OperatorReservationsList } from "./components/OperatorReservationsList";
+import CreateBranches from "./components/CreateBranches";
 
 function App() {
   const location = useLocation();
@@ -75,27 +77,41 @@ function App() {
           path="/client/cancelReservation/:reservationId"
           element={<CancelReservation />}
         />
-        {/* <Route //ruta pendiente
-          path="/client/editReservation/:reservationId"
+        <Route
+          path="/client/editReservation/:reservationId" element={<ReservationPanel />}
+        />
+        <Route path="/client/recoverPassword" element={<RecoverPassword />} />
+                  <Route
+          path="/operator/reservationsList"
+          element={<OperatorReservationsList />}
+        />
           element={< />}
         /> */}
         {user.isAdmin && (
           <>
-            <Route
-              path="/admin/allBranches"
-              element={<AdministratorSucursalesList />}
-            />
-            <Route
-              path="/admin/operators"
-              element={<AdministratorOperatorsList />}
-            />
-            <Route
-              path="/admin/create-operator"
-              element={<CreateOperator />}
-            ></Route>
+        <Route
+          path="/admin/allBranches"
+          element={<AdministratorSucursalesList />}
+        />
+        <Route
+          path="/admin/operators"
+          element={<AdministratorOperatorsList />}
+        />
+
+        <Route
+          path="/admin/create-operator"
+          element={<CreateOperator />}
+        ></Route>
+        <Route
+          path="/admin/edit-operator/:dni"
+          element={<CreateOperator />}
+        ></Route>
+        <Route
+          path="/admin/edit-sucursal/:id"
+          element={<CreateBranches />}
+        ></Route>
           </>
         )}
-        <Route path="/client/recoverPassword" element={<RecoverPassword />} />
       </Routes>
     </div>
   );
