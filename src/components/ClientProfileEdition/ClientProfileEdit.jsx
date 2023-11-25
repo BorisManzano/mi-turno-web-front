@@ -1,18 +1,20 @@
 import React, { useState } from "react";
 import "../ClientProfileEdition/ClientProfileEdit.scss";
 import Navbar from "../../commons/Navbar/Navbar";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
+import { login } from "../../state/user";
 export default function ClientProfileEdit() {
+  const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const [disabled, setDisabled] = useState(true);
   const [data, setData] = useState({
-    fullname: user.fullname,
+    nameAndLast_name: user.fullname,
     email: user.email,
-    dni: user.dni,
-    phoneNumber: user.phoneNumber,
+    DNI: user.dni,
+    telephone: user.telephone,
     password: user.password,
     newPassword: user.newPassword,
     newPasswordConfirm: user.newPasswordConfirm,
@@ -32,32 +34,35 @@ export default function ClientProfileEdit() {
   }
   function handleSubmit(e) {
     e.preventDefault();
-    console.log("DATAA", data, data.newPassword);
-    data.newPassword === data.newPasswordConfirm
-      ? axios
-          .put("http://localhost:3001/api/users/edit/profile", {
-            fullname: data.fullname,
-            email: data.email,
-            dni: data.dni,
-            phoneNumber: data.phoneNumber,
-            password: data.newPassword,
-          })
-          .then((res) => {
-            const editedUser = {
-              fullname: res.data.fullname,
-              email: res.email,
-              dni: res.dni,
-              phoneNumber: res.phoneNumber,
-              password: res.password,
-            };
-            toast.success("TU PERFIL FUE ACTUALIZADO", {
-              position: toast.POSITION.TOP_CENTER,
-            });
-          })
-          .catch((err) => console.log("ERROR EN PEDIDO AXIOS", err))
-      : toast.error("LAS CONTRASEÑAS NO COINCIDEN", {
+
+    if (data.newPassword !== data.newPasswordConfirm) {
+      toast.error("LAS CONTRASEÑAS NO COINCIDEN", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+      return;
+    } else {
+      data.password = data.newPassword;
+    }
+    const toPut = { email: user.email };
+    for (const key in data) {
+      if (data.hasOwnProperty(key) && data[key] && data[key] !== user[key]) {
+        toPut[key] = data[key];
+      }
+    }
+
+    axios
+      .put("http://localhost:3001/api/users/edit/profile", {
+        ...toPut,
+      })
+      .then(() => {
+        toast.warning("LOS CAMBIOS SE ACTUALIZARÁN EN TU PRÓXIMA SESIÓN", {
           position: toast.POSITION.TOP_CENTER,
         });
+        toast.success("TU PERFIL FUE ACTUALIZADO", {
+          position: toast.POSITION.TOP_CENTER,
+        });
+      })
+      .catch((err) => console.log("ERROR EN PEDIDO AXIOS", err));
   }
 
   return (
@@ -69,7 +74,7 @@ export default function ClientProfileEdit() {
             <h1 className="h1-form-client">Mis datos</h1>
             <p className="p-form-client">Nombre</p>
             <input
-              name="name"
+              name="nameAndLast_name"
               defaultValue={user.fullname}
               className="input"
               type="text"
@@ -77,11 +82,11 @@ export default function ClientProfileEdit() {
             />
             <p className="p-form-client">Mail</p>
             <input
-              name="mail"
+              name="email"
               defaultValue={user.email}
               className="input"
-              type="mail"
-              onChange={handleChanges}
+              type="email"
+              disabled
             />
             <div
               style={{
@@ -100,7 +105,7 @@ export default function ClientProfileEdit() {
 
                 <input
                   style={{ width: "100%" }}
-                  name="dni"
+                  name="DNI"
                   defaultValue={user.dni}
                   className="input"
                   type="text"
@@ -111,8 +116,8 @@ export default function ClientProfileEdit() {
                 <p className="p-form-client">Telefono</p>
                 <input
                   style={{ width: "98.5%" }}
-                  name="phoneNumber"
-                  defaultValue={user.phoneNumber}
+                  name="telephone"
+                  defaultValue={user.telephone}
                   className="input"
                   type="text"
                   onChange={handleChanges}
