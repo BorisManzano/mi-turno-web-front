@@ -2,7 +2,8 @@ import * as React from "react";
 import "../ReservationPanel/ReservationPanel.scss";
 import Navbar from "../../commons/Navbar/Navbar";
 import PopupReservation from "../../commons/popup-reservation";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import {
   Box,
   FormControl,
@@ -17,13 +18,14 @@ import {
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
-
+import { useSelector } from "react-redux";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router";
 import Countdown from "../../commons/Countdown";
 
 export default function ReservationPanel() {
   const navigate = useNavigate();
+  const user = useSelector((state) => state.user);
   // variable para renderizas popup exitoso o de error
   let state = true;
 
@@ -45,8 +47,7 @@ export default function ReservationPanel() {
   const [reservationIdParams, setReservationIdParams] = React.useState();
 
   const { reservationId } = useParams();
-  console.log("este es el resevation id", reservationId);
-  console.log("ESTO ES EL RESERVATION ID---->", reservationId);
+
   function handleNext() {
     setActiveStep((prev) => prev + 1);
   }
@@ -112,13 +113,11 @@ export default function ReservationPanel() {
     setBranchId(id);
     setCapacity(capacity);
     handleNext();
+    setEnabled(true);
   }
   function handleScheduleSelection(e) {
     e.preventDefault();
-
     setSchedule(e.target.value);
-
-    handleNext();
   }
   function handleDaySelector(e) {
     setDate(e.$d);
@@ -126,9 +125,7 @@ export default function ReservationPanel() {
   }
 
   const [data, setData] = React.useState({
-    fullname: appointment.fullname,
     telephone: appointment.telephone,
-    email: appointment.email,
   });
 
   function handleChanges(e) {
@@ -141,12 +138,26 @@ export default function ReservationPanel() {
     setEnabled(true);
   }
 
-  const inputs = { branchId, branchName, schedule, date, ...data };
+  const inputs = {
+    branchId,
+    branchName,
+    schedule,
+    date,
+    fullname: user.fullname,
+    email: user.email,
+    ...data,
+  };
 
   //FUNCION HANDLE-SUBMIT--------------------------------------------------------
   function handleSubmit(e) {
     e.preventDefault();
 
+    if (!data.telephone) {
+      toast.error("DEBE INGRESAR UN TELÉFONO", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+    }
+    console.log("ESTO MANDA", inputs);
     axios
       .post("http://localhost:3001/api/users/newAppointment", { ...inputs })
       .then((res) => {
@@ -162,10 +173,11 @@ export default function ReservationPanel() {
           .querySelector(".fake-container-popup")
           .classList.add("fake-container-popup-active");
       })
-      .catch(function (error) {
-        state = false;
-        console.log(error);
-      });
+      .catch(() =>
+        toast.error("ERROR EN EL INGRESO DE DATOS", {
+          position: toast.POSITION.TOP_CENTER,
+        })
+      );
   }
 
   //HANDLEEDITION------------------------------------------
@@ -197,9 +209,11 @@ export default function ReservationPanel() {
           .querySelector(".fake-container-popup")
           .classList.add("fake-container-popup-active");
       })
-      .catch(function (error) {
-        console.log(error);
-      });
+      .catch(() =>
+        toast.error("VERIFIQUE QUE LOS DATOS SEAN CORRECTOS", {
+          position: toast.POSITION.TOP_CENTER,
+        })
+      );
   }
   //--------------------------------------------------------
   return (
@@ -320,6 +334,7 @@ export default function ReservationPanel() {
                     padding: "5px",
                   }}
                   onChange={handleSelection}
+                  disabled={enabled}
                 >
                   <option value="">
                     {reservationId ? appointment.branchName : ""}
@@ -395,14 +410,13 @@ export default function ReservationPanel() {
                       </FormLabel>
 
                       <br />
-                      {console.log(
-                        "ESTE ESL ELDATA FULLNAME LINEA 392",
-                        appointment.fullname
-                      )}
+
                       <input
                         style={{ width: "90%", height: "30px" }}
                         name="fullname"
-                        defaultValue={reservationId ? appointment.fullname : ""}
+                        defaultValue={
+                          reservationId ? appointment.fullname : user.fullname
+                        }
                         type="text"
                         className="form-control"
                         onChange={handleChanges}
@@ -440,7 +454,9 @@ export default function ReservationPanel() {
                   <input
                     style={{ width: "100%", height: "30px" }}
                     name="email"
-                    defaultValue={reservationId ? appointment.email : ""}
+                    defaultValue={
+                      reservationId ? appointment.email : user.email
+                    }
                     type="text"
                     className="form-control"
                     onChange={handleChanges}
@@ -529,6 +545,7 @@ export default function ReservationPanel() {
         reservationId={reservationIdParams || reservationId}
         editing={editing}
       />
+      <ToastContainer />
     </div>
   );
 }
