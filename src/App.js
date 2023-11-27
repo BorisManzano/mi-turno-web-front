@@ -47,6 +47,11 @@ function App() {
         navigate("/operator/reservationsList");
       if (pathname === "/" && !user.isOperator && !user.isAdmin && user.email)
         navigate("/client/newReservation");
+    } else if (pathname.includes("/login") || pathname.includes("/register")) {
+      user.isAdmin && navigate("/admin/allBranches");
+      user.isOperator
+        ? navigate("/operator/reservationsList")
+        : navigate("/client/newReservation");
     }
   }, [pathname, user, user.isAdmin, user.isOperator]);
   return (
@@ -65,7 +70,10 @@ function App() {
         )}
 
         {user.isAdmin && <Route path="/admin/*" element={<AdminRoutes />} />}
-        <Route path="/recoverPassword/:userEmail" element={<RecoverPassword />} />
+        <Route
+          path="/recoverPassword/:userEmail"
+          element={<RecoverPassword />}
+        />
       </Routes>
     </div>
   );
