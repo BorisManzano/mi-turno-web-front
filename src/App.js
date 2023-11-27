@@ -9,6 +9,7 @@ import AdminRoutes from "./navigation/AdminRoutes";
 import ClientRoutes from "./navigation/ClientRoutes";
 import OperatorRoutes from "./navigation/OperatorRoutes";
 import { login } from "./state/user";
+import Register from "./components/Register";
 
 function App() {
   const location = useLocation();
@@ -52,6 +53,7 @@ function App() {
       <PromotionalMessage />
       <Routes>
         <Route path="/" element={<Login />} />
+        <Route path="/client/register" element={<Register />} />
         {user.email && !user.isAdmin && !user.isOperator && (
           <Route path="/client/*" element={<ClientRoutes />} />
         )}
