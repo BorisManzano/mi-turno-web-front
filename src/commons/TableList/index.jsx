@@ -49,7 +49,6 @@ export const TableList = ({ datatype, data }) => {
   //puede ser operadores, sucursales o historial de reservas.
   return (
     <>
-      <Navbar role={"final-client"} />
       <div className={s.container} style={{ marginTop: "1.5%" }}>
         <h1>{dataType == "OperatorReservas" ? "Reservas" : dataType}</h1>
         <div className={s.table}>

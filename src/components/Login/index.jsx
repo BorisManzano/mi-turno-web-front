@@ -59,7 +59,6 @@ const Login = () => {
   }
   return (
     <div>
-      <Navbar role={"final-client"} />
       <div className="login-page">
         <div className="login-container">
           <div className="login-form">

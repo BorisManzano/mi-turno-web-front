@@ -9,6 +9,7 @@ import AdminRoutes from "./navigation/AdminRoutes";
 import ClientRoutes from "./navigation/ClientRoutes";
 import OperatorRoutes from "./navigation/OperatorRoutes";
 import { login } from "./state/user";
+import Navbar from "./commons/Navbar/Navbar";
 import Register from "./components/Register";
 
 function App() {
@@ -51,8 +52,10 @@ function App() {
   return (
     <div className="App">
       <PromotionalMessage />
+      <Navbar />
       <Routes>
         <Route path="/" element={<Login />} />
+        <Route path="/client/login" element={<Login />} />
         <Route path="/client/register" element={<Register />} />
         {user.email && !user.isAdmin && !user.isOperator && (
           <Route path="/client/*" element={<ClientRoutes />} />

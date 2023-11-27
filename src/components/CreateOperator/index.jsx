@@ -74,7 +74,6 @@ export default function CreateOperator() {
 
   return (
     <>
-      <Navbar />
       <div className={s.parent}>
         <form onSubmit={handleSubmit} className={s.f}>
           <h1>Creación de Operadores</h1>
