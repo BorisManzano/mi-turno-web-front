@@ -505,10 +505,16 @@ export default function ReservationPanel() {
                       variant="contained"
                       enabled
                       onClick={handleEdition}
+                      className="button-confirm-reservation-panel"
                       sx={{
                         marginTop: "5%",
                         marginBottom: "5%",
-                        background: "#A442F1",
+                        background: "#a442f1",
+                        transition: "all 0.7s ease",
+                        "&:hover": {
+                          background: "#7412be ",
+                          transform: "scale(1.05)",
+                        },
                       }}
                     >
                       Confirmar edición
@@ -518,10 +524,16 @@ export default function ReservationPanel() {
                       variant="contained"
                       disabled={activeStep < 2 || !enabled}
                       onClick={handleSubmit}
+                      className="button-confirm-reservation-panel"
                       sx={{
                         marginTop: "5%",
                         marginBottom: "5%",
-                        background: "#A442F1",
+                        background: "#a442f1",
+                        transition: "all 0.7s ease",
+                        "&:hover": {
+                          background: "#7412be ",
+                          transform: "scale(1.05)",
+                        },
                       }}
                     >
                       Confirmar reserva
