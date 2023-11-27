@@ -22,6 +22,7 @@ import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router";
 import Countdown from "../../commons/Countdown";
+import PopupTimeOut from "../../commons/popup-timeOut";
 
 export default function ReservationPanel() {
   const navigate = useNavigate();
@@ -193,12 +194,10 @@ export default function ReservationPanel() {
         position: toast.POSITION.TOP_CENTER,
       });
     }
-    // console.log("ESTO MANDA", inputs);
     axios
       .post("http://localhost:3001/api/users/newAppointment", { ...inputs })
       .then((res) => {
         setReservationIdParams(res.data.reservationId);
-        console.log("esta es la respuesta", reservationIdParams);
         document
           .querySelector(".body")
           .classList.add("make-reservation-container-inactive");
@@ -253,7 +252,17 @@ export default function ReservationPanel() {
         })
       );
   }
-  //--------------------------------------------------------
+  if (Countdown().props.children === "Tiempo agotado") {
+    document
+      .querySelector(".body")
+      .classList.add("make-reservation-container-inactive");
+    document
+      .querySelector(".fake-container-popup-time")
+      .classList.remove("fake-container-popup-time-inactive");
+    document
+      .querySelector(".fake-container-popup-time")
+      .classList.add("fake-container-popup-time-active");
+  }
   return (
     <div>
       <Box
@@ -559,7 +568,6 @@ export default function ReservationPanel() {
           >
             {activeStep === 1 || editing ? (
               <LocalizationProvider dateAdapter={AdapterDayjs} id="calendar">
-                {console.log("REERVATIONS???", reservations)}
                 <DateCalendar
                   sx={{ color: "#A442F1" }}
                   disablePast
@@ -583,8 +591,8 @@ export default function ReservationPanel() {
           <Button
             sx={{
               position: "fixed",
-              bottom: "150px",
-              right: "130px",
+              bottom: "6%",
+              right: "8%",
               backgroundColor: "#CC6AFF",
               color: "white",
             }}
@@ -593,11 +601,13 @@ export default function ReservationPanel() {
           </Button>
         </Grid>
       </Box>
+      <PopupTimeOut />
       <PopupReservation
         state={state}
         reservationId={reservationIdParams || reservationId}
         editing={editing}
       />
+
       <ToastContainer />
     </div>
   );
