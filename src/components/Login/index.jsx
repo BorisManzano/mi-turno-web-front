@@ -26,7 +26,6 @@ const Login = () => {
         setTimeout(() => {
           window.location.reload();
         }, 1000);
-        console.log(response);
       })
       .catch((err) => {
         setInvalidInformation("¡Email o contraseña incorrectos!");

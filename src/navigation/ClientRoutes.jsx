@@ -9,7 +9,6 @@ import UserReservationHistory from "../components/UserReservationHistory";
 import ReservationConfirmed from "../components/reservationconfirmed";
 
 const ClientRoutes = () => {
-  console.log("entre a e comonente de rutas CLIENT");
   return (
     <Routes>
       <Route path="/newReservation" element={<ReservationPanel />} />

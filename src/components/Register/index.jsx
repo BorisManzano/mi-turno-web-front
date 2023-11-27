@@ -93,7 +93,6 @@ export default function Register() {
       axios
         .post("http://localhost:3001/api/users/register", data)
         .then(() => {
-          console.log("Registro exitoso");
           navigate("/client/login");
         })
         .catch((err) => {
