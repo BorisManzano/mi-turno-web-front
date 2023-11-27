@@ -189,7 +189,7 @@ const Navbar = () => {
 
             <div className="div-navbar-text">
               {user.email ? (
-                <div>
+                <div style={{ display: "flex" }}>
                   <Link to={"/client/reservations"}>
                     <div style={{ display: "flex", alignItems: "center" }}>
                       <h5 className="h5-navbar-text">Mis reservas</h5>
@@ -208,7 +208,12 @@ const Navbar = () => {
                     </div>
                   </Link>
                   <Link to={"/client/myAccount"}>
-                    <div style={{ display: "flex", alignItems: "center" }}>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                    >
                       <h5 className="h5-navbar-text">Mi Cuenta </h5>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
