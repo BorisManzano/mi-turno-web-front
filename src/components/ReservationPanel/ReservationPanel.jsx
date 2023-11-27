@@ -622,8 +622,15 @@ export default function ReservationPanel() {
               position: "fixed",
               bottom: "6%",
               right: "8%",
-              backgroundColor: "#CC6AFF",
+              backgroundColor: "#a442f1",
               color: "white",
+              borderRadius: "12px",
+              transition: "all 0.7s ease",
+              transition: "transform 1.2s ease",
+              "&:hover": {
+                backgroundColor: "#8631c7",
+                transform: "rotate(360deg) scale(1.3)",
+              },
             }}
           >
             <Countdown />
