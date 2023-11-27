@@ -14,17 +14,18 @@ import {
   Grid,
   Button,
 } from "@mui/material";
-
+import { login } from "../../state/user";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router";
 import Countdown from "../../commons/Countdown";
 
 export default function ReservationPanel() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   // variable para renderizas popup exitoso o de error
   let state = true;
@@ -172,6 +173,7 @@ export default function ReservationPanel() {
         document
           .querySelector(".fake-container-popup")
           .classList.add("fake-container-popup-active");
+        dispatch(login({ ...user, phoneNumber: data.telephone }));
       })
       .catch(() =>
         toast.error("ERROR EN EL INGRESO DE DATOS", {
@@ -208,6 +210,7 @@ export default function ReservationPanel() {
         document
           .querySelector(".fake-container-popup")
           .classList.add("fake-container-popup-active");
+        dispatch(login({ ...user, phoneNumber: data.telephone }));
       })
       .catch(() =>
         toast.error("VERIFIQUE QUE LOS DATOS SEAN CORRECTOS", {
@@ -419,6 +422,7 @@ export default function ReservationPanel() {
                         }
                         type="text"
                         className="form-control"
+                        readOnly
                         onChange={handleChanges}
                       />
                     </Grid>
@@ -439,6 +443,7 @@ export default function ReservationPanel() {
                         defaultValue={
                           reservationId ? appointment.telephone : ""
                         }
+                        readOnly={reservationId ? true : false}
                         type="text"
                         className="input"
                         onChange={handleChanges}
@@ -459,6 +464,7 @@ export default function ReservationPanel() {
                     }
                     type="text"
                     className="form-control"
+                    readOnly
                     onChange={handleChanges}
                   />
                   {editing ? (

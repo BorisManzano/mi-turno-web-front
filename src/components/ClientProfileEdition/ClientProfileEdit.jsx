@@ -1,19 +1,55 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../ClientProfileEdition/ClientProfileEdit.scss";
 import Navbar from "../../commons/Navbar/Navbar";
 import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import s from "../Register/style.module.scss";
+import Eye from "../../assets/Eye";
+import Check from "../../assets/Check";
+import Wrong from "../../assets/Wrong";
 import axios from "axios";
 import { login } from "../../state/user";
 export default function ClientProfileEdit() {
-  const dispatch = useDispatch();
-  const user = useSelector((state) => state.user);
+  const userRedux = useSelector((state) => state.user);
+  const email = userRedux.email;
+  const [user, setUser] = useState({});
+  const [password, setPassword] = useState("");
+
+  const [showPassword, setShowassword] = useState(false);
+  const [checklist, setChecklist] = useState({
+    uppercaseLetter: false,
+    lowercaseLetter: false,
+    oneNumber: false,
+    large: false,
+    validation: false,
+  });
+  useEffect(() => {
+    if (email) {
+      axios
+        .get(`http://localhost:3001/api/users/edit/profile/${email}`)
+        .then((res) => {
+          console.log("respuesta-->", res);
+          setUser({
+            fullname: res.data.nameAndLast_name,
+            email: res.data.email,
+            DNI: res.data.DNI,
+            userId: res.data.id,
+            telephone: res.data.telephone,
+            password: "*******",
+            newPassword: res.data.newPassword,
+            newPasswordConfirm: res.data.newPasswordConfirm,
+          });
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [email]);
+  console.log("ESTO ES ...RES,DATA", user);
   const [disabled, setDisabled] = useState(true);
   const [data, setData] = useState({
     nameAndLast_name: user.fullname,
     email: user.email,
-    DNI: user.dni,
+    DNI: user.DNI,
     telephone: user.telephone,
     password: user.password,
     newPassword: user.newPassword,
@@ -32,10 +68,34 @@ export default function ClientProfileEdit() {
     e.preventDefault();
     setDisabled(false);
   }
+
+  const handleTogglePassword = () => {
+    setShowassword(!showPassword);
+  };
+  const handleInputPassword = (e) => {
+    const newValue = e.target.value;
+    setPassword(newValue);
+    setData({ ...data, newPassword: newValue });
+    setChecklist({
+      uppercaseLetter: /[A-ZÑ]/.test(newValue),
+      lowercaseLetter: /[a-zñ]/.test(newValue),
+      oneNumber: /\d/.test(newValue),
+      large: newValue.length >= 8,
+      validation:
+        /[A-ZÑ]/.test(newValue) &&
+        /[a-zñ]/.test(newValue) &&
+        /\d/.test(newValue) &&
+        newValue.length >= 8,
+    });
+  };
   function handleSubmit(e) {
     e.preventDefault();
-
-    if (data.newPassword !== data.newPasswordConfirm) {
+    if (!checklist.validation) {
+      toast.error("PASSWORD ERROR", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+      return;
+    } else if (data.newPassword !== data.newPasswordConfirm) {
       toast.error("LAS CONTRASEÑAS NO COINCIDEN", {
         position: toast.POSITION.TOP_CENTER,
       });
@@ -55,9 +115,6 @@ export default function ClientProfileEdit() {
         ...toPut,
       })
       .then(() => {
-        toast.warning("LOS CAMBIOS SE ACTUALIZARÁN EN TU PRÓXIMA SESIÓN", {
-          position: toast.POSITION.TOP_CENTER,
-        });
         toast.success("TU PERFIL FUE ACTUALIZADO", {
           position: toast.POSITION.TOP_CENTER,
         });
@@ -106,9 +163,11 @@ export default function ClientProfileEdit() {
                 <input
                   style={{ width: "100%" }}
                   name="DNI"
-                  defaultValue={user.dni}
+                  defaultValue={user.DNI}
                   className="input"
                   type="text"
+                  maxLength="8"
+                  pattern="[0-9]{7,8}"
                   onChange={handleChanges}
                 />
               </div>
@@ -139,15 +198,90 @@ export default function ClientProfileEdit() {
               </>
             ) : (
               <>
-                <p className="p-form-client">Nueva Contraseña</p>
+                <p className="p-form-client">
+                  Nueva Contraseña
+                  <div className={s.row1} onClick={handleTogglePassword}>
+                    <Eye />
+                  </div>
+                </p>
                 <input
                   disabled={disabled}
                   name="newPassword"
-                  defaultValue={user.newPassword}
+                  type={showPassword ? "text" : "password"}
+                  // defaultValue={user.newPassword}
+                  value={data.newPassword}
                   className="input"
-                  type="text"
-                  onChange={handleChanges}
+                  onChange={handleInputPassword}
                 />
+
+                <div className={s.container}>
+                  <div className={s.rowOne}>
+                    {data.newPassword === "" ? (
+                      <>
+                        <div className={s.row3}>
+                          <p>ABC</p> <p>Una letra mayúscula</p>
+                        </div>
+                        <div className={s.row3}>
+                          <p>abc</p> <p>Una letra minúscula</p>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        {checklist.uppercaseLetter ? (
+                          <div className={s.row1}>
+                            <Check /> <p>ABC</p> <p>Una letra mayúscula</p>
+                          </div>
+                        ) : (
+                          <div className={s.row2}>
+                            <Wrong /> <p>ABC</p> <p>Una letra mayúscula</p>
+                          </div>
+                        )}
+                        {checklist.lowercaseLetter ? (
+                          <div className={s.row1}>
+                            <Check /> <p>abc</p> <p>Una letra minúscula</p>
+                          </div>
+                        ) : (
+                          <div className={s.row2}>
+                            <Wrong /> <p>abc</p> <p>Una letra minúscula</p>
+                          </div>
+                        )}
+                      </>
+                    )}
+                  </div>
+                  <div className={s.rowOne}>
+                    {data.password === "" ? (
+                      <>
+                        <div className={s.row3}>
+                          <p>123</p> <p>Un número</p>
+                        </div>
+                        <div className={s.row3}>
+                          <p>***</p> <p>Mínimo 8 caracteres</p>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        {checklist.oneNumber ? (
+                          <div className={s.row1}>
+                            <Check /> <p>123</p> <p>Un número</p>
+                          </div>
+                        ) : (
+                          <div className={s.row2}>
+                            <Wrong /> <p>123</p> <p>Un número</p>
+                          </div>
+                        )}
+                        {checklist.large ? (
+                          <div className={s.row1}>
+                            <Check /> <p>***</p> <p>Mínimo 8 caracteres</p>
+                          </div>
+                        ) : (
+                          <div className={s.row2}>
+                            <Wrong /> <p>***</p> <p>Mínimo 8 caracteres</p>
+                          </div>
+                        )}
+                      </>
+                    )}
+                  </div>
+                </div>
                 <p className="p-form-client">
                   Escribí de nuevo tu nueva contraseña
                 </p>
@@ -155,7 +289,7 @@ export default function ClientProfileEdit() {
                   name="newPasswordConfirm"
                   defaultValue={user.newPasswordConfirm}
                   className="input"
-                  type="text"
+                  type={showPassword ? "text" : "password"}
                   onChange={handleChanges}
                 />
               </>
