@@ -1,7 +1,6 @@
 import React from "react";
 
 const PromotionalMessage = () => {
-  console.log("log nuevo");
   const displayNone = () =>
     document
       .querySelector(".div-promotion-message")

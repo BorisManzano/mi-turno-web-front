@@ -16,7 +16,6 @@ const ReservationConfirmed = function () {
           `http://localhost:3001/api/users/appointment/${reservationId}`
         );
         setReservation(response.data);
-        console.log(response);
       } catch (error) {
         console.error(error);
       }

@@ -13,11 +13,9 @@ export const UserReservationHistory = () => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   useEffect(() => {
-    console.log(user);
     axios
       .get(`http://localhost:3001/api/users/appointmentList/${user.dni}`)
       .then((res) => {
-        console.log(res.data);
         setReservations(
           res.data.map((obj) => {
             const { branch, reservationId, date } = obj;

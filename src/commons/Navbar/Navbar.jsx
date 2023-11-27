@@ -8,7 +8,6 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  console.log(pathname);
   const user = useSelector((state) => state.user);
   const handleButtonRigth = (e) => {
     e.preventDefault();

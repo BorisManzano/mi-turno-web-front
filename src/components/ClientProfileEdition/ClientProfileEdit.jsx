@@ -29,7 +29,6 @@ export default function ClientProfileEdit() {
       axios
         .get(`http://localhost:3001/api/users/edit/profile/${email}`)
         .then((res) => {
-          console.log("respuesta-->", res);
           setUser({
             fullname: res.data.nameAndLast_name,
             email: res.data.email,
@@ -44,7 +43,6 @@ export default function ClientProfileEdit() {
         .catch((err) => console.log(err));
     }
   }, [email]);
-  console.log("ESTO ES ...RES,DATA", user);
   const [disabled, setDisabled] = useState(true);
   const [data, setData] = useState({
     nameAndLast_name: user.fullname,
