@@ -4,7 +4,6 @@
   align-items: center;
   justify-content: center;
   height: 5vh;
-  // border: 2px solid blue;
   background: var(--Grey-2, #f0f0f0);
 }
 .p-promotion-message {
@@ -14,7 +13,10 @@
   font-size: 1.6vh;
   font-style: normal;
   font-weight: 600;
-  line-height: 16px; /* 133.333% */
+  line-height: 16px;
+}
+.display-none {
+  display: none;
 }
 .navbar {
   height: 7vh;
@@ -42,6 +44,7 @@
 
 .h4-navbar {
   color: var(--Principal, #a442f1);
+  color: var(--Principal, #a542f1cb);
   text-align: center;
   font-variant-numeric: slashed-zero;
   font-size: 16px;
