@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
-import Navbar from "../../commons/Navbar/Navbar";
 import axios from "axios";
-import { useNavigate } from "react-router";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router";
+import Navbar from "../../commons/Navbar/Navbar";
 
 const Login = () => {
   const user = useSelector((state) => state.user);
@@ -27,7 +26,6 @@ const Login = () => {
         setTimeout(() => {
           window.location.reload();
         }, 1000);
-        handlePath();
         console.log(response);
       })
       .catch((err) => {
