@@ -1,15 +1,15 @@
 import React from "react";
 import { Route, Routes } from "react-router";
+import { CancelReservation } from "../components/CancelReservation";
+import ClientProfileEdit from "../components/ClientProfileEdition/ClientProfileEdit";
 import Login from "../components/Login";
 import Register from "../components/Register";
 import ReservationPanel from "../components/ReservationPanel/ReservationPanel";
-import ReservationConfirmed from "../components/reservationconfirmed";
 import UserReservationHistory from "../components/UserReservationHistory";
-import { CancelReservation } from "../components/CancelReservation";
-import ClientProfileEdit from "../components/ClientProfileEdition/ClientProfileEdit";
-import RecoverPassword from "../components/RecoverPassword";
+import ReservationConfirmed from "../components/reservationconfirmed";
 
 const ClientRoutes = () => {
+  console.log("entre a e comonente de rutas CLIENT");
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
@@ -30,7 +30,6 @@ const ClientRoutes = () => {
         element={<CancelReservation />}
       />
       <Route path="/myAccount" element={<ClientProfileEdit />} />
-      <Route path="/recoverPassword" element={<RecoverPassword />} />
     </Routes>
   );
 };
