@@ -33,6 +33,30 @@ const Login = () => {
         console.error(err);
       });
   };
+
+  const handlePath = () => {
+    if (user.isAdmin) {
+      navigate("/admin/allBranches");
+    } else if (user.isOperator) {
+      navigate("/operator/reservationsList");
+    } else if (!user.isAdmin && !user.isOperator && user.email) {
+      navigate("/client/newReservation");
+    } else {
+      navigate("/");
+    }
+  };
+ 
+  const handleRecoverPassword =()=>{
+   const email = prompt("ingrese su email")
+
+   axios.post(`http://localhost:3001/api/nodeMailer/recoverEmailPassword/${email}`)
+   .then((resp) => {
+    alert("revise su casilla de correo para restaurar su contraseña")
+   })
+   .catch((error)=>{
+    alert("se ha producido un error al intentar recuperar su contraseña, intentelo mas tarde")
+   })
+  }
   return (
     <div>
       <Navbar role={"final-client"} />
@@ -54,7 +78,7 @@ const Login = () => {
               onChange={(e) => setPasswordInputValue(e.target.value)}
             />
             <p className="p-validation-error-login">{invalidInformation}</p>
-            <h4 className="h4-form-login">¿Olvidaste tu contraseña?</h4>
+            <h4 className="h4-form-login" onClick={handleRecoverPassword}>¿Olvidaste tu contraseña?</h4>
             <button className="login-button" onClick={() => handleSubmit()}>
               Ingresar
             </button>
