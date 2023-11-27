@@ -221,8 +221,6 @@ export default function ReservationPanel() {
   //--------------------------------------------------------
   return (
     <div>
-      <Navbar Navbar role={"final-client"} />
-
       <Box
         className="body"
         sx={{

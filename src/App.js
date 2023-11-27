@@ -9,6 +9,7 @@ import AdminRoutes from "./navigation/AdminRoutes";
 import ClientRoutes from "./navigation/ClientRoutes";
 import OperatorRoutes from "./navigation/OperatorRoutes";
 import { login } from "./state/user";
+import Navbar from "./commons/Navbar/Navbar";
 
 function App() {
   const location = useLocation();
@@ -50,6 +51,7 @@ function App() {
   return (
     <div className="App">
       <PromotionalMessage />
+      <Navbar />
       <Routes>
         <Route path="/" element={<Login />} />
         {user.email && !user.isAdmin && !user.isOperator && (

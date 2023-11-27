@@ -124,7 +124,6 @@ export default function ClientProfileEdit() {
 
   return (
     <>
-      <Navbar role={"final-client"} />
       <div className="client-page">
         <div className="client-container">
           <div className="client-form">
