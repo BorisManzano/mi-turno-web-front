@@ -65,7 +65,7 @@ function App() {
         )}
 
         {user.isAdmin && <Route path="/admin/*" element={<AdminRoutes />} />}
-        <Route path="/recoverPassword" element={<RecoverPassword />} />
+        <Route path="/recoverPassword/:userEmail" element={<RecoverPassword />} />
       </Routes>
     </div>
   );
