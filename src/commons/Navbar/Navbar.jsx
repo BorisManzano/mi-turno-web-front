@@ -19,7 +19,7 @@ const Navbar = ({ role }) => {
       })
       .then(() => {
         dispatch(logout());
-        navigate("/client/login");
+        navigate("/");
       })
       .catch((err) => console.error(err));
   };

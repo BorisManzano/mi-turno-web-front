@@ -58,7 +58,7 @@ export default function ReservationPanel() {
       axios
         .get(`http://localhost:3001/api/users/appointment/${reservationId}`)
         .then((result) => {
-          console.log("ESTO TRAE RESERVATION ID AXIOS", result);
+          // console.log("ESTO TRAE RESERVATION ID AXIOS", result);
           const data = {
             reservationId: reservationId,
             branchId: result.data.branchId,
@@ -157,7 +157,7 @@ export default function ReservationPanel() {
         position: toast.POSITION.TOP_CENTER,
       });
     }
-    console.log("ESTO MANDA", inputs);
+    // console.log("ESTO MANDA", inputs);
     axios
       .post("http://localhost:3001/api/users/newAppointment", { ...inputs })
       .then((res) => {

@@ -1,9 +1,11 @@
 import React from "react";
 import { Route, Routes } from "react-router";
-import { OperatorReservationsList } from "../components/OperatorReservationsList";
 import OperatorProfile from "../components/OperatorProfile";
+import { OperatorReservationsList } from "../components/OperatorReservationsList";
 
 const OperatorRoutes = () => {
+  console.log("entre a e comonente de rutas OPERATOR");
+
   return (
     <Routes>
       <Route path="/reservationsList" element={<OperatorReservationsList />} />
