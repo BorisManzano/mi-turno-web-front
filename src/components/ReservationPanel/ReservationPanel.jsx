@@ -50,6 +50,7 @@ export default function ReservationPanel() {
   const [reservations, setReservations] = React.useState([]);
   const { reservationId } = useParams();
   const [schedules, setSchedules] = React.useState([]);
+  const [notAvailableSchedule, setNotAvilableSchedule] = React.useState("");
   function handleNext() {
     setActiveStep((prev) => prev + 1);
   }
@@ -125,7 +126,7 @@ export default function ReservationPanel() {
       const formattedHour = hour.toString().padStart(2, "0");
       const formattedMinute = minute.toString().padStart(2, "0");
 
-      timeSlots.push(`${formattedHour}:${formattedMinute}`);
+      timeSlots.push(`${formattedHour}:${formattedMinute}:00`);
     }
 
     return timeSlots;
@@ -133,17 +134,12 @@ export default function ReservationPanel() {
 
   function handleSelection(e) {
     e.preventDefault();
+
     const [id, name, capacity, openingTime, closingTime] =
       e.target.value.split("-");
 
     setBranchName(name);
     setBranchId(id);
-    axios
-      .get(`http://localhost:3001/api/appointments/confirmed/${id}`)
-      .then((result) => {
-        setReservations(result.data);
-      })
-      .catch((error) => console.log(error));
 
     setCapacity(capacity);
     const timeSlots = calculateTimeSlots(openingTime, closingTime, capacity);
@@ -151,14 +147,36 @@ export default function ReservationPanel() {
     handleNext();
     setEnabled(true);
   }
+  function handleDaySelector(e) {
+    setDate(e.$d);
+
+    handleNext();
+  }
 
   function handleScheduleSelection(e) {
     e.preventDefault();
+    axios
+      .get(`http://localhost:3001/api/appointments/confirmed/${branchId}`)
+      .then((result) => {
+        const reservedSchedule = [];
+
+        result.data.forEach((appointment) => {
+          if (appointment.schedule === e.target.value) {
+            reservedSchedule.push(appointment.schedule);
+          }
+        });
+
+        if (reservedSchedule.length >= parseInt(capacity)) {
+          toast.error("NO HAY DISPONIBILIDAD EN ESE HORARIO", {
+            position: toast.POSITION.TOP_LEFT,
+          });
+          setNotAvilableSchedule(e.target.value);
+        }
+        setReservations(result.data);
+      })
+      .catch((error) => console.log(error));
+
     setSchedule(e.target.value);
-  }
-  function handleDaySelector(e) {
-    setDate(e.$d);
-    handleNext();
   }
 
   const [data, setData] = React.useState({
@@ -188,7 +206,12 @@ export default function ReservationPanel() {
   //FUNCION HANDLE-SUBMIT--------------------------------------------------------
   function handleSubmit(e) {
     e.preventDefault();
-
+    if (schedule === notAvailableSchedule) {
+      toast.error("NO HAY DISPONIBILIDAD EN ESE HORARIO", {
+        position: toast.POSITION.BOTTOM_LEFT,
+      });
+      return;
+    }
     if (!data.telephone) {
       toast.error("DEBE INGRESAR UN TELÉFONO", {
         position: toast.POSITION.TOP_CENTER,
@@ -219,6 +242,12 @@ export default function ReservationPanel() {
   //HANDLEEDITION------------------------------------------
   function handleEdition(e) {
     e.preventDefault();
+    if (schedule === notAvailableSchedule) {
+      toast.error("NO HAY DISPONIBILIDAD EN ESE HORARIO", {
+        position: toast.POSITION.BOTTOM_LEFT,
+      });
+      return;
+    }
     const toPut = { reservationId: reservationId, email: appointment.email };
     for (const key in inputs) {
       if (
