@@ -46,9 +46,9 @@ export default function ReservationPanel() {
   const [capacity, setCapacity] = React.useState(0);
   const [editing, setEditing] = React.useState(false);
   const [reservationIdParams, setReservationIdParams] = React.useState();
-
+  const [reservations, setReservations] = React.useState([]);
   const { reservationId } = useParams();
-
+  const [schedules, setSchedules] = React.useState([]);
   function handleNext() {
     setActiveStep((prev) => prev + 1);
   }
@@ -91,8 +91,7 @@ export default function ReservationPanel() {
   //-------------------------------------------------------------
   const [branchId, setBranchId] = React.useState(0);
   const [schedule, setSchedule] = React.useState("");
-  //HARDCODEO HORARIOS------------------------------------------------------
-  const schedules = ["10:00", "11:00", "12:00", "12:15"];
+
   //---------------------------------------
   const steps = [
     "Elegí tu sucursal",
@@ -105,17 +104,53 @@ export default function ReservationPanel() {
     reservationId ? steps.length : 0
   );
   //--------------------------------------------------------
+  function calculateTimeSlots(openingTime, closingTime, capacity) {
+    let startTime;
+    openingTime[0] === "0"
+      ? (startTime = openingTime.slice(1, 2))
+      : (startTime = openingTime.slice(0, 2));
+    const endTime = closingTime.slice(0, 2);
+    const availableSlotsForCapacityOfOne = Math.abs(
+      parseInt(openingTime) - parseInt(closingTime)
+    );
+
+    const totalSlots = Math.floor(60 / 15) * availableSlotsForCapacityOfOne;
+    const timeSlots = [];
+
+    for (let i = 0; i < totalSlots; i++) {
+      const hour = Math.floor((i * 15) / 60) + parseInt(startTime);
+      const minute = (i * 15) % 60;
+
+      const formattedHour = hour.toString().padStart(2, "0");
+      const formattedMinute = minute.toString().padStart(2, "0");
+
+      timeSlots.push(`${formattedHour}:${formattedMinute}`);
+    }
+
+    return timeSlots;
+  }
 
   function handleSelection(e) {
     e.preventDefault();
-    const [id, name, capacity] = e.target.value.split("-");
+    const [id, name, capacity, openingTime, closingTime] =
+      e.target.value.split("-");
 
     setBranchName(name);
     setBranchId(id);
+    axios
+      .get(`http://localhost:3001/api/appointments/confirmed/${id}`)
+      .then((result) => {
+        setReservations(result.data);
+      })
+      .catch((error) => console.log(error));
+
     setCapacity(capacity);
+    const timeSlots = calculateTimeSlots(openingTime, closingTime, capacity);
+    setSchedules(timeSlots);
     handleNext();
     setEnabled(true);
   }
+
   function handleScheduleSelection(e) {
     e.preventDefault();
     setSchedule(e.target.value);
@@ -345,7 +380,7 @@ export default function ReservationPanel() {
                   {branches.map((branch) => (
                     <option
                       key={branch.id}
-                      value={`${branch.id}-${branch.name}-${branch.capacity}`}
+                      value={`${branch.id}-${branch.name}-${branch.capacity}-${branch.openingTime}-${branch.closingTime}`}
                     >
                       {branch.name}
                     </option>
@@ -514,8 +549,10 @@ export default function ReservationPanel() {
           >
             {activeStep === 1 || editing ? (
               <LocalizationProvider dateAdapter={AdapterDayjs} id="calendar">
+                {console.log("REERVATIONS???", reservations)}
                 <DateCalendar
                   sx={{ color: "#A442F1" }}
+                  disablePast
                   onChange={handleDaySelector}
                 />
               </LocalizationProvider>
