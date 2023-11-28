@@ -70,10 +70,8 @@ function App() {
         )}
 
         {user.isAdmin && <Route path="/admin/*" element={<AdminRoutes />} />}
-        <Route
-          path="/recoverPassword/:userEmail"
-          element={<RecoverPassword />}
-        />
+        <Route path="/recoverPassword/:token" element={<RecoverPassword />} />
+        <Route path="/ConfirmationOfRegistration/:token" element={<ConfirmationOfRegistration/>} />
       </Routes>
     </div>
   );
