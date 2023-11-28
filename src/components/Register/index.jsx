@@ -91,7 +91,9 @@ export default function Register() {
       alert("Las contraseñas deben ser iguales");
     } else {
       axios
-        .post("http://localhost:3001/api/users/register", data)
+        .post("http://localhost:3001/api/users/register", data, {
+          withCredentials: true,
+        })
         .then(() => {
           console.log("Registro exitoso");
           navigate("/client/login");
