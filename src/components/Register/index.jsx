@@ -91,12 +91,15 @@ export default function Register() {
       alert("Las contraseñas deben ser iguales");
     } else {
       axios
-        .post("http://localhost:3001/api/users/register", data, {
+
+        .post("http://localhost:3001/api/users/register", data,{
           withCredentials: true,
         })
-        .then(() => {
-          navigate("/login");
+        .then((resp) => {
+          console.log("Registro exitoso");
+          axios.post(`http://localhost:3001/api/nodeMailer/accountConfirmation/${resp.data.email}`)
         })
+        .then(()=> navigate("/") )
         .catch((err) => {
           console.error("Error en el registro:", err);
           alert("Error en el registro:", err);
