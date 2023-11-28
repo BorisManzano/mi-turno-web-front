@@ -68,7 +68,7 @@ export default function ReservationPanel() {
             branchName: result.data.branchName,
             date: result.data.date,
             schedule: result.data.schedule,
-            fullname: result.data.createdBy.nameAndLast_name,
+            fullname: result.data.createdBy.fullname,
             telephone: result.data.createdBy.telephone,
             email: result.data.createdBy.email,
           };

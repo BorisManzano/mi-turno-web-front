@@ -24,7 +24,7 @@ function App() {
       .then((res) => {
         if (res.data) {
           const userData = {
-            fullname: res.data.nameAndLast_name,
+            fullname: res.data.fullname,
             email: res.data.email,
             dni: res.data.DNI,
             isAdmin: res.data.isAdmin,

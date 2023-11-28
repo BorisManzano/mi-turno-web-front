@@ -11,7 +11,7 @@ import Fullname from "../../commons/Form/Fullname";
 export default function Register() {
   const navigate = useNavigate();
   const [data, setData] = useState({
-    nameAndLast_name: "",
+    fullname: "",
     DNI: "",
     email: "",
     password: "",

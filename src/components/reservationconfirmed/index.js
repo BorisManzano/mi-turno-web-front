@@ -76,9 +76,7 @@ const ReservationConfirmed = function () {
         <section className="contentInfo">
           <div className="item1">
             <h2>
-              {reservation.createdBy
-                ? reservation.createdBy.nameAndLast_name
-                : ""}
+              {reservation.createdBy ? reservation.createdBy.fullname : ""}
             </h2>
             <p>
               Email: {reservation.createdBy ? reservation.createdBy.email : ""}
