@@ -117,6 +117,11 @@ h1 {
   font-style: normal;
   font-weight: 600;
   line-height: 20px;
+  transition: all 0.4s;
+  &:hover {
+    background: rgba(165, 66, 241, 0.24);
+    transform: scale(1.05);
+  }
 }
 
 .cancelReservationBtn {
@@ -138,6 +143,11 @@ h1 {
   font-style: normal;
   font-weight: 600;
   line-height: 20px;
+  transition: all 0.4s;
+  &:hover {
+    background: rgba(165, 66, 241, 0.24);
+    transform: scale(1.05);
+  }
 }
 .contentInfo {
   display: flex;
@@ -257,9 +267,10 @@ h1 {
   border-radius: 8px;
   background: var(--Principal, #a442f1);
   border: none;
-  transition: all 0.5s ease;
+  transition: transform 0.8s ease, box-shadow 0.4s ease;
 }
 
 .impresion:hover {
-  transform: scale(1.05);
+  transform: scale(1.08);
+  box-shadow: 0px 3px 19px 1px #8631c7;
 }

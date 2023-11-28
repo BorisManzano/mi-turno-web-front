@@ -134,7 +134,7 @@ export const TableList = ({ datatype, data }) => {
                     <div className="horiz">
                       <Button
                         onClick={(event) =>
-                          handleOnClickEdit(objIns[objKeys[3]], event)
+                          handleOnClickEdit(objIns[objKeys[0]], event)
                         }
                         variant="contained"
                         style={{
