@@ -1,9 +1,6 @@
 import React from "react";
-import { useNavigate } from "react-router";
 
 const PopupTimeOut = () => {
-  const navigate = useNavigate();
-
   return (
     <div className="fake-container-popup-time fake-container-popup-time-inactive">
       <div className="popup-time-container">

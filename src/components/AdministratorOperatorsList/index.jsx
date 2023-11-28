@@ -18,7 +18,7 @@ export const AdministratorOperatorsList = () => {
         setAllData(
           res.data.map((obj) => {
             const { name, operator } = obj;
-            const userName = operator ? operator.nameAndLast_name : "";
+            const userName = operator ? operator.fullname : "";
             const dni = operator ? operator.DNI : "";
             const operatorEmail = operator ? operator.email : "";
             return { userName, operatorEmail, name, dni };

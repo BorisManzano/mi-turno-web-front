@@ -1,15 +1,13 @@
+import axios from "axios";
 import React, { useEffect, useState } from "react";
-import "../ClientProfileEdition/ClientProfileEdit.scss";
-import Navbar from "../../commons/Navbar/Navbar";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import s from "../Register/style.module.scss";
-import Eye from "../../assets/Eye";
 import Check from "../../assets/Check";
+import Eye from "../../assets/Eye";
 import Wrong from "../../assets/Wrong";
-import axios from "axios";
-import { login } from "../../state/user";
+import "../ClientProfileEdition/ClientProfileEdit.scss";
+import s from "../Register/style.module.scss";
 export default function ClientProfileEdit() {
   const userRedux = useSelector((state) => state.user);
   const email = userRedux.email;
@@ -30,7 +28,7 @@ export default function ClientProfileEdit() {
         .get(`http://localhost:3001/api/users/edit/profile/${email}`)
         .then((res) => {
           setUser({
-            fullname: res.data.nameAndLast_name,
+            fullname: res.data.fullname,
             email: res.data.email,
             DNI: res.data.DNI,
             userId: res.data.id,
@@ -45,7 +43,7 @@ export default function ClientProfileEdit() {
   }, [email]);
   const [disabled, setDisabled] = useState(true);
   const [data, setData] = useState({
-    nameAndLast_name: user.fullname,
+    fullname: user.fullname,
     email: user.email,
     DNI: user.DNI,
     telephone: user.telephone,
@@ -128,7 +126,7 @@ export default function ClientProfileEdit() {
             <h1 className="h1-form-client">Mis datos</h1>
             <p className="p-form-client">Nombre</p>
             <input
-              name="nameAndLast_name"
+              name="fullname"
               defaultValue={user.fullname}
               className="input"
               type="text"

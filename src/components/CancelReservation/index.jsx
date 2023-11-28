@@ -4,7 +4,6 @@ import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Button from "@mui/material/Button";
 import { red } from "@mui/material/colors";
-import Navbar from "../../commons/Navbar/Navbar.jsx";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router";
 import { useSelector } from "react-redux";
@@ -107,7 +106,7 @@ export const CancelReservation = () => {
           <h1>Cancelar Reserva</h1>
           <br />
           <br />
-          <p>Hola {reservation.createdBy.nameAndLast_name},</p>
+          <p>Hola {reservation.createdBy.fullname},</p>
 
           <h3>¿Por qué desea cancelar su reserva?</h3>
 
@@ -163,7 +162,7 @@ export const CancelReservation = () => {
         <div className={s.divright}>
           <br />
           <p className={s.Info}>Información de la reserva</p>
-          <h2>{reservation.createdBy.nameAndLast_name}</h2>
+          <h2>{reservation.createdBy.fullname}</h2>
           <div style={{ marginTop: "10px" }}>
             <div className={s.horiz}>
               <p>Día: </p>

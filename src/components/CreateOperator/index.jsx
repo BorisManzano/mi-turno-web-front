@@ -27,7 +27,7 @@ const CreateOperator = function () {
       axios
         .get(`http://localhost:3001/api/users/operator/info/${dni}`)
         .then((res) => {
-          fullname.setValue(res.data.operator.nameAndLast_name);
+          fullname.setValue(res.data.operator.fullname);
           setEmailBlocked(res.data.operator.email);
           dni_.setValue(res.data.operator.DNI);
           sucursal.setValue(res.data.name);
@@ -50,7 +50,7 @@ const CreateOperator = function () {
 
     //if(fullname.value !== "" && dni_.value !== 0 && sucursal.value !== "" && (email.value !== "" || emailBlocked != "")){
     let data = {
-      nameAndLast_name: fullname.value,
+      fullname: fullname.value,
       DNI: dni_.value,
       email: dni ? emailBlocked : email.value,
       branch: sucursal.value,

@@ -21,7 +21,7 @@ export const OperatorReservationsList = () => {
           res.data.map((obj) => {
             //usernamew/reserva n/sucursal/date
             const { createdBy, reservationId, branch, date } = obj;
-            const username = createdBy.nameAndLast_name;
+            const username = createdBy.fullname;
             const branchname = branch.name;
             return { username, reservationId, date, branchname };
           })

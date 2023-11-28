@@ -9,7 +9,7 @@ const OperatorProfile = function () {
   const handleUpdateProfile = (e) => {
     e.preventDefault();
     const info = {
-      nameAndLast_name: e.target.name.value,
+      fullname: e.target.name.value,
       email: e.target.email.value,
     };
 
@@ -17,10 +17,10 @@ const OperatorProfile = function () {
       .put("http://localhost:3001/api/users/edit/profile", info)
       .then((resp) => {
         const payload = {
-          fullname: resp.data.nameAndLast_name,
+          fullname: resp.data.fullname,
           email: resp.data.email,
           dni: resp.data.DNI,
-          phoneNumber: null,
+          telephone: null,
         };
 
         dispatch(login(payload));

@@ -11,7 +11,7 @@ export default function Fullname({ value, handleInputChange }) {
       </label>
       <input
         type="text"
-        name="nameAndLast_name"
+        name="fullname"
         id="fn"
         value={value}
         placeholder="Nombre Apellido"
