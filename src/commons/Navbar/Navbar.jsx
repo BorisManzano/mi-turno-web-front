@@ -17,9 +17,7 @@ const Navbar = () => {
       })
       .then(() => {
         if (!user.email) {
-          pathname !== "/client/register"
-            ? navigate("/client/register")
-            : navigate("/client/login");
+          pathname !== "/register" ? navigate("/register") : navigate("/login");
         } else {
           dispatch(logout());
           navigate("/");
@@ -112,7 +110,7 @@ const Navbar = () => {
                   <h4 className="h4-navbar">
                     {user.email
                       ? `Logout`
-                      : pathname !== "/client/register"
+                      : pathname !== "/register"
                       ? `Register`
                       : `Login`}
                   </h4>
@@ -162,7 +160,7 @@ const Navbar = () => {
                   <h4 className="h4-navbar">
                     {user.email
                       ? `Logout`
-                      : pathname !== "/client/register"
+                      : pathname !== "/register"
                       ? `Register`
                       : `Login`}
                   </h4>
@@ -241,7 +239,7 @@ const Navbar = () => {
                   <h4 className="h4-navbar">
                     {user.email
                       ? `Logout`
-                      : pathname !== "/client/register"
+                      : pathname !== "/register"
                       ? `Register`
                       : `Login`}
                   </h4>
