@@ -92,10 +92,11 @@ export default function Register() {
     } else {
       axios
         .post("http://localhost:3001/api/users/register", data)
-        .then(() => {
+        .then((resp) => {
           console.log("Registro exitoso");
-          navigate("/client/login");
+          axios.post(`http://localhost:3001/api/nodeMailer/accountConfirmation/${resp.data.email}`)
         })
+        .then(()=> navigate("/") )
         .catch((err) => {
           console.error("Error en el registro:", err);
           alert("Error en el registro:", err);

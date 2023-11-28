@@ -22,7 +22,7 @@ const RecoverPassword = () => {
     large: false,
     validation: false,
   });
-  let {userEmail} = useParams();
+  let {token} = useParams();
   const handleInputPassword = (e) => {
     const newValue = e.target.value;
     setPassword(newValue);
@@ -55,7 +55,7 @@ const RecoverPassword = () => {
     } else setInvalidInformation("");
     axios
       .put(
-        `http://localhost:3001/api/users/recoverPassword/${userEmail}`,
+        `http://localhost:3001/api/nodeMailer/recoverPassword/${token}`,
         { newPassword },
         { withCredentials: true }
       )
