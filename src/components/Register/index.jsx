@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
-import s from "./style.module.scss";
-import Eye from "../../assets/Eye";
-import Check from "../../assets/Check";
-import Wrong from "../../assets/Wrong";
-import ArrowLeft from "../../assets/ArrowLeft";
-import { useNavigate } from "react-router";
 import axios from "axios";
+import React, { useState } from "react";
+import { useNavigate } from "react-router";
+import ArrowLeft from "../../assets/ArrowLeft";
+import Check from "../../assets/Check";
+import Eye from "../../assets/Eye";
+import Wrong from "../../assets/Wrong";
 import Fullname from "../../commons/Form/Fullname";
+import s from "./style.module.scss";
 
 export default function Register() {
   const navigate = useNavigate();

@@ -20,7 +20,7 @@ const AdministratorProfile = function () {
           fullname: resp.data.fullname,
           email: resp.data.email,
           dni: resp.data.DNI,
-          phoneNumber: null,
+          telephone: null,
         };
         dispatch(login(payload));
       })

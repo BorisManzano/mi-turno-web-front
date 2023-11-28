@@ -1,15 +1,13 @@
+import axios from "axios";
 import React, { useEffect, useState } from "react";
-import "../ClientProfileEdition/ClientProfileEdit.scss";
-import Navbar from "../../commons/Navbar/Navbar";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import s from "../Register/style.module.scss";
-import Eye from "../../assets/Eye";
 import Check from "../../assets/Check";
+import Eye from "../../assets/Eye";
 import Wrong from "../../assets/Wrong";
-import axios from "axios";
-import { login } from "../../state/user";
+import "../ClientProfileEdition/ClientProfileEdit.scss";
+import s from "../Register/style.module.scss";
 export default function ClientProfileEdit() {
   const userRedux = useSelector((state) => state.user);
   const email = userRedux.email;

@@ -2,8 +2,6 @@ import React from "react";
 import { Route, Routes } from "react-router";
 import { CancelReservation } from "../components/CancelReservation";
 import ClientProfileEdit from "../components/ClientProfileEdition/ClientProfileEdit";
-import Login from "../components/Login";
-import Register from "../components/Register";
 import ReservationPanel from "../components/ReservationPanel/ReservationPanel";
 import UserReservationHistory from "../components/UserReservationHistory";
 import ReservationConfirmed from "../components/reservationconfirmed";

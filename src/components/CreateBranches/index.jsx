@@ -3,7 +3,6 @@ import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router";
 import { useEffect, useState } from "react";
-import { AirportShuttle } from "@mui/icons-material";
 import useInput from "../../hooks/useInput";
 
 const CreateBranches = function () {
@@ -231,4 +230,3 @@ const CreateBranches = function () {
 };
 
 export default CreateBranches;
-

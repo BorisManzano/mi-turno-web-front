@@ -4,7 +4,6 @@ import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Button from "@mui/material/Button";
 import { red } from "@mui/material/colors";
-import Navbar from "../../commons/Navbar/Navbar.jsx";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router";
 import { useSelector } from "react-redux";

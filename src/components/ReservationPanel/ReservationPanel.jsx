@@ -1,31 +1,29 @@
-import * as React from "react";
-import "../ReservationPanel/ReservationPanel.scss";
-import Navbar from "../../commons/Navbar/Navbar";
-import PopupReservation from "../../commons/popup-reservation";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import {
-  Box,
-  FormControl,
-  FormLabel,
-  Stepper,
-  Step,
-  StepLabel,
-  Grid,
-  Button,
-} from "@mui/material";
-import { login } from "../../state/user";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
-import { useSelector, useDispatch } from "react-redux";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import axios from "axios";
-import { useNavigate, useParams } from "react-router";
+import * as React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Countdown from "../../commons/Countdown";
+import PopupReservation from "../../commons/popup-reservation";
 import PopupTimeOut from "../../commons/popup-timeOut";
+import { login } from "../../state/user";
+import "../ReservationPanel/ReservationPanel.scss";
+import {
+  Box,
+  Button,
+  FormControl,
+  FormLabel,
+  Grid,
+  Step,
+  StepLabel,
+  Stepper,
+} from "@mui/material";
 
 export default function ReservationPanel() {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   // variable para renderizas popup exitoso o de error
@@ -230,7 +228,7 @@ export default function ReservationPanel() {
         document
           .querySelector(".fake-container-popup")
           .classList.add("fake-container-popup-active");
-        dispatch(login({ ...user, phoneNumber: data.telephone }));
+        dispatch(login({ ...user, telephone: data.telephone }));
       })
       .catch(() =>
         toast.error("ERROR EN EL INGRESO DE DATOS", {
@@ -273,7 +271,7 @@ export default function ReservationPanel() {
         document
           .querySelector(".fake-container-popup")
           .classList.add("fake-container-popup-active");
-        dispatch(login({ ...user, phoneNumber: data.telephone }));
+        dispatch(login({ ...user, telephone: data.telephone }));
       })
       .catch(() =>
         toast.error("VERIFIQUE QUE LOS DATOS SEAN CORRECTOS", {

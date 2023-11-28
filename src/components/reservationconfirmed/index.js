@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { check, cancelIcon, editIcon } from "../../assets/icons";
-import "./index.scss";
-import Navbar from "../../commons/Navbar/Navbar";
-import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { cancelIcon, check, editIcon } from "../../assets/icons";
+import "./index.scss";
 const ReservationConfirmed = function () {
   const navigate = useNavigate();
   let { reservationId } = useParams();
