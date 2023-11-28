@@ -11,7 +11,7 @@ import OperatorRoutes from "./navigation/OperatorRoutes";
 import { login } from "./state/user";
 import Navbar from "./commons/Navbar/Navbar";
 import Register from "./components/Register";
-
+import ConfirmationOfRegistration from "./components/ConfirmationOfRegistration"
 function App() {
   const location = useLocation();
   const { pathname } = location;
