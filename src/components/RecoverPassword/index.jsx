@@ -5,6 +5,7 @@ import s from "../Register/style.module.scss";
 import Check from "../../assets/Check";
 import Wrong from "../../assets/Wrong";
 import PopupReservation from "../../commons/popup-reservation";
+import { useParams } from "react-router";
 
 const RecoverPassword = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -21,6 +22,7 @@ const RecoverPassword = () => {
     large: false,
     validation: false,
   });
+  let { userEmail } = useParams();
   const handleInputPassword = (e) => {
     const newValue = e.target.value;
     setPassword(newValue);
@@ -53,7 +55,7 @@ const RecoverPassword = () => {
     } else setInvalidInformation("");
     axios
       .put(
-        "http://localhost:3001/api/users/recoverPassword",
+        `http://localhost:3001/api/users/recoverPassword/${userEmail}`,
         { newPassword },
         { withCredentials: true }
       )
@@ -69,7 +71,6 @@ const RecoverPassword = () => {
       .querySelector(".fake-container-popup")
       .classList.add("fake-container-popup-active");
   };
-  console.log(checklist.validation);
   return (
     <div>
       <div className="recover-password-container">

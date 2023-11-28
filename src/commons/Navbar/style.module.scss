@@ -4,7 +4,6 @@
   align-items: center;
   justify-content: center;
   height: 5vh;
-  // border: 2px solid blue;
   background: var(--Grey-2, #f0f0f0);
 }
 .p-promotion-message {
@@ -14,14 +13,16 @@
   font-size: 1.6vh;
   font-style: normal;
   font-weight: 600;
-  line-height: 16px; /* 133.333% */
+  line-height: 16px;
+}
+.display-none {
+  display: none;
 }
 .navbar {
   height: 7vh;
-  // border-bottom: 0.5px solid salmon;
   display: flex;
   justify-content: space-between;
-  padding: 16px 9%;
+  padding: 16px 7%;
   align-items: center;
   gap: 14px;
   box-shadow: 0px 7px 20px -4px rgba(51, 51, 51, 0.1);
@@ -43,6 +44,7 @@
 
 .h4-navbar {
   color: var(--Principal, #a442f1);
+  color: var(--Principal, #a542f1cb);
   text-align: center;
   font-variant-numeric: slashed-zero;
   font-size: 16px;
@@ -54,6 +56,10 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+  a {
+    display: flex;
+    align-items: center;
+  }
 }
 a {
   text-decoration: none;
@@ -61,7 +67,9 @@ a {
   cursor: pointer;
 }
 .h5-navbar-text {
-  margin: 0px 0px 0px 25px;
+  margin: 0px 0px 0px 19px;
+  padding-right: 7px;
+
   font-size: 15px;
   letter-spacing: 0.3px;
   transition: all 0.5s ease;
@@ -70,13 +78,13 @@ a {
   font-size: 16px;
   letter-spacing: 0.4px;
 }
-.h5-navbar-text:hover + svg > path {
+.h5-navbar-text:hover + a + svg > path {
   transform: scale(1.1);
 }
 .h5-navbar-text:focus {
   color: var(--Principal, #a442f1);
 }
-.h5-navbar-text:focus + svg > path {
+.h5-navbar-text:focus + a + svg > path {
   fill: #a442f1;
 }
 svg > path {
@@ -96,4 +104,13 @@ svg > path {
 }
 .navbar-button-administrator:hover {
   transform: scale(1.08);
+}
+.special-operator {
+  padding: 16px 11%;
+  .div-navbar-text {
+    gap: 20px;
+  }
+}
+.special-notLoggedIn {
+  padding: 16px 12%;
 }

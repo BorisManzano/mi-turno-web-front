@@ -7,8 +7,6 @@ import CreateBranches from "../components/CreateBranches";
 import CreateOperator from "../components/CreateOperator";
 
 const AdminRoutes = () => {
-  console.log("entre a e comonente de rutas ADMIN");
-
   return (
     <Routes>
       <Route path="/" element={<AdministratorSucursalesList />} />

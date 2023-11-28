@@ -9,6 +9,8 @@ import AdminRoutes from "./navigation/AdminRoutes";
 import ClientRoutes from "./navigation/ClientRoutes";
 import OperatorRoutes from "./navigation/OperatorRoutes";
 import { login } from "./state/user";
+import Navbar from "./commons/Navbar/Navbar";
+import Register from "./components/Register";
 
 function App() {
   const location = useLocation();
@@ -16,7 +18,6 @@ function App() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
-  console.log("esto es user", user.isAdmin);
   useEffect(() => {
     axios
       .get("http://localhost:3001/api/users/me", { withCredentials: true })
@@ -45,13 +46,21 @@ function App() {
         navigate("/operator/reservationsList");
       if (pathname === "/" && !user.isOperator && !user.isAdmin && user.email)
         navigate("/client/newReservation");
+    } else if (pathname.includes("/login") || pathname.includes("/register")) {
+      user.isAdmin && navigate("/admin/allBranches");
+      user.isOperator
+        ? navigate("/operator/reservationsList")
+        : navigate("/client/newReservation");
     }
   }, [pathname, user, user.isAdmin, user.isOperator]);
   return (
     <div className="App">
       <PromotionalMessage />
+      <Navbar />
       <Routes>
         <Route path="/" element={<Login />} />
+        <Route path="/client/login" element={<Login />} />
+        <Route path="/client/register" element={<Register />} />
         {user.email && !user.isAdmin && !user.isOperator && (
           <Route path="/client/*" element={<ClientRoutes />} />
         )}
@@ -60,7 +69,10 @@ function App() {
         )}
 
         {user.isAdmin && <Route path="/admin/*" element={<AdminRoutes />} />}
-        <Route path="/recoverPassword" element={<RecoverPassword />} />
+        <Route
+          path="/recoverPassword/:userEmail"
+          element={<RecoverPassword />}
+        />
       </Routes>
     </div>
   );
