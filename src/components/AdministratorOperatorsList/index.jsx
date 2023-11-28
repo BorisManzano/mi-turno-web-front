@@ -11,17 +11,16 @@ export const AdministratorOperatorsList = () => {
   const navigate = useNavigate();
   useEffect(() => {
     axios
-      .get(`http://localhost:3001/api/users/admin/sucursalesList`, {
+      .get(`http://localhost:3001/api/users/admin/operatorsList`, {
         // mediante la ruta de sucursales tambien se trae la info de operadores
-        withCredentials: true,
       })
       .then((res) => {
         setAllData(
           res.data.map((obj) => {
             const { name, operator } = obj;
-            const userName = operator.nameAndLast_name;
-            const dni = operator.DNI;
-            const operatorEmail = operator.email;
+            const userName = operator ? operator.fullname : "";
+            const dni = operator ? operator.DNI : "";
+            const operatorEmail = operator ? operator.email : "";
             return { userName, operatorEmail, name, dni };
           })
         );

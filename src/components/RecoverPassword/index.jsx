@@ -22,7 +22,9 @@ const RecoverPassword = () => {
     large: false,
     validation: false,
   });
+
   let {token} = useParams();
+
   const handleInputPassword = (e) => {
     const newValue = e.target.value;
     setPassword(newValue);
@@ -71,7 +73,6 @@ const RecoverPassword = () => {
       .querySelector(".fake-container-popup")
       .classList.add("fake-container-popup-active");
   };
-  console.log(checklist.validation);
   return (
     <div>
       <div className="recover-password-container">

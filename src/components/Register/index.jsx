@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from "react";
-import s from "./style.module.scss";
-import Eye from "../../assets/Eye";
-import Check from "../../assets/Check";
-import Wrong from "../../assets/Wrong";
-import ArrowLeft from "../../assets/ArrowLeft";
-import { useNavigate } from "react-router";
 import axios from "axios";
+import React, { useState } from "react";
+import { useNavigate } from "react-router";
+import ArrowLeft from "../../assets/ArrowLeft";
+import Check from "../../assets/Check";
+import Eye from "../../assets/Eye";
+import Wrong from "../../assets/Wrong";
 import Fullname from "../../commons/Form/Fullname";
+import s from "./style.module.scss";
 
 export default function Register() {
   const navigate = useNavigate();
   const [data, setData] = useState({
-    nameAndLast_name: "",
+    fullname: "",
     DNI: "",
     email: "",
     password: "",
@@ -64,7 +64,7 @@ export default function Register() {
   };
 
   const returnLogin = () => {
-    navigate("/client/login");
+    navigate("/login");
   };
 
   const handleInputChange = (e) => {
@@ -91,7 +91,10 @@ export default function Register() {
       alert("Las contraseñas deben ser iguales");
     } else {
       axios
-        .post("http://localhost:3001/api/users/register", data)
+
+        .post("http://localhost:3001/api/users/register", data,{
+          withCredentials: true,
+        })
         .then((resp) => {
           console.log("Registro exitoso");
           axios.post(`http://localhost:3001/api/nodeMailer/accountConfirmation/${resp.data.email}`)
@@ -207,6 +210,7 @@ export default function Register() {
                     onChange={handleInputConfirmPswd}
                     onFocus={handleToggleFocus}
                     onBlur={handleToggleFocus}
+                    onKeyDown={(e) => e.code === "Enter" && handleSubmit(e)}
                   />
                   <div onClick={handleToggleConfirmPassword}>
                     <Eye />
