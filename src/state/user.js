@@ -6,7 +6,7 @@ const initialState = {
   fullname: null,
   email: null,
   dni: null,
-  phoneNumber: null,
+  telephone: null,
   isAdmin: false,
   isOperator: false,
 };

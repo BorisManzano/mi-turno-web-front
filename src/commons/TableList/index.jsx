@@ -1,8 +1,7 @@
+import Button from "@mui/material/Button";
+import { red } from "@mui/material/colors";
 import React from "react";
 import s from "./style.module.scss";
-import Button from "@mui/material/Button";
-import Navbar from "../Navbar/Navbar";
-import { red } from "@mui/material/colors";
 
 import { useNavigate } from "react-router";
 
@@ -25,22 +24,22 @@ export const TableList = ({ datatype, data }) => {
   let column3 = "";
   let column4 = "";
 
-  if (dataType == "Sucursales") {
+  if (dataType === "Sucursales") {
     column1 = "Nombre";
     column2 = "Correo";
     column3 = "Capacidad";
     column4 = "Horario de Inicio y cierre";
-  } else if (dataType == "Operadores") {
+  } else if (dataType === "Operadores") {
     column1 = "Nombre y Apellido";
     column2 = "Mail";
     column3 = "Sucursal";
     column4 = "DNI";
-  } else if (dataType == "Reservas" || dataType == "OperatorReservas") {
+  } else if (dataType === "Reservas" || dataType === "OperatorReservas") {
     column1 = "N° reserva";
     column2 = "Sucursal";
     column3 = "Fecha y hora";
     column4 = "Teléfono";
-  } else if (dataType == "OperatorReservas") {
+  } else if (dataType === "OperatorReservas") {
     column1 = "Usuario";
     column2 = "N° reserva";
     column3 = "Fecha y hora";
@@ -50,7 +49,7 @@ export const TableList = ({ datatype, data }) => {
   return (
     <>
       <div className={s.container} style={{ marginTop: "1.5%" }}>
-        <h1>{dataType == "OperatorReservas" ? "Reservas" : dataType}</h1>
+        <h1>{dataType === "OperatorReservas" ? "Reservas" : dataType}</h1>
         <div className={s.table}>
           {data.map((objIns, i) => {
             return (
@@ -82,11 +81,11 @@ export const TableList = ({ datatype, data }) => {
                   <b>{objIns[objKeys[3]]}</b>
                 </div>
                 <div className={s.rowItem}>
-                  {datatype == "Operadores" && (
+                  {datatype === "Operadores" && (
                     <Button
                       onClick={(e) => {
                         e.preventDefault();
-                        navigate(`/admin/edit-operator/${objIns[objKeys[3]]}`);
+                        navigate(`/admin/edit/operador/${objIns[objKeys[3]]}`);
                       }}
                       variant="contained"
                       style={{
@@ -99,11 +98,11 @@ export const TableList = ({ datatype, data }) => {
                       Editar
                     </Button>
                   )}
-                  {datatype == "Sucursales" && (
+                  {datatype === "Sucursales" && (
                     <Button
                       onClick={(e) => {
                         e.preventDefault();
-                        navigate(`/admin/edit-sucursal/${objIns[objKeys[4]]}`); //recibe adicion almente el id de la sucursal
+                        navigate(`/admin/edit/branch/${objIns[objKeys[4]]}`); //recibe adicion almente el id de la sucursal
                       }}
                       variant="contained"
                       style={{
@@ -116,7 +115,7 @@ export const TableList = ({ datatype, data }) => {
                       Editar
                     </Button>
                   )}
-                  {dataType == "OperatorReservas" && (
+                  {dataType === "OperatorReservas" && (
                     <Button
                       variant="contained"
                       style={{
@@ -130,11 +129,11 @@ export const TableList = ({ datatype, data }) => {
                     </Button>
                   )}
 
-                  {dataType == "Reservas" && (
+                  {dataType === "Reservas" && (
                     <div className="horiz">
                       <Button
                         onClick={(event) =>
-                          handleOnClickEdit(objIns[objKeys[3]], event)
+                          handleOnClickEdit(objIns[objKeys[0]], event)
                         }
                         variant="contained"
                         style={{

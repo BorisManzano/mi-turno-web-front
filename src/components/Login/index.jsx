@@ -22,11 +22,16 @@ const Login = () => {
           withCredentials: true,
         }
       )
-      .then((response) => {
+      .then(() => {
         setTimeout(() => {
           window.location.reload();
+          user.isAdmin && navigate("/admin/allBranches");
+          user.isOperator && navigate("/operator/reservationsList");
+          !user.isAdmin &&
+            !user.isOperator &&
+            user.email &&
+            navigate("/client/newReservation");
         }, 1000);
-        console.log(response);
       })
       .catch((err) => {
         setInvalidInformation("¡Email o contraseña incorrectos!");
@@ -34,17 +39,17 @@ const Login = () => {
       });
   };
 
-  const handlePath = () => {
-    if (user.isAdmin) {
-      navigate("/admin/allBranches");
-    } else if (user.isOperator) {
-      navigate("/operator/reservationsList");
-    } else if (!user.isAdmin && !user.isOperator && user.email) {
-      navigate("/client/newReservation");
-    } else {
-      navigate("/");
-    }
-  };
+  // const handlePath = () => {
+  //   if (user.isAdmin) {
+  //     navigate("/admin/allBranches");
+  //   } else if (user.isOperator) {
+  //     navigate("/operator/reservationsList");
+  //   } else if (!user.isAdmin && !user.isOperator && user.email) {
+  //     navigate("/client/newReservation");
+  //   } else {
+  //     navigate("/");
+  //   }
+  // };
 
   const handleRecoverPassword = () => {
     const email = prompt("ingrese su email");
@@ -93,7 +98,7 @@ const Login = () => {
             <div className="login-form-line"></div>
             <button
               className="go-to-register-button"
-              onClick={() => navigate("/client/register")}
+              onClick={() => navigate("/register")}
             >
               ¿No tenés cuenta? Registrate
             </button>
