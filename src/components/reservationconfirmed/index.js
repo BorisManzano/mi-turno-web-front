@@ -2,13 +2,12 @@ import React, { useEffect, useState } from "react";
 import { check, cancelIcon, editIcon } from "../../assets/icons";
 import "./index.scss";
 import Navbar from "../../commons/Navbar/Navbar";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 const ReservationConfirmed = function () {
+  const navigate = useNavigate();
   let { reservationId } = useParams();
-
   const [reservation, setReservation] = useState({});
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -16,7 +15,6 @@ const ReservationConfirmed = function () {
           `http://localhost:3001/api/users/appointment/${reservationId}`
         );
         setReservation(response.data);
-        console.log(response);
       } catch (error) {
         console.error(error);
       }
@@ -60,7 +58,12 @@ const ReservationConfirmed = function () {
           </div>
 
           <div className="itemPedidoButton">
-            <button className="editReservationBtn">
+            <button
+              className="editReservationBtn"
+              onClick={() =>
+                navigate(`/client/editReservation/${reservationId}`)
+              }
+            >
               {editIcon}editar reserva
             </button>
             <button className="cancelReservationBtn">

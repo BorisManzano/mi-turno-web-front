@@ -41,12 +41,7 @@ const PopupReservation = ({ state, option, reservationId, editing }) => {
               onClick={() => {
                 !option
                   ? navigate(`/client/reservationConfirmed/${reservationId}`)
-                  : navigate("/client/login");
-                // !option
-                //   ? reservationId
-                //     ? navigate(`/client/reservationConfirmed/${reservationId}`)
-                //     : navigate("/client/reservationConfirmed")
-                //   : navigate("/client/login");
+                  : navigate("/login");
               }}
             >
               Continuar

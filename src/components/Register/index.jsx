@@ -64,7 +64,7 @@ export default function Register() {
   };
 
   const returnLogin = () => {
-    navigate("/client/login");
+    navigate("/login");
   };
 
   const handleInputChange = (e) => {
@@ -95,8 +95,7 @@ export default function Register() {
           withCredentials: true,
         })
         .then(() => {
-          console.log("Registro exitoso");
-          navigate("/client/login");
+          navigate("/login");
         })
         .catch((err) => {
           console.error("Error en el registro:", err);
@@ -208,6 +207,7 @@ export default function Register() {
                     onChange={handleInputConfirmPswd}
                     onFocus={handleToggleFocus}
                     onBlur={handleToggleFocus}
+                    onKeyDown={(e) => e.code === "Enter" && handleSubmit(e)}
                   />
                   <div onClick={handleToggleConfirmPassword}>
                     <Eye />

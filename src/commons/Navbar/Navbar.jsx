@@ -8,7 +8,6 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  console.log(pathname);
   const user = useSelector((state) => state.user);
   const handleButtonRigth = (e) => {
     e.preventDefault();
@@ -18,9 +17,7 @@ const Navbar = () => {
       })
       .then(() => {
         if (!user.email) {
-          pathname !== "/client/register"
-            ? navigate("/client/register")
-            : navigate("/client/login");
+          pathname !== "/register" ? navigate("/register") : navigate("/login");
         } else {
           dispatch(logout());
           navigate("/");
@@ -42,7 +39,7 @@ const Navbar = () => {
               </button>
               <button
                 className="navbar-button-administrator"
-                onClick={() => navigate("/admin/create/operator")}
+                onClick={() => navigate("/admin/create/operador")}
               >
                 <h4 className="h4-navbar">Crear Operador</h4>
               </button>
@@ -113,7 +110,7 @@ const Navbar = () => {
                   <h4 className="h4-navbar">
                     {user.email
                       ? `Logout`
-                      : pathname !== "/client/register"
+                      : pathname !== "/register"
                       ? `Register`
                       : `Login`}
                   </h4>
@@ -163,7 +160,7 @@ const Navbar = () => {
                   <h4 className="h4-navbar">
                     {user.email
                       ? `Logout`
-                      : pathname !== "/client/register"
+                      : pathname !== "/register"
                       ? `Register`
                       : `Login`}
                   </h4>
@@ -189,7 +186,7 @@ const Navbar = () => {
 
             <div className="div-navbar-text">
               {user.email ? (
-                <div>
+                <div style={{ display: "flex" }}>
                   <Link to={"/client/reservations"}>
                     <div style={{ display: "flex", alignItems: "center" }}>
                       <h5 className="h5-navbar-text">Mis reservas</h5>
@@ -208,7 +205,12 @@ const Navbar = () => {
                     </div>
                   </Link>
                   <Link to={"/client/myAccount"}>
-                    <div style={{ display: "flex", alignItems: "center" }}>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                    >
                       <h5 className="h5-navbar-text">Mi Cuenta </h5>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -237,7 +239,7 @@ const Navbar = () => {
                   <h4 className="h4-navbar">
                     {user.email
                       ? `Logout`
-                      : pathname !== "/client/register"
+                      : pathname !== "/register"
                       ? `Register`
                       : `Login`}
                   </h4>

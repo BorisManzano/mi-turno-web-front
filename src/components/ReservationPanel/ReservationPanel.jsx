@@ -22,6 +22,7 @@ import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router";
 import Countdown from "../../commons/Countdown";
+import PopupTimeOut from "../../commons/popup-timeOut";
 
 export default function ReservationPanel() {
   const navigate = useNavigate();
@@ -46,9 +47,10 @@ export default function ReservationPanel() {
   const [capacity, setCapacity] = React.useState(0);
   const [editing, setEditing] = React.useState(false);
   const [reservationIdParams, setReservationIdParams] = React.useState();
-
+  const [reservations, setReservations] = React.useState([]);
   const { reservationId } = useParams();
-
+  const [schedules, setSchedules] = React.useState([]);
+  const [notAvailableSchedule, setNotAvilableSchedule] = React.useState("");
   function handleNext() {
     setActiveStep((prev) => prev + 1);
   }
@@ -91,8 +93,7 @@ export default function ReservationPanel() {
   //-------------------------------------------------------------
   const [branchId, setBranchId] = React.useState(0);
   const [schedule, setSchedule] = React.useState("");
-  //HARDCODEO HORARIOS------------------------------------------------------
-  const schedules = ["10:00", "11:00", "12:00", "12:15"];
+
   //---------------------------------------
   const steps = [
     "Elegí tu sucursal",
@@ -105,24 +106,77 @@ export default function ReservationPanel() {
     reservationId ? steps.length : 0
   );
   //--------------------------------------------------------
+  function calculateTimeSlots(openingTime, closingTime, capacity) {
+    let startTime;
+    openingTime[0] === "0"
+      ? (startTime = openingTime.slice(1, 2))
+      : (startTime = openingTime.slice(0, 2));
+    const endTime = closingTime.slice(0, 2);
+    const availableSlotsForCapacityOfOne = Math.abs(
+      parseInt(openingTime) - parseInt(closingTime)
+    );
+
+    const totalSlots = Math.floor(60 / 15) * availableSlotsForCapacityOfOne;
+    const timeSlots = [];
+
+    for (let i = 0; i < totalSlots; i++) {
+      const hour = Math.floor((i * 15) / 60) + parseInt(startTime);
+      const minute = (i * 15) % 60;
+
+      const formattedHour = hour.toString().padStart(2, "0");
+      const formattedMinute = minute.toString().padStart(2, "0");
+
+      timeSlots.push(`${formattedHour}:${formattedMinute}:00`);
+    }
+
+    return timeSlots;
+  }
 
   function handleSelection(e) {
     e.preventDefault();
-    const [id, name, capacity] = e.target.value.split("-");
+
+    const [id, name, capacity, openingTime, closingTime] =
+      e.target.value.split("-");
 
     setBranchName(name);
     setBranchId(id);
+
     setCapacity(capacity);
+    const timeSlots = calculateTimeSlots(openingTime, closingTime, capacity);
+    setSchedules(timeSlots);
     handleNext();
     setEnabled(true);
   }
-  function handleScheduleSelection(e) {
-    e.preventDefault();
-    setSchedule(e.target.value);
-  }
   function handleDaySelector(e) {
     setDate(e.$d);
+
     handleNext();
+  }
+
+  function handleScheduleSelection(e) {
+    e.preventDefault();
+    axios
+      .get(`http://localhost:3001/api/appointments/confirmed/${branchId}`)
+      .then((result) => {
+        const reservedSchedule = [];
+
+        result.data.forEach((appointment) => {
+          if (appointment.schedule === e.target.value) {
+            reservedSchedule.push(appointment.schedule);
+          }
+        });
+
+        if (reservedSchedule.length >= parseInt(capacity)) {
+          toast.error("NO HAY DISPONIBILIDAD EN ESE HORARIO", {
+            position: toast.POSITION.TOP_LEFT,
+          });
+          setNotAvilableSchedule(e.target.value);
+        }
+        setReservations(result.data);
+      })
+      .catch((error) => console.log(error));
+
+    setSchedule(e.target.value);
   }
 
   const [data, setData] = React.useState({
@@ -152,18 +206,21 @@ export default function ReservationPanel() {
   //FUNCION HANDLE-SUBMIT--------------------------------------------------------
   function handleSubmit(e) {
     e.preventDefault();
-
+    if (schedule === notAvailableSchedule) {
+      toast.error("NO HAY DISPONIBILIDAD EN ESE HORARIO", {
+        position: toast.POSITION.BOTTOM_LEFT,
+      });
+      return;
+    }
     if (!data.telephone) {
       toast.error("DEBE INGRESAR UN TELÉFONO", {
         position: toast.POSITION.TOP_CENTER,
       });
     }
-    // console.log("ESTO MANDA", inputs);
     axios
       .post("http://localhost:3001/api/users/newAppointment", { ...inputs })
       .then((res) => {
         setReservationIdParams(res.data.reservationId);
-        console.log("esta es la respuesta", reservationIdParams);
         document
           .querySelector(".body")
           .classList.add("make-reservation-container-inactive");
@@ -185,6 +242,12 @@ export default function ReservationPanel() {
   //HANDLEEDITION------------------------------------------
   function handleEdition(e) {
     e.preventDefault();
+    if (schedule === notAvailableSchedule) {
+      toast.error("NO HAY DISPONIBILIDAD EN ESE HORARIO", {
+        position: toast.POSITION.BOTTOM_LEFT,
+      });
+      return;
+    }
     const toPut = { reservationId: reservationId, email: appointment.email };
     for (const key in inputs) {
       if (
@@ -218,7 +281,17 @@ export default function ReservationPanel() {
         })
       );
   }
-  //--------------------------------------------------------
+  if (Countdown().props.children === "Tiempo agotado") {
+    document
+      .querySelector(".body")
+      .classList.add("make-reservation-container-inactive");
+    document
+      .querySelector(".fake-container-popup-time")
+      .classList.remove("fake-container-popup-time-inactive");
+    document
+      .querySelector(".fake-container-popup-time")
+      .classList.add("fake-container-popup-time-active");
+  }
   return (
     <div>
       <Box
@@ -343,7 +416,7 @@ export default function ReservationPanel() {
                   {branches.map((branch) => (
                     <option
                       key={branch.id}
-                      value={`${branch.id}-${branch.name}-${branch.capacity}`}
+                      value={`${branch.id}-${branch.name}-${branch.capacity}-${branch.openingTime}-${branch.closingTime}`}
                     >
                       {branch.name}
                     </option>
@@ -470,10 +543,16 @@ export default function ReservationPanel() {
                       variant="contained"
                       enabled
                       onClick={handleEdition}
+                      className="button-confirm-reservation-panel"
                       sx={{
                         marginTop: "5%",
                         marginBottom: "5%",
-                        background: "#A442F1",
+                        background: "#a442f1",
+                        transition: "all 0.7s ease",
+                        "&:hover": {
+                          background: "#7412be ",
+                          transform: "scale(1.05)",
+                        },
                       }}
                     >
                       Confirmar edición
@@ -483,10 +562,16 @@ export default function ReservationPanel() {
                       variant="contained"
                       disabled={activeStep < 2 || !enabled}
                       onClick={handleSubmit}
+                      className="button-confirm-reservation-panel"
                       sx={{
                         marginTop: "5%",
                         marginBottom: "5%",
-                        background: "#A442F1",
+                        background: "#a442f1",
+                        transition: "all 0.7s ease",
+                        "&:hover": {
+                          background: "#7412be ",
+                          transform: "scale(1.05)",
+                        },
                       }}
                     >
                       Confirmar reserva
@@ -514,6 +599,7 @@ export default function ReservationPanel() {
               <LocalizationProvider dateAdapter={AdapterDayjs} id="calendar">
                 <DateCalendar
                   sx={{ color: "#A442F1" }}
+                  disablePast
                   onChange={handleDaySelector}
                 />
               </LocalizationProvider>
@@ -534,21 +620,30 @@ export default function ReservationPanel() {
           <Button
             sx={{
               position: "fixed",
-              bottom: "150px",
-              right: "130px",
-              backgroundColor: "#CC6AFF",
+              bottom: "6%",
+              right: "8%",
+              backgroundColor: "#a442f1",
               color: "white",
+              borderRadius: "12px",
+              transition: "all 0.7s ease",
+              transition: "transform 1.2s ease",
+              "&:hover": {
+                backgroundColor: "#8631c7",
+                transform: "rotate(360deg) scale(1.3)",
+              },
             }}
           >
             <Countdown />
           </Button>
         </Grid>
       </Box>
+      <PopupTimeOut />
       <PopupReservation
         state={state}
         reservationId={reservationIdParams || reservationId}
         editing={editing}
       />
+
       <ToastContainer />
     </div>
   );
