@@ -33,7 +33,9 @@ function App() {
           dispatch(login(userData));
         }
       })
-      .catch(() => pathname !== "/client/register" && navigate("/"));
+      .catch(
+        () => pathname !== ("/register" || "/recoverPassword") && navigate("/")
+      );
   }, []);
   useEffect(() => {
     if (user.email) {
@@ -48,9 +50,8 @@ function App() {
         navigate("/client/newReservation");
     } else if (pathname.includes("/login") || pathname.includes("/register")) {
       user.isAdmin && navigate("/admin/allBranches");
-      user.isOperator
-        ? navigate("/operator/reservationsList")
-        : navigate("/client/newReservation");
+      user.isOperator && navigate("/operator/reservationsList");
+      user.email && navigate("/client/newReservation");
     }
   }, [pathname, user, user.isAdmin, user.isOperator]);
   return (
@@ -59,8 +60,8 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="/client/login" element={<Login />} />
-        <Route path="/client/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
         {user.email && !user.isAdmin && !user.isOperator && (
           <Route path="/client/*" element={<ClientRoutes />} />
         )}

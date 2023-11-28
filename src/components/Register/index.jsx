@@ -64,7 +64,7 @@ export default function Register() {
   };
 
   const returnLogin = () => {
-    navigate("/client/login");
+    navigate("/login");
   };
 
   const handleInputChange = (e) => {
@@ -93,7 +93,7 @@ export default function Register() {
       axios
         .post("http://localhost:3001/api/users/register", data)
         .then(() => {
-          navigate("/client/login");
+          navigate("/login");
         })
         .catch((err) => {
           console.error("Error en el registro:", err);
