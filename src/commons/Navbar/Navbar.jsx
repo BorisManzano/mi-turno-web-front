@@ -39,7 +39,7 @@ const Navbar = () => {
               </button>
               <button
                 className="navbar-button-administrator"
-                onClick={() => navigate("/admin/create/operator")}
+                onClick={() => navigate("/admin/create/operador")}
               >
                 <h4 className="h4-navbar">Crear Operador</h4>
               </button>
