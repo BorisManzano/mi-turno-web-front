@@ -87,7 +87,7 @@ export const TableList = ({ datatype, data }) => {
                     <Button
                       onClick={(e) => {
                         e.preventDefault();
-                        navigate(`/admin/edit-operator/${objIns[objKeys[3]]}`);
+                        navigate(`/admin/edit/operador/${objIns[objKeys[3]]}`);
                       }}
                       variant="contained"
                       style={{
@@ -104,7 +104,7 @@ export const TableList = ({ datatype, data }) => {
                     <Button
                       onClick={(e) => {
                         e.preventDefault();
-                        navigate(`/admin/edit-sucursal/${objIns[objKeys[4]]}`); //recibe adicion almente el id de la sucursal
+                        navigate(`/admin/edit/branch/${objIns[objKeys[4]]}`); //recibe adicion almente el id de la sucursal
                       }}
                       variant="contained"
                       style={{
