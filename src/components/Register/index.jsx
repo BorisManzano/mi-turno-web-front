@@ -16,6 +16,7 @@ export default function Register() {
     email: "",
     password: "",
   });
+  const [error, setError] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPswd, setConfirmPswd] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -101,11 +102,11 @@ export default function Register() {
         })
         .then(()=> navigate("/") )
         .catch((err) => {
-          console.error("Error en el registro:", err);
-          alert("Error en el registro:", err);
+          setError(err.response.data.error);
         });
     }
   };
+  console.log(error);
 
   return (
     <>
@@ -296,6 +297,7 @@ export default function Register() {
               </div>
             </div>
           </div>
+          {error ? <p className={s.error}>{error}</p> : <></>}
           <button className={s.btnSingIn} type="submit">
             <h3>Registrarme</h3>
           </button>
