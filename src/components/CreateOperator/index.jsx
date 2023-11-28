@@ -61,7 +61,7 @@ const CreateOperator = function () {
 
     axios
 
-      .post("http://localhost:3001/api/users/register", data, {
+      .post("http://localhost:3001/api/users/operator", data, {
         withCredentials: true,
       })
       .then(() => {
