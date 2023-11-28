@@ -52,7 +52,9 @@ export default function CreateOperator() {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:3001/api/users/register", data)
+      .post("http://localhost:3001/api/users/register", data, {
+        withCredentials: true,
+      })
       .then(() => {
         alert("Registro exitoso");
         setData({
