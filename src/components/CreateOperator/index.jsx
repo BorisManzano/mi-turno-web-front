@@ -60,7 +60,10 @@ const CreateOperator = function () {
       data = { ...data, password: password.value };
 
     axios
-      .post("http://localhost:3001/api/users/operator", data)
+
+      .post("http://localhost:3001/api/users/register", data, {
+        withCredentials: true,
+      })
       .then(() => {
         alert("se guardo la información");
         navigate("/admin/operators");
