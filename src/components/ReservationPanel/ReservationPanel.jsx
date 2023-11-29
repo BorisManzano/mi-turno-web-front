@@ -22,6 +22,7 @@ import {
   StepLabel,
   Stepper,
 } from "@mui/material";
+import { Today } from "@mui/icons-material";
 
 export default function ReservationPanel() {
   const dispatch = useDispatch();
@@ -129,7 +130,6 @@ export default function ReservationPanel() {
         let notAvailableDate = [];
         OcurrencyChecker(daysWithAppointments, appointmentsByDay);
         for (const day in appointmentsByDay) {
-         
           if (timeSlots.length * capacity <= appointmentsByDay[day]) {
             notAvailableDate.push(day);
           }
@@ -143,23 +143,38 @@ export default function ReservationPanel() {
   }
   function handleDaySelector(e) {
     setDate(e.$d);
+
+    const today = dateConversor(todayGetter()).toString().slice(0, 5);
+    const todayCalendar = dateConversor(e.$d).toString().slice(0, 5);
+
     let fulfilledSlots = [];
     reservations.forEach((appointment) => {
-      if (dateConversor(e.$d, appointment.date))
+      if (dateComparator(e.$d, appointment.date))
         fulfilledSlots.push(appointment.schedule);
     });
-    console.log("HORARIOS USADOS", fulfilledSlots);
+    // console.log("HORARIOS USADOS", fulfilledSlots);
     let schedulesCounter = {};
     OcurrencyChecker(fulfilledSlots, schedulesCounter);
-    let onlyAvailableSchedules = [];
-    const filteredSchedules = schedules.filter(
-      (schedule) => fulfilledSlots.indexOf(schedule) == -1 //TIENE QUE SER IGUAL A 2
-    );
+
+    const filteredSchedules = schedules.filter((schedule) => {
+      if (today === todayCalendar) {
+        return (
+          fulfilledSlots.indexOf(schedule) === -1 && hourGetter() < schedule
+        );
+      } else {
+        return fulfilledSlots.indexOf(schedule) === -1;
+      }
+    });
+
     for (const schedule in schedulesCounter) {
-      console.log("schedulescONTUNER[schedule]", schedulesCounter[schedule]);
+      // console.log("schedulescONTUNER[schedule]", schedulesCounter[schedule]);
       if (schedulesCounter[schedule] === capacity - 1) {
         filteredSchedules.push(
           schedule + "   Último turno disponible en este horario!!"
+        );
+      } else if (schedulesCounter[schedule] === capacity - 2) {
+        filteredSchedules.push(
+          schedule + "   Últimos 2 turnos disponibles en este horario!!"
         );
       } else if (schedulesCounter[schedule] < capacity - 1) {
         filteredSchedules.push(schedule);
@@ -177,7 +192,7 @@ export default function ReservationPanel() {
     } else {
       selectedSchedule = e.target.value;
     }
-    console.log("ASI QUEDA SELECTEDSCHEDULE", selectedSchedule);
+    // console.log("ASI QUEDA SELECTEDSCHEDULE", selectedSchedule);
     setSchedule(selectedSchedule);
   }
 
@@ -216,7 +231,7 @@ export default function ReservationPanel() {
         position: toast.POSITION.TOP_CENTER,
       });
     }
-    
+
     axios
       .post("http://localhost:3001/api/users/newAppointment", { ...inputs })
       .then((res) => {
@@ -432,8 +447,10 @@ export default function ReservationPanel() {
                   onChange={handleSelection}
                   disabled={enabled}
                 >
-                  <option value="">
-                    {reservationId ? appointment.branchName : ""}
+                  <option value="" style={{ fontStyle: "italic" }}>
+                    {reservationId
+                      ? `${appointment.branchName} es tu sucursal elegida. Confirmala o elegí una nueva`
+                      : "Elegí una sucursal:"}
                   </option>
                   {branches.map((branch) => (
                     <option
@@ -621,23 +638,43 @@ export default function ReservationPanel() {
               <LocalizationProvider dateAdapter={AdapterDayjs} id="calendar">
                 <DateCalendar
                   sx={{
-                    "& .MuiPaper-root": {
-                      backgroundColor: "red",
-                    },
+                    "& .css-jgls56-MuiButtonBase-root-MuiPickersDay-root.Mui-selected":
+                      {
+                        color: "#fff",
+                        backgroundColor: "#a442f1",
+                        fontWeight: 500,
+                      },
+                    "& .css-1u23akw-MuiButtonBase-root-MuiPickersDay-root.Mui-selected":
+                      {
+                        backgroundColor: "#a442f1",
+                      },
                   }}
                   disablePast
-                  // minTime={openingTime.toJsDate()}
                   onChange={handleDaySelector}
-                  shouldDisableDate={(day) =>
-                    reservedDay.some((date) => {
-                      return dateConversor(day.$d, date);
-                    })
+                  shouldDisableDate={
+                    (day) =>
+                      reservedDay.some((date) =>
+                        dateComparator(day.$d, date)
+                      ) || day.$d.getDay() === 0 // Deshabilita el domingo
                   }
+                  date={appointment.date ? new Date(appointment.date) : null}
                 />
               </LocalizationProvider>
             ) : (
               <LocalizationProvider dateAdapter={AdapterDayjs} id="calendar">
-                <DateCalendar sx={{ color: "#A442F1" }} disabled />
+                <DateCalendar
+                  sx={{
+                    "& .css-jgls56-MuiButtonBase-root-MuiPickersDay-root.Mui-selected":
+                      {
+                        backgroundColor: "#a442f1",
+                      },
+                    "& .css-1u23akw-MuiButtonBase-root-MuiPickersDay-root.Mui-selected":
+                      {
+                        backgroundColor: "#a442f1",
+                      },
+                  }}
+                  disabled
+                />
               </LocalizationProvider>
             )}
           </Grid>
@@ -681,12 +718,28 @@ export default function ReservationPanel() {
   );
 }
 //FUNCIONES AUXILIARES----------------------------------
-function dateConversor(frontDate, backDate) {
-  const materialUidate = new Date(frontDate);
-  const sequelizeDate = new Date(backDate);
+function dateComparator(frontDate, backDate) {
+  const newFrontDate = dateConversor(frontDate);
+  const newBackDate = dateConversor(backDate);
+  return dateConversor(frontDate) === dateConversor(backDate);
+}
+function dateConversor(date) {
+  const materialUidate = new Date(date);
   const materialUiTime = materialUidate.getTime();
-  const sequelizeTime = sequelizeDate.getTime();
-  return materialUiTime === sequelizeTime;
+  return materialUiTime;
+}
+function hourGetter() {
+  const now = new Date();
+  const currentHour = now.getHours().toString().padStart(2, "0");
+  const currentMinutes = now.getMinutes().toString().padStart(2, "0");
+  return `${currentHour}:${currentMinutes}:00`;
+}
+function todayGetter() {
+  const today = new Date();
+  const currentYear = today.getFullYear();
+  const currentMonth = today.getMonth() + 1;
+  const currentDay = today.getDate();
+  return `${currentYear}-${currentMonth}-${currentDay}`;
 }
 
 function calculateTimeSlots(openingTime, closingTime, capacity) {
