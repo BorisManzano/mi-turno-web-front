@@ -19,8 +19,9 @@ export const AdministratorSucursalesList = () => {
         setAllData(
           res.data.map((obj) => {
             const { name, email, capacity, openingTime, closingTime, id } = obj;
+            const operator = obj.operator;
             const horario = openingTime + " to " + closingTime;
-            return { name, email, capacity, horario, id };
+            return { name, email, capacity, horario, id, operator };
           })
         );
       })

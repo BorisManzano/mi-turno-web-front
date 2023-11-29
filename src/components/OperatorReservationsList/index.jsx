@@ -13,9 +13,9 @@ export const OperatorReservationsList = () => {
   const navigate = useNavigate();
   useEffect(() => {
     axios
-      .get(`http://localhost:3001/api/users/operator/reservationsList`, {
-        DNI: user.dni,
-      })
+      .get(
+        `http://localhost:3001/api/users/operator/reservationsList/${user.dni}`
+      )
       .then((res) => {
         setReservationsList(
           res.data.map((obj) => {

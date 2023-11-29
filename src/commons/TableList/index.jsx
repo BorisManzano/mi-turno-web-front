@@ -4,6 +4,7 @@ import React from "react";
 import s from "./style.module.scss";
 
 import { useNavigate } from "react-router";
+import axios from "axios";
 
 export const TableList = ({ datatype, data }) => {
   const navigate = useNavigate();
@@ -16,6 +17,16 @@ export const TableList = ({ datatype, data }) => {
     e.preventDefault();
     navigate(`/client/cancelReservation/${rid}`);
   };
+  const handleOnClickDeleteOperator = (oid, e) => {
+    e.preventDefault();
+    axios
+      .put(`http://localhost:3001/api/users/removeOperator/${oid}`)
+      .then((msg) => {
+        alert(msg);
+        navigate("/admin/operators");
+      });
+  };
+
   const dataType = datatype;
   const objKeys = Object.keys(data[0]);
 
@@ -34,7 +45,7 @@ export const TableList = ({ datatype, data }) => {
     column2 = "Mail";
     column3 = "Sucursal";
     column4 = "DNI";
-  } else if (dataType === "Reservas" || dataType === "OperatorReservas") {
+  } else if (dataType === "Reservas") {
     column1 = "N° reserva";
     column2 = "Sucursal";
     column3 = "Fecha y hora";
@@ -53,88 +64,82 @@ export const TableList = ({ datatype, data }) => {
         <div className={s.table}>
           {data.map((objIns, i) => {
             return (
-              <div className={s.row} key={i}>
-                <div className={s.rowItem}>
-                  <p>{column1}</p>
-                  <b>{objIns[objKeys[0]]}</b>
-                </div>
-                <div className={s.rowItem}>
-                  <p>{column2}</p>
-                  <b>{objIns[objKeys[1]]}</b>
-                </div>
-                <div className={s.rowItem}>
-                  <p>{column3}</p>
-                  <b>
-                    {dataType.includes("Reservas") ? (
-                      <>
-                        <>{objIns[objKeys[2]].split("T")[0]} </>
-                        &nbsp; · &nbsp;
-                        <>{objIns[objKeys[2]].split("T")[1].split(".")[0]}</>
-                      </>
-                    ) : (
-                      objIns[objKeys[2]]
+              objIns[objKeys[0]] != "" && (
+                <div className={s.row} key={i}>
+                  <div className={s.rowItem}>
+                    <p>{column1}</p>
+                    <b>{objIns[objKeys[0]]}</b>
+                    {dataType === "Sucursales" && !objIns[objKeys[5]] && (
+                      <p style={{ color: red[500] }}>(Sin operador)</p>
                     )}
-                  </b>
-                </div>
-                <div className={s.rowItem}>
-                  <p>{column4}</p>
-                  <b>{objIns[objKeys[3]]}</b>
-                </div>
-                <div className={s.rowItem}>
-                  {datatype === "Operadores" && (
-                    <Button
-                      onClick={(e) => {
-                        e.preventDefault();
-                        navigate(`/admin/edit/operador/${objIns[objKeys[3]]}`);
-                      }}
-                      variant="contained"
-                      style={{
-                        backgroundColor: "#F5F5F5",
-                        color: "#A442F1",
-                        textTransform: "none",
-                        padding: "0 !important",
-                      }}
-                    >
-                      Editar
-                    </Button>
-                  )}
-                  {datatype === "Sucursales" && (
-                    <Button
-                      onClick={(e) => {
-                        e.preventDefault();
-                        navigate(`/admin/edit/branch/${objIns[objKeys[4]]}`); //recibe adicion almente el id de la sucursal
-                      }}
-                      variant="contained"
-                      style={{
-                        backgroundColor: "#F5F5F5",
-                        color: "#A442F1",
-                        textTransform: "none",
-                        padding: "0 !important",
-                      }}
-                    >
-                      Editar
-                    </Button>
-                  )}
-                  {dataType === "OperatorReservas" && (
-                    <Button
-                      variant="contained"
-                      style={{
-                        backgroundColor: "#F5F5F5",
-                        color: "#A442F1",
-                        textTransform: "none",
-                        padding: "0 !important",
-                      }}
-                    >
-                      Confirmar
-                    </Button>
-                  )}
-
-                  {dataType === "Reservas" && (
-                    <div className="horiz">
+                  </div>
+                  <div className={s.rowItem}>
+                    <p>{column2}</p>
+                    <b>{objIns[objKeys[1]]}</b>
+                  </div>
+                  <div className={s.rowItem}>
+                    <p>{column3}</p>
+                    <b>
+                      {dataType.includes("Reservas") ? (
+                        <>
+                          <>{objIns[objKeys[2]].split("T")[0]} </>
+                          &nbsp; · &nbsp;
+                          <>{objIns[objKeys[2]].split("T")[1].split(".")[0]}</>
+                        </>
+                      ) : (
+                        objIns[objKeys[2]]
+                      )}
+                    </b>
+                  </div>
+                  <div className={s.rowItem}>
+                    <p>{column4}</p>
+                    <b>{objIns[objKeys[3]]}</b>
+                  </div>
+                  <div className={s.rowItem}>
+                    {datatype === "Operadores" && (
+                      <div className="horiz">
+                        <Button
+                          onClick={(e) => {
+                            e.preventDefault();
+                            navigate(
+                              `/admin/edit/operador/${objIns[objKeys[3]]}`
+                            );
+                          }}
+                          variant="contained"
+                          style={{
+                            backgroundColor: "#F5F5F5",
+                            color: "#A442F1",
+                            textTransform: "none",
+                            padding: "0 !important",
+                          }}
+                        >
+                          Editar
+                        </Button>
+                        &nbsp; &nbsp;
+                        <Button
+                          onClick={(event) =>
+                            handleOnClickDeleteOperator(
+                              objIns[objKeys[4]],
+                              event
+                            )
+                          }
+                          variant="contained"
+                          style={{
+                            backgroundColor: red[500],
+                            color: "white",
+                            textTransform: "none",
+                          }}
+                        >
+                          Eliminar
+                        </Button>
+                      </div>
+                    )}
+                    {datatype === "Sucursales" && (
                       <Button
-                        onClick={(event) =>
-                          handleOnClickEdit(objIns[objKeys[0]], event)
-                        }
+                        onClick={(e) => {
+                          e.preventDefault();
+                          navigate(`/admin/edit/branch/${objIns[objKeys[4]]}`); //recibe adicion almente el id de la sucursal
+                        }}
                         variant="contained"
                         style={{
                           backgroundColor: "#F5F5F5",
@@ -145,24 +150,56 @@ export const TableList = ({ datatype, data }) => {
                       >
                         Editar
                       </Button>
-                      &nbsp; &nbsp;
+                    )}
+                    {dataType === "OperatorReservas" && (
                       <Button
-                        onClick={(event) =>
-                          handleOnClickCancel(objIns[objKeys[0]], event)
-                        }
                         variant="contained"
                         style={{
-                          backgroundColor: red[500],
-                          color: "white",
+                          backgroundColor: "#F5F5F5",
+                          color: "#A442F1",
                           textTransform: "none",
+                          padding: "0 !important",
                         }}
                       >
-                        Cancelar
+                        Confirmar
                       </Button>
-                    </div>
-                  )}
+                    )}
+
+                    {dataType === "Reservas" && (
+                      <div className="horiz">
+                        <Button
+                          onClick={(event) =>
+                            handleOnClickEdit(objIns[objKeys[0]], event)
+                          }
+                          variant="contained"
+                          style={{
+                            backgroundColor: "#F5F5F5",
+                            color: "#A442F1",
+                            textTransform: "none",
+                            padding: "0 !important",
+                          }}
+                        >
+                          Editar
+                        </Button>
+                        &nbsp; &nbsp;
+                        <Button
+                          onClick={(event) =>
+                            handleOnClickCancel(objIns[objKeys[0]], event)
+                          }
+                          variant="contained"
+                          style={{
+                            backgroundColor: red[500],
+                            color: "white",
+                            textTransform: "none",
+                          }}
+                        >
+                          Cancelar
+                        </Button>
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div>
+              )
             );
           })}
         </div>
