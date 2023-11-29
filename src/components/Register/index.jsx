@@ -1,7 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
-import ArrowLeft from "../../assets/ArrowLeft";
 import Check from "../../assets/Check";
 import Eye from "../../assets/Eye";
 import Wrong from "../../assets/Wrong";
@@ -36,10 +35,16 @@ export default function Register() {
 
   const handleTogglePassword = () => {
     setShowPassword(!showPassword);
+    document.querySelector(".strike-eye1").style.display = !showPassword
+      ? "inherit"
+      : "none";
   };
 
   const handleToggleConfirmPassword = () => {
     setShowConfirmPassword(!showConfirmPassword);
+    document.querySelector(".strike-eye2").style.display = !showConfirmPassword
+      ? "inherit"
+      : "none";
   };
 
   const handleInputConfirmPswd = (e) => {
@@ -93,14 +98,16 @@ export default function Register() {
     } else {
       axios
 
-        .post("http://localhost:3001/api/users/register", data,{
+        .post("http://localhost:3001/api/users/register", data, {
           withCredentials: true,
         })
         .then((resp) => {
           console.log("Registro exitoso");
-          axios.post(`http://localhost:3001/api/nodeMailer/accountConfirmation/${resp.data.email}`)
+          axios.post(
+            `http://localhost:3001/api/nodeMailer/accountConfirmation/${resp.data.email}`
+          );
         })
-        .then(()=> navigate("/") )
+        .then(() => navigate("/"))
         .catch((err) => {
           setError(err.response.data.error);
         });
@@ -113,10 +120,6 @@ export default function Register() {
       <div className={s.divs}>
         <form className={s.f} onSubmit={handleSubmit}>
           <div className={s.head}>
-            <button onClick={returnLogin} className={s.none}>
-              <ArrowLeft className={s.none} />
-              Atras
-            </button>
             <h1 className={s.textTittle}>Crear cuenta</h1>
           </div>
           <div className={s.inputs}>
@@ -184,6 +187,18 @@ export default function Register() {
                   />
                   <div onClick={handleTogglePassword}>
                     <Eye />
+                    <div
+                      className="strike-eye1"
+                      style={{
+                        border: "1px solid",
+                        position: "relative",
+                        top: "-16px",
+                        left: "2px",
+                        width: "18px",
+                        transform: "rotate(29deg)",
+                        display: "none",
+                      }}
+                    ></div>
                   </div>
                 </div>
               </div>
@@ -215,6 +230,18 @@ export default function Register() {
                   />
                   <div onClick={handleToggleConfirmPassword}>
                     <Eye />
+                    <div
+                      className="strike-eye2"
+                      style={{
+                        border: "1px solid",
+                        position: "relative",
+                        top: "-16px",
+                        left: "2px",
+                        width: "18px",
+                        transform: "rotate(29deg)",
+                        display: "none",
+                      }}
+                    ></div>
                   </div>
                 </div>
               </div>

@@ -18,10 +18,10 @@ export const UserReservationHistory = () => {
       .then((res) => {
         setReservations(
           res.data.map((obj) => {
-            const { branch, reservationId, date } = obj;
+            const { branch, reservationId, date, schedule } = obj;
             const name = branch.name;
             const telephone = branch.telephone;
-            return { reservationId, name, date, telephone };
+            return { reservationId, name, date, telephone, schedule };
           })
         );
       })
