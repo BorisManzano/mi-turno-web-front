@@ -22,15 +22,15 @@ const Login = () => {
         }
       )
       .then(() => {
-        setTimeout(() => {
-          window.location.reload();
-          user.isAdmin && navigate("/admin/allBranches");
-          user.isOperator && navigate("/operator/reservationsList");
-          !user.isAdmin &&
+        window.location.reload();
+        user.isAdmin
+          ? navigate("/admin/allBranches")
+          : user.isOperator
+          ? navigate("/operator/reservationsList")
+          : !user.isAdmin &&
             !user.isOperator &&
             user.email &&
             navigate("/client/newReservation");
-        }, 1000);
       })
       .catch((err) => {
         setInvalidInformation("¡Email o contraseña incorrectos!");
