@@ -65,7 +65,12 @@ const ReservationConfirmed = function () {
             >
               {editIcon}editar reserva
             </button>
-            <button className="cancelReservationBtn">
+            <button
+              className="cancelReservationBtn"
+              onClick={() =>
+                navigate(`/client/cancelReservation/${reservationId}`)
+              }
+            >
               {" "}
               {cancelIcon} cancelar reserva
             </button>
