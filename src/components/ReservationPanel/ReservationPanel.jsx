@@ -48,6 +48,8 @@ export default function ReservationPanel() {
   const { reservationId } = useParams();
   const [schedules, setSchedules] = React.useState([]);
   const [notAvailableSchedule, setNotAvilableSchedule] = React.useState("");
+  const [reservedDay, setReservedDay] = React.useState([]);
+  const [openingTime, setOpeningTime] = React.useState("");
   function handleNext() {
     setActiveStep((prev) => prev + 1);
   }
@@ -61,7 +63,7 @@ export default function ReservationPanel() {
           const data = {
             reservationId: reservationId,
             branchId: result.data.branchId,
-            branchName: result.data.branchName,
+            branchName: result.data.branch.name,
             date: result.data.date,
             schedule: result.data.schedule,
             fullname: result.data.createdBy.fullname,
@@ -102,76 +104,81 @@ export default function ReservationPanel() {
     reservationId ? steps.length : 0
   );
   //--------------------------------------------------------
-  function calculateTimeSlots(openingTime, closingTime, capacity) {
-    let startTime;
-    openingTime[0] === "0"
-      ? (startTime = openingTime.slice(1, 2))
-      : (startTime = openingTime.slice(0, 2));
-    const endTime = closingTime.slice(0, 2);
-    const availableSlotsForCapacityOfOne = Math.abs(
-      parseInt(openingTime) - parseInt(closingTime)
-    );
-
-    const totalSlots = Math.floor(60 / 15) * availableSlotsForCapacityOfOne;
-    const timeSlots = [];
-
-    for (let i = 0; i < totalSlots; i++) {
-      const hour = Math.floor((i * 15) / 60) + parseInt(startTime);
-      const minute = (i * 15) % 60;
-
-      const formattedHour = hour.toString().padStart(2, "0");
-      const formattedMinute = minute.toString().padStart(2, "0");
-
-      timeSlots.push(`${formattedHour}:${formattedMinute}:00`);
-    }
-
-    return timeSlots;
-  }
 
   function handleSelection(e) {
     e.preventDefault();
 
     const [id, name, capacity, openingTime, closingTime] =
       e.target.value.split("-");
-
+    setOpeningTime(openingTime);
     setBranchName(name);
     setBranchId(id);
-
     setCapacity(capacity);
     const timeSlots = calculateTimeSlots(openingTime, closingTime, capacity);
     setSchedules(timeSlots);
+    const daysWithAppointments = [];
+    const allAppointmentsOnBranch = [];
+    axios
+      .get(`http://localhost:3001/api/appointments/confirmed/${id}`)
+      .then((result) => {
+        result.data.forEach((appointment) => {
+          allAppointmentsOnBranch.push(appointment);
+          daysWithAppointments.push(appointment.date);
+        });
+        let appointmentsByDay = {};
+        let notAvailableDate = [];
+        OcurrencyChecker(daysWithAppointments, appointmentsByDay);
+        for (const day in appointmentsByDay) {
+         
+          if (timeSlots.length * capacity <= appointmentsByDay[day]) {
+            notAvailableDate.push(day);
+          }
+        }
+        setReservations(allAppointmentsOnBranch);
+        setReservedDay(notAvailableDate);
+      });
+
     handleNext();
     setEnabled(true);
   }
   function handleDaySelector(e) {
     setDate(e.$d);
+    let fulfilledSlots = [];
+    reservations.forEach((appointment) => {
+      if (dateConversor(e.$d, appointment.date))
+        fulfilledSlots.push(appointment.schedule);
+    });
+    console.log("HORARIOS USADOS", fulfilledSlots);
+    let schedulesCounter = {};
+    OcurrencyChecker(fulfilledSlots, schedulesCounter);
+    let onlyAvailableSchedules = [];
+    const filteredSchedules = schedules.filter(
+      (schedule) => fulfilledSlots.indexOf(schedule) == -1 //TIENE QUE SER IGUAL A 2
+    );
+    for (const schedule in schedulesCounter) {
+      console.log("schedulescONTUNER[schedule]", schedulesCounter[schedule]);
+      if (schedulesCounter[schedule] === capacity - 1) {
+        filteredSchedules.push(
+          schedule + "   Último turno disponible en este horario!!"
+        );
+      } else if (schedulesCounter[schedule] < capacity - 1) {
+        filteredSchedules.push(schedule);
+      }
+    }
+    setSchedules(filteredSchedules.sort());
     handleNext();
   }
 
   function handleScheduleSelection(e) {
     e.preventDefault();
-    axios
-      .get(`http://localhost:3001/api/appointments/confirmed/${branchId}`)
-      .then((result) => {
-        const reservedSchedule = [];
-
-        result.data.forEach((appointment) => {
-          if (appointment.schedule === e.target.value) {
-            reservedSchedule.push(appointment.schedule);
-          }
-        });
-
-        if (reservedSchedule.length >= parseInt(capacity)) {
-          toast.error("NO HAY DISPONIBILIDAD EN ESE HORARIO", {
-            position: toast.POSITION.TOP_LEFT,
-          });
-          setNotAvilableSchedule(e.target.value);
-        }
-        setReservations(result.data);
-      })
-      .catch((error) => console.log(error));
-
-    setSchedule(e.target.value);
+    let selectedSchedule;
+    if (e.target.value.match(/([A-Za-z¡!])/g)) {
+      selectedSchedule = e.target.value.slice(0, 8);
+    } else {
+      selectedSchedule = e.target.value;
+    }
+    console.log("ASI QUEDA SELECTEDSCHEDULE", selectedSchedule);
+    setSchedule(selectedSchedule);
   }
 
   const [data, setData] = React.useState({
@@ -200,20 +207,16 @@ export default function ReservationPanel() {
   const logicPopUp = (tag, option, className) => {
     document.querySelector(tag).classList[option](className);
   };
+
   //FUNCION HANDLE-SUBMIT--------------------------------------------------------
   function handleSubmit(e) {
     e.preventDefault();
-    if (schedule === notAvailableSchedule) {
-      toast.error("NO HAY DISPONIBILIDAD EN ESE HORARIO", {
-        position: toast.POSITION.BOTTOM_LEFT,
-      });
-      return;
-    }
     if (!data.telephone) {
       toast.error("DEBE INGRESAR UN TELÉFONO", {
         position: toast.POSITION.TOP_CENTER,
       });
     }
+    
     axios
       .post("http://localhost:3001/api/users/newAppointment", { ...inputs })
       .then((res) => {
@@ -249,12 +252,6 @@ export default function ReservationPanel() {
   //HANDLEEDITION------------------------------------------
   function handleEdition(e) {
     e.preventDefault();
-    if (schedule === notAvailableSchedule) {
-      toast.error("NO HAY DISPONIBILIDAD EN ESE HORARIO", {
-        position: toast.POSITION.BOTTOM_LEFT,
-      });
-      return;
-    }
     const toPut = { reservationId: reservationId, email: appointment.email };
     for (const key in inputs) {
       if (
@@ -623,9 +620,19 @@ export default function ReservationPanel() {
             {activeStep === 1 || editing ? (
               <LocalizationProvider dateAdapter={AdapterDayjs} id="calendar">
                 <DateCalendar
-                  sx={{ color: "#A442F1" }}
+                  sx={{
+                    "& .MuiPaper-root": {
+                      backgroundColor: "red",
+                    },
+                  }}
                   disablePast
+                  // minTime={openingTime.toJsDate()}
                   onChange={handleDaySelector}
+                  shouldDisableDate={(day) =>
+                    reservedDay.some((date) => {
+                      return dateConversor(day.$d, date);
+                    })
+                  }
                 />
               </LocalizationProvider>
             ) : (
@@ -672,4 +679,44 @@ export default function ReservationPanel() {
       <ToastContainer />
     </div>
   );
+}
+//FUNCIONES AUXILIARES----------------------------------
+function dateConversor(frontDate, backDate) {
+  const materialUidate = new Date(frontDate);
+  const sequelizeDate = new Date(backDate);
+  const materialUiTime = materialUidate.getTime();
+  const sequelizeTime = sequelizeDate.getTime();
+  return materialUiTime === sequelizeTime;
+}
+
+function calculateTimeSlots(openingTime, closingTime, capacity) {
+  let startTime;
+  openingTime[0] === "0"
+    ? (startTime = openingTime.slice(1, 2))
+    : (startTime = openingTime.slice(0, 2));
+  const endTime = closingTime.slice(0, 2);
+  const availableSlotsForCapacityOfOne = Math.abs(
+    parseInt(openingTime) - parseInt(closingTime)
+  );
+
+  const totalSlots = Math.floor(60 / 15) * availableSlotsForCapacityOfOne;
+  const timeSlots = [];
+
+  for (let i = 0; i < totalSlots; i++) {
+    const hour = Math.floor((i * 15) / 60) + parseInt(startTime);
+    const minute = (i * 15) % 60;
+
+    const formattedHour = hour.toString().padStart(2, "0");
+    const formattedMinute = minute.toString().padStart(2, "0");
+
+    timeSlots.push(`${formattedHour}:${formattedMinute}:00`);
+  }
+
+  return timeSlots;
+}
+
+function OcurrencyChecker(array, object) {
+  return array.forEach((x) => {
+    object[x] = (object[x] || 0) + 1;
+  });
 }
