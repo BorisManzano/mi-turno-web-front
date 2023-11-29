@@ -1,12 +1,17 @@
 import "./index.scss";
+import React, { useState } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../state/user";
 const AdministratorProfile = function () {
   const date = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const [disabled, setDisabled] = useState(true);
   const { dni, email, fullname } = date;
-
+  function handleEditPasswordClick(e) {
+    e.preventDefault();
+    setDisabled(false);
+  }
   const handleUpdateProfile = (e) => {
     e.preventDefault();
     const info = {
@@ -58,17 +63,20 @@ const AdministratorProfile = function () {
           <label htmlFor="dni">DNI</label>
           <input type="text" name="Dni" id="dni" defaultValue={dni} readOnly />
         </div>
-
-        <div className="itemPerfilAdm">
-          <label htmlFor="password">Contraseña</label>
-          <input
-            type="password"
-            name="contraseña"
-            id="password"
-            defaultValue={"Default123"}
-            readOnly
-          />
-          <p className="editPassword">Editar Contraseña</p>
+        <div style={{ width: "92%" }} className="inputs-div-container">
+          <div className="single-input-container special-password">
+            <p className="p-form-client">Contraseña</p>
+            <input
+              name="password"
+              readOnly
+              className="input"
+              type="password"
+              defaultValue={"Default123"}
+            />
+          </div>
+          <h4 className="h4-form-edit" onClick={handleEditPasswordClick}>
+            Editar contraseña
+          </h4>
         </div>
         <div>
           <button className="perfilBtn">Aceptar</button>
