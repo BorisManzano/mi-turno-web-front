@@ -21,7 +21,8 @@ export const AdministratorOperatorsList = () => {
             const userName = operator ? operator.fullname : "";
             const dni = operator ? operator.DNI : "";
             const operatorEmail = operator ? operator.email : "";
-            return { userName, operatorEmail, name, dni };
+            const id = operator ? operator.id : null;
+            return { userName, operatorEmail, name, dni, id };
           })
         );
       })
