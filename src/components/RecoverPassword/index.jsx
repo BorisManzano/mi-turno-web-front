@@ -4,8 +4,8 @@ import axios from "axios";
 import s from "../Register/style.module.scss";
 import Check from "../../assets/Check";
 import Wrong from "../../assets/Wrong";
-import PopupReservation from "../../commons/popup-reservation";
 import { useParams } from "react-router";
+import Popup from "../../commons/Popup";
 
 const RecoverPassword = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -53,6 +53,9 @@ const RecoverPassword = () => {
       ? "inherit"
       : "none";
   };
+  const logicPopUp = (tag, option, className) => {
+    document.querySelector(tag).classList[option](className);
+  };
   const handleSubmit = () => {
     if (newPassword === undefined) {
       return setInvalidInformation("Debe ingresar una contraseña");
@@ -67,17 +70,24 @@ const RecoverPassword = () => {
         { newPassword },
         { withCredentials: true }
       )
-      .then(() => {})
+      .then(() => {
+        logicPopUp(
+          ".recover-password-container",
+          "add",
+          "make-reservation-container-inactive"
+        );
+        logicPopUp(
+          ".fake-container-popup-time",
+          "remove",
+          "fake-container-popup-time-inactive"
+        );
+        logicPopUp(
+          ".fake-container-popup-time",
+          "add",
+          "fake-container-popup-time-active"
+        );
+      })
       .catch(() => setState(false));
-    document
-      .querySelector(".recover-password-container")
-      .classList.add("make-reservation-container-inactive");
-    document
-      .querySelector(".fake-container-popup")
-      .classList.remove("fake-container-popup-inactive");
-    document
-      .querySelector(".fake-container-popup")
-      .classList.add("fake-container-popup-active");
   };
   return (
     <div>
@@ -224,7 +234,12 @@ const RecoverPassword = () => {
           </div>
         </div>
       </div>
-      <PopupReservation state={state} option={result} />
+      <Popup
+        title={`Contraseña modificada con exito`}
+        text={`Haz click en continuar para iniciar sesion        `}
+        img={true}
+        redirect={"/login"}
+      />
     </div>
   );
 };

@@ -9,7 +9,6 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Countdown from "../../commons/Countdown";
 import PopupReservation from "../../commons/popup-reservation";
-import PopupTimeOut from "../../commons/popup-timeOut";
 import { login } from "../../state/user";
 import "../ReservationPanel/ReservationPanel.scss";
 import {
@@ -22,6 +21,7 @@ import {
   StepLabel,
   Stepper,
 } from "@mui/material";
+import Popup from "../../commons/Popup";
 
 export default function ReservationPanel() {
   const dispatch = useDispatch();
@@ -129,7 +129,6 @@ export default function ReservationPanel() {
         let notAvailableDate = [];
         OcurrencyChecker(daysWithAppointments, appointmentsByDay);
         for (const day in appointmentsByDay) {
-         
           if (timeSlots.length * capacity <= appointmentsByDay[day]) {
             notAvailableDate.push(day);
           }
@@ -216,7 +215,7 @@ export default function ReservationPanel() {
         position: toast.POSITION.TOP_CENTER,
       });
     }
-    
+
     axios
       .post("http://localhost:3001/api/users/newAppointment", { ...inputs })
       .then((res) => {
@@ -669,13 +668,18 @@ export default function ReservationPanel() {
           </Button>
         </Grid>
       </Box>
-      <PopupTimeOut />
+      <Popup
+        title={`Se acabo el tiempo`}
+        text={`Puede presionar el boton continuar para refrescar la pagina y volver
+            a realizar la reserva`}
+        img={false}
+        redirect={true}
+      />
       <PopupReservation
         state={state}
         reservationId={reservationIdParams || reservationId}
         editing={editing}
       />
-
       <ToastContainer />
     </div>
   );
