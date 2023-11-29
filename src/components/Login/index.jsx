@@ -2,7 +2,6 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
-import Navbar from "../../commons/Navbar/Navbar";
 
 const Login = () => {
   const user = useSelector((state) => state.user);
@@ -38,19 +37,6 @@ const Login = () => {
         console.error(err);
       });
   };
-
-  // const handlePath = () => {
-  //   if (user.isAdmin) {
-  //     navigate("/admin/allBranches");
-  //   } else if (user.isOperator) {
-  //     navigate("/operator/reservationsList");
-  //   } else if (!user.isAdmin && !user.isOperator && user.email) {
-  //     navigate("/client/newReservation");
-  //   } else {
-  //     navigate("/");
-  //   }
-  // };
-
   const handleRecoverPassword = () => {
     const email = prompt("ingrese su email");
 
@@ -67,7 +53,6 @@ const Login = () => {
         );
       });
   };
-  const focusNext = document.querySelector(".input-password-focus");
   return (
     <div>
       <div className="login-page">

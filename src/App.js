@@ -11,7 +11,7 @@ import OperatorRoutes from "./navigation/OperatorRoutes";
 import { login } from "./state/user";
 import Navbar from "./commons/Navbar/Navbar";
 import Register from "./components/Register";
-import ConfirmationOfRegistration from "./components/ConfirmationOfRegistration"
+import ConfirmationOfRegistration from "./components/ConfirmationOfRegistration";
 function App() {
   const location = useLocation();
   const { pathname } = location;
@@ -33,9 +33,7 @@ function App() {
           dispatch(login(userData));
         }
       })
-      .catch(
-        () => pathname !== ("/register" || "/recoverPassword") && navigate("/")
-      );
+      .catch(() => {});
   }, []);
   useEffect(() => {
     if (user.email) {
@@ -71,7 +69,10 @@ function App() {
 
         {user.isAdmin && <Route path="/admin/*" element={<AdminRoutes />} />}
         <Route path="/recoverPassword/:token" element={<RecoverPassword />} />
-        <Route path="/ConfirmationOfRegistration/:token" element={<ConfirmationOfRegistration/>} />
+        <Route
+          path="/ConfirmationOfRegistration/:token"
+          element={<ConfirmationOfRegistration />}
+        />
       </Routes>
     </div>
   );
