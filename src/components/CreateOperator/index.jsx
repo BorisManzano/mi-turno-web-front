@@ -222,7 +222,11 @@ const CreateOperator = function () {
               </div>
             </div>
           </div>
-          <button type="submit" className={s.btnSingIn}>
+          <button
+            type="submit"
+            className={s.btnSingIn}
+            style={{ marginTop: "3%" }}
+          >
             <h3>{dni ? "Guardar Cambios" : "Registrar"}</h3>
           </button>
         </form>

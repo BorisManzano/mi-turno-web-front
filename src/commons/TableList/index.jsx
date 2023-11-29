@@ -94,8 +94,9 @@ export const TableList = ({ datatype, data }) => {
                         <b>
                           <>{objIns[objKeys[2]].split("T")[0]} </>
                           &nbsp; · &nbsp;
-                          <>{objIns[objKeys[2]].split("T")[1].split(".")[0]}</>
+                          <>{objIns[objKeys[4]].slice(0, 5)}hs</>
                         </b>
+
                       ) : (
                         objIns[objKeys[2]] == "Sin asignar" ?( <b style={{color: red[500]}}>Sin asignar</b> ): (<b>{objIns[objKeys[2]]}</b>)
                       )}

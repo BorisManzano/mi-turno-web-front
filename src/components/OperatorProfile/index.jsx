@@ -2,6 +2,7 @@ import "./index.scss";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../state/user";
+import { Tooltip } from "react-tooltip";
 const OperatorProfile = function () {
   const date = useSelector((state) => state.user);
   const dispatch = useDispatch();
@@ -99,26 +100,29 @@ const OperatorProfile = function () {
               className="input"
               type="password"
               defaultValue={"Default123"}
+              data-tooltip-id="my-tooltip"
+              data-tooltip-content="Para cambiar tu contraseña debes comunicarte con el administrador"
+              data-tooltip-place="top-start"
             />
           </div>
           <h4
             className="h4-form-edit"
-            // onClick={handleEditPasswordClick}
+            data-tooltip-id="my-tooltip"
+            data-tooltip-content="Para cambiar tu contraseña debes comunicarte con el administrador"
+            data-tooltip-place="top-end"
           >
             Editar contraseña
           </h4>
-        </div>
-        {/* <div className="item-O-P divPassword">
-          <label htmlFor="password">Contraseña</label>
-          <input
-            type="password"
-            name="contraseña"
-            id="password"
-            defaultValue={"default123"}
-            readOnly
+          <Tooltip
+            id="my-tooltip"
+            style={{
+              background: "#a442f1",
+              borderRadius: "12px",
+              fontSize: "13.5px",
+              padding: "12px",
+            }}
           />
-          <p className="editPassword">Editar Contraseña</p>
-        </div> */}
+        </div>
         <div className="divBtn">
           <button className="O-perfilBtn">Aceptar</button>
         </div>
