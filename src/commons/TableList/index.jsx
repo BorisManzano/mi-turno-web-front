@@ -84,7 +84,7 @@ export const TableList = ({ datatype, data }) => {
                         <>
                           <>{objIns[objKeys[2]].split("T")[0]} </>
                           &nbsp; · &nbsp;
-                          <>{objIns[objKeys[2]].split("T")[1].split(".")[0]}</>
+                          <>{objIns[objKeys[4]].slice(0, 5)}hs</>
                         </>
                       ) : (
                         objIns[objKeys[2]]
