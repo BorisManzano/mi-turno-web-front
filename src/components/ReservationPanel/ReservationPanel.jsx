@@ -28,7 +28,6 @@ export default function ReservationPanel() {
   const user = useSelector((state) => state.user);
   // variable para renderizas popup exitoso o de error
   let state = true;
-
   const [appointment, setAppointment] = React.useState({
     reservationId: "",
     branchId: "",
@@ -59,7 +58,6 @@ export default function ReservationPanel() {
       axios
         .get(`http://localhost:3001/api/users/appointment/${reservationId}`)
         .then((result) => {
-          // console.log("ESTO TRAE RESERVATION ID AXIOS", result);
           const data = {
             reservationId: reservationId,
             branchId: result.data.branchId,
@@ -73,7 +71,7 @@ export default function ReservationPanel() {
 
           setAppointment(data);
         })
-        .catch((error) => console.log("ERROR AXIOS RESERVATION"));
+        .catch(() => console.log("ERROR AXIOS RESERVATION"));
     } else {
       setEditing(false);
     }
@@ -83,7 +81,7 @@ export default function ReservationPanel() {
       .then((result) => {
         setBranches(result.data);
       })
-      .catch((error) => console.log("NO BRANCHES AVAILABLE"));
+      .catch(() => console.log("NO BRANCHES AVAILABLE"));
   }, [reservationId]);
 
   //---------------------------------------------
@@ -147,7 +145,6 @@ export default function ReservationPanel() {
   }
   function handleDaySelector(e) {
     setDate(e.$d);
-
     handleNext();
   }
 
@@ -200,7 +197,9 @@ export default function ReservationPanel() {
     email: user.email,
     ...data,
   };
-
+  const logicPopUp = (tag, option, className) => {
+    document.querySelector(tag).classList[option](className);
+  };
   //FUNCION HANDLE-SUBMIT--------------------------------------------------------
   function handleSubmit(e) {
     e.preventDefault();
@@ -219,16 +218,26 @@ export default function ReservationPanel() {
       .post("http://localhost:3001/api/users/newAppointment", { ...inputs })
       .then((res) => {
         setReservationIdParams(res.data.reservationId);
-        document
-          .querySelector(".body")
-          .classList.add("make-reservation-container-inactive");
-        document
-          .querySelector(".fake-container-popup")
-          .classList.remove("fake-container-popup-inactive");
-        document
-          .querySelector(".fake-container-popup")
-          .classList.add("fake-container-popup-active");
+        sendConfirmationEmail(
+          inputs.email,
+          inputs.branchName,
+          res.data.date,
+          res.data.schedule
+        );
         dispatch(login({ ...user, telephone: data.telephone }));
+      })
+      .then(() => {
+        logicPopUp(".body", "add", "make-reservation-container-inactive");
+        logicPopUp(
+          ".fake-container-popup",
+          "remove",
+          "fake-container-popup-inactive"
+        );
+        logicPopUp(
+          ".fake-container-popup",
+          "add",
+          "fake-container-popup-active"
+        );
       })
       .catch(() =>
         toast.error("ERROR EN EL INGRESO DE DATOS", {
@@ -262,15 +271,17 @@ export default function ReservationPanel() {
         ...toPut,
       })
       .then(() => {
-        document
-          .querySelector(".body")
-          .classList.add("make-reservation-container-inactive");
-        document
-          .querySelector(".fake-container-popup")
-          .classList.remove("fake-container-popup-inactive");
-        document
-          .querySelector(".fake-container-popup")
-          .classList.add("fake-container-popup-active");
+        logicPopUp(".body", "add", "make-reservation-container-inactive");
+        logicPopUp(
+          ".fake-container-popup",
+          "remove",
+          "fake-container-popup-inactive"
+        );
+        logicPopUp(
+          ".fake-container-popup",
+          "add",
+          "fake-container-popup-active"
+        );
         dispatch(login({ ...user, telephone: data.telephone }));
       })
       .catch(() =>
@@ -280,16 +291,32 @@ export default function ReservationPanel() {
       );
   }
   if (Countdown().props.children === "Tiempo agotado") {
-    document
-      .querySelector(".body")
-      .classList.add("make-reservation-container-inactive");
-    document
-      .querySelector(".fake-container-popup-time")
-      .classList.remove("fake-container-popup-time-inactive");
-    document
-      .querySelector(".fake-container-popup-time")
-      .classList.add("fake-container-popup-time-active");
+    logicPopUp(".body", "add", "make-reservation-container-inactive");
+    logicPopUp(
+      ".fake-container-popup-time",
+      "remove",
+      "fake-container-popup-time-inactive"
+    );
+    logicPopUp(
+      ".fake-container-popup-time",
+      "add",
+      "fake-container-popup-time-active"
+    );
   }
+  const sendConfirmationEmail = (email, branch, date, time) => {
+    date = date.slice(0, 10);
+    time = time.slice(0, 5);
+    axios
+      .post(
+        "http://localhost:3001/api/nodeMailer/appointment/confirmation",
+        { email, branch, date, time },
+        {
+          withCredentials: true,
+        }
+      )
+      .then(() => {})
+      .catch((err) => console.error(err));
+  };
   return (
     <div>
       <Box
