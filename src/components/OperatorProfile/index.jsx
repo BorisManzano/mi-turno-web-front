@@ -90,8 +90,25 @@ const OperatorProfile = function () {
             </select>
           </div>
         </div>
-
-        <div className="item-O-P divPassword">
+        <div style={{ width: "92%" }} className="inputs-div-container">
+          <div className="single-input-container special-password">
+            <p className="p-form-client">Contraseña</p>
+            <input
+              name="password"
+              readOnly
+              className="input"
+              type="password"
+              defaultValue={"Default123"}
+            />
+          </div>
+          <h4
+            className="h4-form-edit"
+            // onClick={handleEditPasswordClick}
+          >
+            Editar contraseña
+          </h4>
+        </div>
+        {/* <div className="item-O-P divPassword">
           <label htmlFor="password">Contraseña</label>
           <input
             type="password"
@@ -101,7 +118,7 @@ const OperatorProfile = function () {
             readOnly
           />
           <p className="editPassword">Editar Contraseña</p>
-        </div>
+        </div> */}
         <div className="divBtn">
           <button className="O-perfilBtn">Aceptar</button>
         </div>

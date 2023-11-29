@@ -32,6 +32,7 @@
   margin-bottom: 6px;
 }
 .input {
+  width: 100%;
   border: 0.8px solid rgba(128, 128, 128, 0.541);
   border-radius: 5px;
   height: 2.5rem;
@@ -52,17 +53,18 @@
 }
 
 .h4-form-edit {
-  margin-top: 24px;
   color: var(--Principal, #a442f1);
-  text-align: start;
-  font-variant-numeric: slashed-zero;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 16px;
+  height: fit-content;
+  padding: 13px 35px;
+  margin-top: 5%;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  border-radius: 6px;
+  background-color: #dabcf15c;
   transition: all 0.7s ease;
-  &:active {
-    color: yellow;
+  &:hover {
+    background-color: rgb(218 188 241 / 71%);
+    transform: translateX(-8px) scale(1.02);
   }
 }
 
@@ -87,4 +89,26 @@
   margin-top: 1.5rem;
   height: 0;
   border: 0.1px solid rgba(189, 185, 185, 0.541);
+}
+.inputs-div-container {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 20px;
+}
+.single-input-container {
+  width: 50%;
+  position: relative;
+  .eye-container {
+    top: 63%;
+    right: 2%;
+  }
+}
+.restrictions-container {
+  margin: 3% 0;
+}
+.special-password {
+  width: 70%;
+  margin-bottom: 3%;
 }

@@ -13,8 +13,8 @@ export default function ClientProfileEdit() {
   const email = userRedux.email;
   const [user, setUser] = useState({});
   const [password, setPassword] = useState("");
-
-  const [showPassword, setShowassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
   const [checklist, setChecklist] = useState({
     uppercaseLetter: false,
     lowercaseLetter: false,
@@ -66,7 +66,10 @@ export default function ClientProfileEdit() {
   }
 
   const handleTogglePassword = () => {
-    setShowassword(!showPassword);
+    setShowPassword(!showPassword);
+  };
+  const handleTogglePasswordConfirm = () => {
+    setShowPasswordConfirm(!showPasswordConfirm);
   };
   const handleInputPassword = (e) => {
     const newValue = e.target.value;
@@ -124,22 +127,28 @@ export default function ClientProfileEdit() {
         <div className="client-container">
           <div className="client-form">
             <h1 className="h1-form-client">Mis datos</h1>
-            <p className="p-form-client">Nombre</p>
-            <input
-              name="fullname"
-              defaultValue={user.fullname}
-              className="input"
-              type="text"
-              onChange={handleChanges}
-            />
-            <p className="p-form-client">Mail</p>
-            <input
-              name="email"
-              defaultValue={user.email}
-              className="input"
-              type="email"
-              disabled
-            />
+            <div className="inputs-div-container">
+              <div className="single-input-container">
+                <p className="p-form-client">Nombre</p>
+                <input
+                  name="fullname"
+                  defaultValue={user.fullname}
+                  className="input"
+                  type="text"
+                  onChange={handleChanges}
+                />
+              </div>
+              <div className="single-input-container">
+                <p className="p-form-client">Mail</p>
+                <input
+                  name="email"
+                  defaultValue={user.email}
+                  className="input"
+                  type="email"
+                  disabled
+                />
+              </div>
+            </div>
             <div
               style={{
                 display: "flex",
@@ -180,118 +189,136 @@ export default function ClientProfileEdit() {
             </div>
 
             {disabled ? (
-              <>
-                <p className="p-form-client">Contraseña</p>
-                <input
-                  disabled={disabled}
-                  name="password"
-                  defaultValue={user.password}
-                  className="input"
-                  type="text"
-                  onChange={handleChanges}
-                />
-              </>
+              <div className="inputs-div-container">
+                <div className="single-input-container special-password">
+                  <p className="p-form-client">Contraseña</p>
+                  <input
+                    disabled={disabled}
+                    name="password"
+                    defaultValue={user.password}
+                    className="input"
+                    type="text"
+                    onChange={handleChanges}
+                  />
+                </div>
+                <h4 className="h4-form-edit" onClick={handleEditPasswordClick}>
+                  Editar contraseña
+                </h4>
+              </div>
             ) : (
               <>
-                <p className="p-form-client">
-                  Nueva Contraseña
-                  <div className={s.row1} onClick={handleTogglePassword}>
-                    <Eye />
+                <div className="inputs-div-container">
+                  <div className="single-input-container">
+                    <p className="p-form-client">
+                      Nueva Contraseña
+                      <div
+                        className="eye-container"
+                        onClick={handleTogglePassword}
+                      >
+                        <Eye />
+                      </div>
+                    </p>
+                    <input
+                      disabled={disabled}
+                      name="newPassword"
+                      type={showPassword ? "text" : "password"}
+                      value={data.newPassword}
+                      className="input"
+                      onChange={handleInputPassword}
+                    />
                   </div>
-                </p>
-                <input
-                  disabled={disabled}
-                  name="newPassword"
-                  type={showPassword ? "text" : "password"}
-                  // defaultValue={user.newPassword}
-                  value={data.newPassword}
-                  className="input"
-                  onChange={handleInputPassword}
-                />
-
-                <div className={s.container}>
-                  <div className={s.rowOne}>
-                    {data.newPassword === "" ? (
-                      <>
-                        <div className={s.row3}>
-                          <p>ABC</p> <p>Una letra mayúscula</p>
-                        </div>
-                        <div className={s.row3}>
-                          <p>abc</p> <p>Una letra minúscula</p>
-                        </div>
-                      </>
-                    ) : (
-                      <>
-                        {checklist.uppercaseLetter ? (
-                          <div className={s.row1}>
-                            <Check /> <p>ABC</p> <p>Una letra mayúscula</p>
-                          </div>
-                        ) : (
-                          <div className={s.row2}>
-                            <Wrong /> <p>ABC</p> <p>Una letra mayúscula</p>
-                          </div>
-                        )}
-                        {checklist.lowercaseLetter ? (
-                          <div className={s.row1}>
-                            <Check /> <p>abc</p> <p>Una letra minúscula</p>
-                          </div>
-                        ) : (
-                          <div className={s.row2}>
-                            <Wrong /> <p>abc</p> <p>Una letra minúscula</p>
-                          </div>
-                        )}
-                      </>
-                    )}
-                  </div>
-                  <div className={s.rowOne}>
-                    {data.password === "" ? (
-                      <>
-                        <div className={s.row3}>
-                          <p>123</p> <p>Un número</p>
-                        </div>
-                        <div className={s.row3}>
-                          <p>***</p> <p>Mínimo 8 caracteres</p>
-                        </div>
-                      </>
-                    ) : (
-                      <>
-                        {checklist.oneNumber ? (
-                          <div className={s.row1}>
-                            <Check /> <p>123</p> <p>Un número</p>
-                          </div>
-                        ) : (
-                          <div className={s.row2}>
-                            <Wrong /> <p>123</p> <p>Un número</p>
-                          </div>
-                        )}
-                        {checklist.large ? (
-                          <div className={s.row1}>
-                            <Check /> <p>***</p> <p>Mínimo 8 caracteres</p>
-                          </div>
-                        ) : (
-                          <div className={s.row2}>
-                            <Wrong /> <p>***</p> <p>Mínimo 8 caracteres</p>
-                          </div>
-                        )}
-                      </>
-                    )}
+                  <div className="single-input-container">
+                    <p className="p-form-client">Repetir nueva contraseña</p>
+                    <div
+                      className="eye-container"
+                      onClick={handleTogglePasswordConfirm}
+                    >
+                      <Eye />
+                    </div>
+                    <input
+                      name="newPasswordConfirm"
+                      defaultValue={user.newPasswordConfirm}
+                      className="input"
+                      type={showPasswordConfirm ? "text" : "password"}
+                      onChange={handleChanges}
+                    />
                   </div>
                 </div>
-                <p className="p-form-client">
-                  Escribí de nuevo tu nueva contraseña
-                </p>
-                <input
-                  name="newPasswordConfirm"
-                  defaultValue={user.newPasswordConfirm}
-                  className="input"
-                  type={showPassword ? "text" : "password"}
-                  onChange={handleChanges}
-                />
+                <div className={`${s.warning} restrictions-container`}>
+                  <p className={s.marg}>La contraseña debe contener:</p>
+
+                  <div className={s.bBorder}></div>
+                  <div className={s.container}>
+                    <div className={s.rowOne}>
+                      {data.password === "" ? (
+                        <>
+                          <div className={s.row3}>
+                            <p>ABC</p> <p>Una letra mayúscula</p>
+                          </div>
+                          <div className={s.row3}>
+                            <p>abc</p> <p>Una letra minúscula</p>
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          {checklist.uppercaseLetter ? (
+                            <div className={s.row1}>
+                              <Check /> <p>ABC</p> <p>Una letra mayúscula</p>
+                            </div>
+                          ) : (
+                            <div className={s.row2}>
+                              <Wrong /> <p>ABC</p> <p>Una letra mayúscula</p>
+                            </div>
+                          )}
+                          {checklist.lowercaseLetter ? (
+                            <div className={s.row1}>
+                              <Check /> <p>abc</p> <p>Una letra minúscula</p>
+                            </div>
+                          ) : (
+                            <div className={s.row2}>
+                              <Wrong /> <p>abc</p> <p>Una letra minúscula</p>
+                            </div>
+                          )}
+                        </>
+                      )}
+                    </div>
+                    <div className={s.rowOne}>
+                      {data.password === "" ? (
+                        <>
+                          <div className={s.row3}>
+                            <p>123</p> <p>Un número</p>
+                          </div>
+                          <div className={s.row3}>
+                            <p>***</p> <p>Mínimo 8 caracteres</p>
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          {checklist.oneNumber ? (
+                            <div className={s.row1}>
+                              <Check /> <p>123</p> <p>Un número</p>
+                            </div>
+                          ) : (
+                            <div className={s.row2}>
+                              <Wrong /> <p>123</p> <p>Un número</p>
+                            </div>
+                          )}
+                          {checklist.large ? (
+                            <div className={s.row1}>
+                              <Check /> <p>***</p> <p>Mínimo 8 caracteres</p>
+                            </div>
+                          ) : (
+                            <div className={s.row2}>
+                              <Wrong /> <p>***</p> <p>Mínimo 8 caracteres</p>
+                            </div>
+                          )}
+                        </>
+                      )}
+                    </div>
+                  </div>
+                </div>
               </>
             )}
-            <h4 className="h4-form-edit" onClick={handleEditPasswordClick}>
-              Editar Contraseña
-            </h4>
             <button className="login-button" onClick={handleSubmit}>
               Aceptar
             </button>
