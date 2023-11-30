@@ -66,14 +66,14 @@ const Login = () => {
             <h1 className="h1-form-login">Iniciar sesion</h1>
             <p className="p-form-login">Usuario</p>
             <input
-              className="input"
+              className="inputLogin"
               type="text"
               onChange={(e) => setUserInputValue(e.target.value)}
               autoComplete="username"
             />
             <p className="p-form-login">Contraseña</p>
             <input
-              className="input input-password-focus"
+              className="inputLogin input-password-focus"
               type="password"
               onChange={(e) => setPasswordInputValue(e.target.value)}
               onKeyDown={(e) => e.code === "Enter" && handleSubmit()}

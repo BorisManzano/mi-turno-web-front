@@ -30,7 +30,7 @@
 .p-form-login {
   margin-bottom: 6px;
 }
-.input {
+.inputLogin {
   border: 0.8px solid rgba(128, 128, 128, 0.541);
   border-radius: 5px;
   height: 2.5rem;
@@ -38,17 +38,17 @@
   color: rgb(48, 47, 47);
   transition: all 0.4s ease;
 }
-.input:focus {
+.inputLogin:focus {
   outline: none;
-  border: 1.9px solid rgb(56, 54, 54);
+  border: 1.9px solid #8A26A6;
 }
-.input:hover {
+.inputLogin:hover {
   // transform: scale(1.01);
   border: 1px solid rgba(100, 100, 100, 0.774);
 }
-.input:hover:focus {
+.inputLogin:hover:focus {
   outline: none;
-  border: 1.9px solid rgb(56, 54, 54);
+  border: 1.9px solid #8A26A6;
 }
 
 .h4-form-login {
