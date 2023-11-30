@@ -4,6 +4,7 @@ import Fullname from "../../commons/Form/Fullname";
 import axios from "axios";
 import useInput from "../../hooks/useInput";
 import { useNavigate, useParams } from "react-router";
+import Popup from "../../commons/Popup";
 
 const CreateOperator = function () {
   const navigate = useNavigate();
@@ -16,7 +17,13 @@ const CreateOperator = function () {
   const password = useInput("");
   const confirmPassword = useInput("");
   const sucursales = useInput([]);
-  const [sinSuc, setSinSuc] = useState(false)
+  const [sinSuc, setSinSuc] = useState(false);
+  const [popupInfo, setPopupInfo] = useState({
+    title: undefined,
+    text: undefined,
+    img: undefined,
+    redirect: undefined,
+  });
   useEffect(() => {
     axios
       .get("http://localhost:3001/api/users/admin/sucursalesList")
@@ -25,7 +32,7 @@ const CreateOperator = function () {
       });
   }, []);
 
-  useEffect(()=>{
+  useEffect(() => {
     if (dni) {
       axios
         .get(`http://localhost:3001/api/users/operator/info/${dni}`)
@@ -33,17 +40,18 @@ const CreateOperator = function () {
           fullname.setValue(res.data.operator.fullname);
           setEmailBlocked(res.data.operator.email);
           dni_.setValue(res.data.operator.DNI);
-          if(res.data.name)
-          {
-            console.log(sucursales.value.filter((suc)=>suc.name === res.data.name))
-            const obj = (sucursales.value.filter((suc)=>suc.name === res.data.name))[0]
-            sucursal.setValue(
-            obj? obj.id : null
-          );}
-          else if(!res.data.name) setSinSuc(true);
+          if (res.data.name) {
+            console.log(
+              sucursales.value.filter((suc) => suc.name === res.data.name)
+            );
+            const obj = sucursales.value.filter(
+              (suc) => suc.name === res.data.name
+            )[0];
+            sucursal.setValue(obj ? obj.id : null);
+          } else if (!res.data.name) setSinSuc(true);
         });
     }
-  },[sucursales.value]);
+  }, [sucursales.value]);
 
   //const [password, setPassword] = useState("");
   // const [confirmPswd, setConfirmPswd] = useState("");
@@ -54,7 +62,9 @@ const CreateOperator = function () {
   const handleToggleFocus = () => {
     setFocus(!focus);
   };
-
+  const logicPopUp = (tag, option, className) => {
+    document.querySelector(tag).classList[option](className);
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -76,8 +86,23 @@ const CreateOperator = function () {
         withCredentials: true,
       })
       .then(() => {
-        alert("se guardo la información");
-        navigate("/admin/operators");
+        setPopupInfo({
+          title: `Operador creado con exito`,
+          text: `Gracias por confiar en nuestro servicio`,
+          img: true,
+          redirect: `/admin/operators`,
+        });
+        logicPopUp(".body", "add", "external-div-container-inactive");
+        logicPopUp(
+          ".fake-container-popup",
+          "remove",
+          "fake-container-popup-inactive"
+        );
+        logicPopUp(
+          ".fake-container-popup",
+          "add",
+          "fake-container-popup-active"
+        );
       })
       .catch((err) => console.error(err));
     //}
@@ -88,7 +113,7 @@ const CreateOperator = function () {
 
   return (
     <>
-      <div className={s.parent}>
+      <div className={`${s.parent} body`}>
         <form onSubmit={handleSubmit} className={s.f}>
           <h1>{dni ? "Editar Operador" : "Crear Operador"}</h1>
           <div className={s.inputMail}>
@@ -157,12 +182,11 @@ const CreateOperator = function () {
                 </option>
                 {sucursales.value.map((suc) => {
                   return (
-                    <option
-                      value={suc.id}
-                      selected={sucursal.value === suc.id}
-                    >
+                    <option value={suc.id} selected={sucursal.value === suc.id}>
                       {suc.name}
-                      {suc.operator ? " (Ocupado por: "+suc.operator.fullname+")" : " (Libre)"}
+                      {suc.operator
+                        ? " (Ocupado por: " + suc.operator.fullname + ")"
+                        : " (Libre)"}
                     </option>
                   );
                 })}
@@ -172,7 +196,9 @@ const CreateOperator = function () {
           <div className={s.rowForm}>
             <div>
               <label htmlFor="password" className={s.textInputs}>
-                {dni ? "Nueva Contraseña (opcional)" : "Contraseña (obligatorio)"}
+                {dni
+                  ? "Nueva Contraseña (opcional)"
+                  : "Contraseña (obligatorio)"}
               </label>
               <div
                 className={
@@ -192,7 +218,7 @@ const CreateOperator = function () {
                   {...password}
                   onFocus={handleToggleFocus}
                   onBlur={handleToggleFocus}
-                  required={dni == null }
+                  required={dni == null}
                 />
               </div>
             </div>
@@ -218,7 +244,7 @@ const CreateOperator = function () {
                   className={s.inputPassword}
                   onFocus={handleToggleFocus}
                   onBlur={handleToggleFocus}
-                  required={dni == null }
+                  required={dni == null}
                 />
               </div>
             </div>
@@ -232,6 +258,7 @@ const CreateOperator = function () {
           </button>
         </form>
       </div>
+      <Popup popupInfo={popupInfo} />
     </>
   );
 };

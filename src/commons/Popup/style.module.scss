@@ -84,95 +84,85 @@
 
 //  P O P U P   A C T I V E   B A S I C O
 // .popup-container {
-// // estado inicial del popup
+//   // estado inicial del popup
 //   transition: all 1.5s ease;
 //   scale: 0;
 // }
 // .fake-container-popup-active {
-//   position: fixed;
-//   z-index: 2;
 //   .popup-container {
 //     scale: 1.1;
 //   }
 // }
 
-//  P O P U P   A C T I V E   B A S I C O D E S D E   A B A J O
+//  P O P U P   A C T I V E   B A S I C O  D E S D E   A B A J O
 // .popup-container {
 //   // estado inicial del popup
 //   transition: all 1.2s ease;
 //   scale: 1;
 //   transform: translateY(80vh);
 // }
-// .fake-container-popup-active {
-//   position: fixed;
-//   z-index: 2;
+// .fake-container-popup-active-basic-bottom {
 //   .popup-container {
 //     scale: 1;
 //     transform: translateY(0vh);
 //   }
 // }
 
-// P O P U P   A C T I V E   B A S I C O   D E S D E   A R R I B A
-// .popup-container {
-//   // estado inicial del popup
-//   transition: all 1.2s ease;
-//   scale: 1;
-//   transform: translateY(-80vh);
-// }
-// .fake-container-popup-active {
-//   position: fixed;
-//   z-index: 2;
-//   .popup-container {
-//     scale: 1;
-//     transform: translateY(0vh);
-//   }
-// }
+// // P O P U P   A C T I V E   B A S I C O   D E S D E   A R R I B A
+.popup-container {
+  // estado inicial del popup
+  transition: all 1.2s ease;
+  scale: 1;
+  transform: translateY(-80vh);
+}
+.fake-container-popup-active {
+  .popup-container {
+    scale: 1;
+    transform: translateY(0vh);
+  }
+}
 
-// P O P U P   A C T I V E  R O T A T E   D E S D E   A T R A S
+// // P O P U P   A C T I V E  R O T A T E   D E S D E   A T R A S
 // .popup-container {
 //   // estado inicial del popup
 //   transition: all 1.2s ease;
 //   scale: 0;
 // }
-// .fake-container-popup-active {
-//   position: fixed;
-//   z-index: 2;
+// .fake-container-popup-active-rotate-back {
 //   .popup-container {
 //     scale: 1.1;
 //     transform: rotate(360deg);
 //   }
 // }
 
-// P O P U P   A C T I V E   B O U N C E   D E S D E   A R R I B A
-.popup-container {
-  // estado inicial del popup
-  transition: all 0.7s ease;
-  scale: 1;
-  transform: translateY(-80vh);
-}
-.fake-container-popup-active {
-  position: fixed;
-  z-index: 2;
-  .popup-container {
-    scale: 1;
-    transform: translateY(0vh);
-    animation: bounce 1s linear 0.58s;
-  }
-}
-@keyframes bounce {
-  20%,
-  60%,
-  90%,
-  to {
-    transform: translateY(0);
-  }
-  40% {
-    transform: translateY(-30px);
-  }
-  70% {
-    transform: translateY(-10px);
-  }
-  90% {
-    transform: translateY(-4px);
-  }
-}
+// // P O P U P   A C T I V E   B O U N C E   D E S D E   A R R I B A
+// .popup-container {
+//   // estado inicial del popup
+//   transition: all 0.7s ease;
+//   scale: 1;
+//   transform: translateY(-80vh);
+// }
+// .fake-container-popup-active-bounce-top {
+//   .popup-container {
+//     scale: 1;
+//     transform: translateY(0vh);
+//     animation: bounce 1s linear 0.58s;
+//   }
+// }
+// @keyframes bounce {
+//   20%,
+//   60%,
+//   90%,
+//   to {
+//     transform: translateY(0);
+//   }
+//   40% {
+//     transform: translateY(-30px);
+//   }
+//   70% {
+//     transform: translateY(-10px);
+//   }
+//   90% {
+//     transform: translateY(-4px);
+//   }
+// }

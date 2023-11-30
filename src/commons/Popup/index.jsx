@@ -20,7 +20,7 @@ const Popup = ({ popupInfo }) => {
                 : window.location.reload()
             }
           >
-            Continuar
+            {popupInfo.bottonText || `Continuar`}
           </button>
         </div>
       </div>
