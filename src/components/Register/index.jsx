@@ -1,7 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
-import ArrowLeft from "../../assets/ArrowLeft";
 import Check from "../../assets/Check";
 import Eye from "../../assets/Eye";
 import Wrong from "../../assets/Wrong";
@@ -37,10 +36,16 @@ export default function Register() {
 
   const handleTogglePassword = () => {
     setShowPassword(!showPassword);
+    document.querySelector(".strike-eye1").style.display = !showPassword
+      ? "inherit"
+      : "none";
   };
 
   const handleToggleConfirmPassword = () => {
     setShowConfirmPassword(!showConfirmPassword);
+    document.querySelector(".strike-eye2").style.display = !showConfirmPassword
+      ? "inherit"
+      : "none";
   };
 
   const handleInputConfirmPswd = (e) => {
@@ -117,10 +122,6 @@ export default function Register() {
       <div className={s.divs}>
         <form className={s.f} onSubmit={handleSubmit}>
           <div className={s.head}>
-            <button onClick={returnLogin} className={s.none}>
-              <ArrowLeft className={s.none} />
-              Atras
-            </button>
             <h1 className={s.textTittle}>Crear cuenta</h1>
           </div>
           <div className={s.inputs}>

@@ -8,6 +8,7 @@ import Eye from "../../assets/Eye";
 import Wrong from "../../assets/Wrong";
 import "../ClientProfileEdition/ClientProfileEdit.scss";
 import s from "../Register/style.module.scss";
+
 export default function ClientProfileEdit() {
   const userRedux = useSelector((state) => state.user);
   const email = userRedux.email;

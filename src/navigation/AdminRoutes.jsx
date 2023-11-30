@@ -6,6 +6,7 @@ import { AdministratorSucursalesList } from "../components/AdministratorSucursal
 import CreateBranches from "../components/CreateBranches";
 import CreateOperator from "../components/CreateOperator";
 import Reports from "../components/Reports";
+import RouteNotFound from "../components/RouteNotFound";
 
 const AdminRoutes = () => {
   return (
@@ -19,6 +20,10 @@ const AdminRoutes = () => {
       <Route path="/edit/branch/:id" element={<CreateBranches />} />
       <Route path="/edit/operador/:dni" element={<CreateOperator />} />
       <Route path="/reports" element={<Reports />} />
+      <Route
+          path="/*"
+          element={<RouteNotFound />}
+        />
     </Routes>
   );
 };

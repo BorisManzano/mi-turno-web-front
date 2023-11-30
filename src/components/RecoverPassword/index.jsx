@@ -23,7 +23,7 @@ const RecoverPassword = () => {
     validation: false,
   });
 
-  let {token} = useParams();
+  let { token } = useParams();
 
   const handleInputPassword = (e) => {
     const newValue = e.target.value;
@@ -43,9 +43,15 @@ const RecoverPassword = () => {
   const [password, setPassword] = useState("");
   const handleTogglePassword = () => {
     setShowPassword(!showPassword);
+    document.querySelector(".strike-eye1").style.display = !showPassword
+      ? "inherit"
+      : "none";
   };
   const handleTogglePasswordConfirm = () => {
     setShowPasswordConfirm(!showPasswordConfirm);
+    document.querySelector(".strike-eye2").style.display = !showPasswordConfirm
+      ? "inherit"
+      : "none";
   };
   const handleSubmit = () => {
     if (newPassword === undefined) {
@@ -89,6 +95,18 @@ const RecoverPassword = () => {
               />
               <div className="eye-container" onClick={handleTogglePassword}>
                 <Eye />
+                <div
+                  className="strike-eye1"
+                  style={{
+                    border: "1px solid",
+                    position: "relative",
+                    top: "-16px",
+                    left: "2px",
+                    width: "18px",
+                    transform: "rotate(29deg)",
+                    display: "none",
+                  }}
+                ></div>
               </div>
             </div>
             <p className="p-recover-password">Repetir contraseña</p>
@@ -103,6 +121,18 @@ const RecoverPassword = () => {
                 onClick={handleTogglePasswordConfirm}
               >
                 <Eye />
+                <div
+                  className="strike-eye2"
+                  style={{
+                    border: "1px solid",
+                    position: "relative",
+                    top: "-16px",
+                    left: "2px",
+                    width: "18px",
+                    transform: "rotate(29deg)",
+                    display: "none",
+                  }}
+                ></div>
               </div>
             </div>
             <div className={`${s.warning} verification-container-div`}>

@@ -12,6 +12,7 @@ import { login } from "./state/user";
 import Navbar from "./commons/Navbar/Navbar";
 import Register from "./components/Register";
 import ConfirmationOfRegistration from "./components/ConfirmationOfRegistration";
+import RouteNotFound from "./components/RouteNotFound";
 function App() {
   const location = useLocation();
   const { pathname } = location;
@@ -72,6 +73,10 @@ function App() {
         <Route
           path="/ConfirmationOfRegistration/:token"
           element={<ConfirmationOfRegistration />}
+        />
+          <Route
+          path="/*"
+          element={<RouteNotFound />}
         />
       </Routes>
     </div>

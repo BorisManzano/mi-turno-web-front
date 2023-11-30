@@ -1,7 +1,7 @@
 .parent {
   display: flex;
   justify-content: center;
-  margin-top: 48px;
+  margin-top: 6%;
   width: 100%;
   flex-direction: column;
   align-items: center;
@@ -114,10 +114,12 @@
   border: none;
   border-radius: 8px;
   background: var(--Principal, #a442f1);
+  transition: all 0.7s ease;
 }
 
 .btnSingIn:hover {
-  background: var(--Secundario, #cc6aff);
+  background: var(--Principal, #8631c7);
+  transform: scale(1.05) translateY(-8px);
 }
 
 .btnSingIn:active {

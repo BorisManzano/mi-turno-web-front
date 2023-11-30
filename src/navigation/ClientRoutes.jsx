@@ -5,6 +5,7 @@ import ClientProfileEdit from "../components/ClientProfileEdition/ClientProfileE
 import ReservationPanel from "../components/ReservationPanel/ReservationPanel";
 import UserReservationHistory from "../components/UserReservationHistory";
 import ReservationConfirmed from "../components/reservationconfirmed";
+import RouteNotFound from "../components/RouteNotFound";
 
 const ClientRoutes = () => {
   return (
@@ -25,6 +26,7 @@ const ClientRoutes = () => {
         element={<CancelReservation />}
       />
       <Route path="/myAccount" element={<ClientProfileEdit />} />
+      <Route path="/*" element={<RouteNotFound />} />
     </Routes>
   );
 };

@@ -171,9 +171,7 @@ export const CancelReservation = () => {
             </div>
             <div className={s.horiz}>
               <p>Horario: </p>
-              <p className={s.Info}>
-                {reservation.date.split("T")[1].split(".")[0]}
-              </p>
+              <p className={s.Info}>{reservation.schedule.slice(0, 5)}</p>
             </div>
             <div className={s.horiz}>
               <p>Sucursal: </p>
