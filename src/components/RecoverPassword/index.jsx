@@ -9,7 +9,6 @@ import Popup from "../../commons/Popup";
 
 const RecoverPassword = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const result = true;
   const [state, setState] = useState(true);
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
   const [newPassword, setNewPassword] = useState();
@@ -21,6 +20,12 @@ const RecoverPassword = () => {
     oneNumber: false,
     large: false,
     validation: false,
+  });
+  const [popupInfo, setPopupInfo] = useState({
+    title: undefined,
+    text: undefined,
+    img: undefined,
+    redirect: undefined,
   });
 
   let { token } = useParams();
@@ -71,20 +76,26 @@ const RecoverPassword = () => {
         { withCredentials: true }
       )
       .then(() => {
+        setPopupInfo({
+          title: `Contraseña modificada con exito`,
+          text: `Haz click en continuar para iniciar sesion`,
+          img: true,
+          redirect: `/login`,
+        });
         logicPopUp(
           ".recover-password-container",
           "add",
-          "make-reservation-container-inactive"
+          "external-div-container-inactive"
         );
         logicPopUp(
-          ".fake-container-popup-time",
+          ".fake-container-popup",
           "remove",
-          "fake-container-popup-time-inactive"
+          "fake-container-popup-inactive"
         );
         logicPopUp(
-          ".fake-container-popup-time",
+          ".fake-container-popup",
           "add",
-          "fake-container-popup-time-active"
+          "fake-container-popup-active"
         );
       })
       .catch(() => setState(false));
@@ -234,12 +245,7 @@ const RecoverPassword = () => {
           </div>
         </div>
       </div>
-      <Popup
-        title={`Contraseña modificada con exito`}
-        text={`Haz click en continuar para iniciar sesion        `}
-        img={true}
-        redirect={"/login"}
-      />
+      <Popup popupInfo={popupInfo} />
     </div>
   );
 };
