@@ -22,9 +22,9 @@ const Login = () => {
         }
       )
       .then((resp) => {
-        if(resp.data.isConfirmed){
-          window.location.reload();
-          user.isAdmin
+        // if(resp.data.isConfirmed){
+        window.location.reload();
+        user.isAdmin
           ? navigate("/admin/allBranches")
           : user.isOperator
           ? navigate("/operator/reservationsList")
@@ -32,10 +32,9 @@ const Login = () => {
             !user.isOperator &&
             user.email &&
             navigate("/client/newReservation");
-        }else{
-          alert("aun no se ha confirmado el registro, revise su casilla de correo e confirme su registro para poder loguarse")
-        }
-   
+        // }else{
+        //   alert("aun no se ha confirmado el registro, revise su casilla de correo e confirme su registro para poder loguarse")
+        // }
       })
       .catch((err) => {
         setInvalidInformation("¡Email o contraseña incorrectos!");

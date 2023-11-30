@@ -23,14 +23,26 @@ function PasswordAndValidations({
   return (
     <div>
       <div>
-        <div className={pathname === "/admin/profile" ? s.password : s.rowForm}>
-          <div className={pathname === "/admin/profile" ? s.password1 : ""}>
+        <div
+          className={
+            pathname === "/admin/profile" || "/operator/profile"
+              ? s.password
+              : s.rowForm
+          }
+        >
+          <div
+            className={
+              pathname === "/admin/profile" || "/operator/profile"
+                ? s.password1
+                : ""
+            }
+          >
             <label htmlFor="password" className={s.textInputs}>
               Contraseña
             </label>
             <div
               className={
-                pathname === "/admin/profile"
+                pathname === "/admin/profile" || "/operator/profile"
                   ? focus && value === confirmPswd
                     ? s.focusP
                     : value !== confirmPswd
@@ -66,7 +78,7 @@ function PasswordAndValidations({
             </label>
             <div
               className={
-                pathname === "/admin/profile"
+                pathname === "/admin/profile" || "/operator/profile"
                   ? focus && value === confirmPswd
                     ? s.focusP
                     : value !== confirmPswd
@@ -98,7 +110,13 @@ function PasswordAndValidations({
           </div>
         </div>
       </div>
-      <div className={pathname === "/admin/profile" ? s.warningP : s.warning}>
+      <div
+        className={
+          pathname === "/admin/profile" || "/operator/profile"
+            ? s.warningP
+            : s.warning
+        }
+      >
         {value === "" ? (
           <p className={s.marg2}>La contraseña debe contener:</p>
         ) : (

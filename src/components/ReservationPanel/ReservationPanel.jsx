@@ -8,8 +8,6 @@ import { useParams } from "react-router";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Countdown from "../../commons/Countdown";
-import PopupReservation from "../../commons/popup-reservation";
-import PopupTimeOut from "../../commons/popup-timeOut";
 import { login } from "../../state/user";
 import "../ReservationPanel/ReservationPanel.scss";
 import {
@@ -22,13 +20,15 @@ import {
   StepLabel,
   Stepper,
 } from "@mui/material";
+
+import { useState } from "react";
+import Popup from "../../commons/Popup";
 import { Today } from "@mui/icons-material";
 
 export default function ReservationPanel() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
-  // variable para renderizas popup exitoso o de error
-  let state = true;
+
   const [appointment, setAppointment] = React.useState({
     reservationId: "",
     branchId: "",
@@ -51,13 +51,20 @@ export default function ReservationPanel() {
   const [notAvailableSchedule, setNotAvilableSchedule] = React.useState("");
   const [reservedDay, setReservedDay] = React.useState([]);
   const [openingTime, setOpeningTime] = React.useState("");
+
+  const [popupInfo, setPopupInfo] = useState({
+    title: undefined,
+    text: undefined,
+    img: undefined,
+    redirect: undefined,
+  });
+
   function handleNext() {
     setActiveStep((prev) => prev + 1);
   }
   //TRAIGO DATOS DE LA RESERVA PARA EDITAR y SUCURSALES DEL BACK--------------------------
   React.useEffect(() => {
     if (reservationId) {
-      setEditing(true);
       axios
         .get(`http://localhost:3001/api/users/appointment/${reservationId}`)
         .then((result) => {
@@ -86,7 +93,7 @@ export default function ReservationPanel() {
       })
       .catch(() => console.log("NO BRANCHES AVAILABLE"));
   }, [reservationId]);
-
+  // const selectedDate = reservationId ? new Date(appointment.date) : null;
   //---------------------------------------------
   const [branchName, setBranchName] = React.useState("");
   //-------------------------------------------------------------
@@ -108,7 +115,7 @@ export default function ReservationPanel() {
 
   function handleSelection(e) {
     e.preventDefault();
-
+    if (reservationId) setActiveStep(0);
     const [id, name, capacity, openingTime, closingTime] =
       e.target.value.split("-");
     setOpeningTime(openingTime);
@@ -168,17 +175,41 @@ export default function ReservationPanel() {
 
     for (const schedule in schedulesCounter) {
       // console.log("schedulescONTUNER[schedule]", schedulesCounter[schedule]);
-      if (schedulesCounter[schedule] === capacity - 1) {
+      if (
+        schedulesCounter[schedule] === capacity - 1 &&
+        hourGetter() < schedule
+      ) {
         filteredSchedules.push(
           schedule + "   Último turno disponible en este horario!!"
         );
-      } else if (schedulesCounter[schedule] === capacity - 2) {
+      } else if (
+        schedulesCounter[schedule] === capacity - 2 &&
+        hourGetter() < schedule
+      ) {
         filteredSchedules.push(
           schedule + "   Últimos 2 turnos disponibles en este horario!!"
         );
-      } else if (schedulesCounter[schedule] < capacity - 1) {
+      } else if (
+        schedulesCounter[schedule] < capacity - 1 &&
+        hourGetter() < schedule
+      ) {
         filteredSchedules.push(schedule);
       }
+    }
+    if (filteredSchedules.length < 1) {
+      setPopupInfo({
+        title: `Error en la reserva`,
+        text: ``,
+        img: false,
+        redirect: true,
+      });
+      logicPopUp(".body", "add", "external-div-container-inactive");
+      logicPopUp(
+        ".fake-container-popup",
+        "remove",
+        "fake-container-popup-inactive"
+      );
+      logicPopUp(".fake-container-popup", "add", "fake-container-popup-active");
     }
     setSchedules(filteredSchedules.sort());
     handleNext();
@@ -192,7 +223,6 @@ export default function ReservationPanel() {
     } else {
       selectedSchedule = e.target.value;
     }
-    // console.log("ASI QUEDA SELECTEDSCHEDULE", selectedSchedule);
     setSchedule(selectedSchedule);
   }
 
@@ -231,7 +261,6 @@ export default function ReservationPanel() {
         position: toast.POSITION.TOP_CENTER,
       });
     }
-
     axios
       .post("http://localhost:3001/api/users/newAppointment", { ...inputs })
       .then((res) => {
@@ -243,9 +272,16 @@ export default function ReservationPanel() {
           res.data.schedule
         );
         dispatch(login({ ...user, telephone: data.telephone }));
+        return res.data.reservationId;
       })
-      .then(() => {
-        logicPopUp(".body", "add", "make-reservation-container-inactive");
+      .then((response) => {
+        setPopupInfo({
+          title: `Turno reservado con exito`,
+          text: `Gracias por confiar en nuestro servicio`,
+          img: true,
+          redirect: `/client/reservationConfirmed/${response}`,
+        });
+        logicPopUp(".body", "add", "external-div-container-inactive");
         logicPopUp(
           ".fake-container-popup",
           "remove",
@@ -264,7 +300,7 @@ export default function ReservationPanel() {
       );
   }
 
-  //HANDLEEDITION------------------------------------------
+  //HANDLE-EDITION------------------------------------------
   function handleEdition(e) {
     e.preventDefault();
     const toPut = { reservationId: reservationId, email: appointment.email };
@@ -277,13 +313,18 @@ export default function ReservationPanel() {
         toPut[key] = inputs[key];
       }
     }
-
     axios
       .put("http://localhost:3001/api/users/newAppointment", {
         ...toPut,
       })
       .then(() => {
-        logicPopUp(".body", "add", "make-reservation-container-inactive");
+        setPopupInfo({
+          title: `Turno modificado con exito`,
+          text: `Gracias por confiar en nuestro servicio`,
+          img: true,
+          redirect: `/client/reservationConfirmed/${reservationId}`,
+        });
+        logicPopUp(".body", "add", "external-div-container-inactive");
         logicPopUp(
           ".fake-container-popup",
           "remove",
@@ -303,17 +344,21 @@ export default function ReservationPanel() {
       );
   }
   if (Countdown().props.children === "Tiempo agotado") {
-    logicPopUp(".body", "add", "make-reservation-container-inactive");
+    if (!popupInfo.title) {
+      setPopupInfo({
+        title: `Se acabo el tiempo`,
+        text: `Haga click en el boton continuar para empezar nuevamente`,
+        img: false,
+        redirect: true,
+      });
+    }
+    logicPopUp(".body", "add", "external-div-container-inactive");
     logicPopUp(
-      ".fake-container-popup-time",
+      ".fake-container-popup",
       "remove",
-      "fake-container-popup-time-inactive"
+      "fake-container-popup-inactive"
     );
-    logicPopUp(
-      ".fake-container-popup-time",
-      "add",
-      "fake-container-popup-time-active"
-    );
+    logicPopUp(".fake-container-popup", "add", "fake-container-popup-active");
   }
   const sendConfirmationEmail = (email, branch, date, time) => {
     date = date.slice(0, 10);
@@ -336,12 +381,9 @@ export default function ReservationPanel() {
         sx={{
           height: "85vh",
           width: "fixed",
-
           paddingTop: "2.5%",
-
           paddingLeft: "10%",
           backgroundColor: " #f1ebeb",
-
           overflow: "hidden",
           margin: "auto",
         }}
@@ -448,9 +490,9 @@ export default function ReservationPanel() {
                   disabled={enabled}
                   className = "inputLogin"
                 >
-                  <option value="" style={{ fontStyle: "italic" }}>
+                  <option value="" style={{ display: "none" }}>
                     {reservationId
-                      ? `${appointment.branchName} es tu sucursal elegida. Confirmala o elegí una nueva`
+                      ? `${appointment.branchName} es tu sucursal elegida. Confirmala o elegí una nueva:`
                       : "Elegí una sucursal:"}
                   </option>
                   {branches.map((branch) => (
@@ -494,8 +536,10 @@ export default function ReservationPanel() {
                       onChange={handleScheduleSelection}
                       className = "inputLogin"
                     >
-                      <option value="">
-                        {reservationId ? appointment.schedule : data.schedule}
+                      <option value="" style={{ display: "none" }}>
+                        {!enabled
+                          ? ` ${appointment.schedule} `
+                          : "Elegí un horario"}
                       </option>
                       {schedules.map((schedule) => (
                         <option key={schedule} value={schedule}>
@@ -579,7 +623,7 @@ export default function ReservationPanel() {
                     readOnly
                     onChange={handleChanges}
                   />
-                  {editing ? (
+                  {reservationId ? (
                     <Button
                       variant="contained"
                       enabled
@@ -653,13 +697,11 @@ export default function ReservationPanel() {
                   }}
                   disablePast
                   onChange={handleDaySelector}
-                  shouldDisableDate={
-                    (day) =>
-                      reservedDay.some((date) =>
-                        dateComparator(day.$d, date)
-                      ) || day.$d.getDay() === 0 // Deshabilita el domingo
+                  shouldDisableDate={(day) =>
+                    reservedDay.some((date) => dateComparator(day.$d, date)) ||
+                    day.$d.getDay() === 0
                   }
-                  date={appointment.date ? new Date(appointment.date) : null}
+                  // defaultValue={selectedDate}
                 />
               </LocalizationProvider>
             ) : (
@@ -708,13 +750,7 @@ export default function ReservationPanel() {
           </Button>
         </Grid>
       </Box>
-      <PopupTimeOut />
-      <PopupReservation
-        state={state}
-        reservationId={reservationIdParams || reservationId}
-        editing={editing}
-      />
-
+      <Popup popupInfo={popupInfo} />
       <ToastContainer />
     </div>
   );

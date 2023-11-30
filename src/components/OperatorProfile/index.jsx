@@ -3,7 +3,69 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../state/user";
 import { Tooltip } from "react-tooltip";
+import { useState } from "react";
+import PasswordAndValidations from "../../commons/Form/PasswordAndValidations";
+
 const OperatorProfile = function () {
+  const [disabled, setDisabled] = useState(true);
+  const [data, setData] = useState({
+    fullname: "",
+    DNI: "",
+    email: "",
+    password: "",
+  });
+  const [password, setPassword] = useState("");
+  const [confirmPswd, setConfirmPswd] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [focus, setFocus] = useState(false);
+  const [checklist, setChecklist] = useState({
+    uppercaseLetter: false,
+    lowercaseLetter: false,
+    oneNumber: false,
+    large: false,
+    validation: false,
+  });
+
+  const handleToggleFocus = () => {
+    setFocus(!focus);
+  };
+
+  const handleTogglePassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleToggleConfirmPassword = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
+
+  const handleInputConfirmPswd = (e) => {
+    const newValue = e.target.value;
+    setConfirmPswd(newValue);
+  };
+
+  const handleInputPassword = (e) => {
+    const newValue = e.target.value;
+    setPassword(newValue);
+    setData({ ...data, password: newValue });
+    setChecklist({
+      uppercaseLetter: /[A-ZÑ]/.test(newValue),
+      lowercaseLetter: /[a-zñ]/.test(newValue),
+      oneNumber: /\d/.test(newValue),
+      large: newValue.length >= 8,
+      validation:
+        /[A-ZÑ]/.test(newValue) &&
+        /[a-zñ]/.test(newValue) &&
+        /\d/.test(newValue) &&
+        newValue.length >= 8,
+    });
+  };
+
+  function handleEditPasswordClick(e) {
+    e.preventDefault();
+    setDisabled(false);
+  }
+
   const date = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
@@ -94,38 +156,55 @@ const OperatorProfile = function () {
             </select>
           </div>
         </div>
-        <div style={{ width: "92%" }} className="inputs-div-container">
-          <div className="single-input-container special-password">
-            <p className="p-form-client">Contraseña</p>
-            <input
-              name="password"
-              readOnly
-              className="inputLogin"
-              type="password"
-              defaultValue={"Default123"}
+        {disabled ? (
+          <div style={{ width: "92%" }} className="inputs-div-container">
+            <div className="single-input-container special-password">
+              <p className="p-form-client">Contraseña</p>
+              <input
+                name="password"
+                readOnly
+                className="inputLogin"
+                type="password"
+                defaultValue={"Default123"}
+                data-tooltip-id="my-tooltip"
+                data-tooltip-content="Para cambiar tu contraseña debes comunicarte con el administrador"
+                data-tooltip-place="top-start"
+              />
+            </div>
+            <h4
+              className="h4-form-edit"
               data-tooltip-id="my-tooltip"
               data-tooltip-content="Para cambiar tu contraseña debes comunicarte con el administrador"
-              data-tooltip-place="top-start"
+              data-tooltip-place="top-end"
+              onClick={handleEditPasswordClick}
+            >
+              Editar contraseña
+            </h4>
+            <Tooltip
+              id="my-tooltip"
+              style={{
+                background: "#a442f1",
+                borderRadius: "12px",
+                fontSize: "13.5px",
+                padding: "12px",
+              }}
             />
           </div>
-          <h4
-            className="h4-form-edit"
-            data-tooltip-id="my-tooltip"
-            data-tooltip-content="Para cambiar tu contraseña debes comunicarte con el administrador"
-            data-tooltip-place="top-end"
-          >
-            Editar contraseña
-          </h4>
-          <Tooltip
-            id="my-tooltip"
-            style={{
-              background: "#a442f1",
-              borderRadius: "12px",
-              fontSize: "13.5px",
-              padding: "12px",
-            }}
+        ) : (
+          <PasswordAndValidations
+            value={data.password}
+            handleInputConfirmPswd={handleInputConfirmPswd}
+            handleInputPassword={handleInputPassword}
+            handleToggleFocus={handleToggleFocus}
+            handleTogglePassword={handleTogglePassword}
+            handleToggleConfirmPassword={handleToggleConfirmPassword}
+            confirmPswd={confirmPswd}
+            showPassword={showPassword}
+            showConfirmPassword={showConfirmPassword}
+            checklist={checklist}
+            focus={focus}
           />
-        </div>
+        )}
         <div className="divBtn">
           <button className="O-perfilBtn">Aceptar</button>
         </div>
