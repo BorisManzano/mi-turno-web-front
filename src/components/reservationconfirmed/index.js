@@ -34,7 +34,7 @@ const ReservationConfirmed = function () {
           deseado o promociones.
         </p>
 
-        <button className="impresion"> ¿Quéres imprimir tu comprobante?</button>
+        <button className="impresion"> ¿Querés imprimir tu comprobante?</button>
       </div>
 
       <div className="contentReservation">

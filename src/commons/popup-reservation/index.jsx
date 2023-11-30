@@ -26,13 +26,13 @@ const PopupReservation = ({ state, option, reservationId, editing }) => {
             </svg>
             <h1 className="h1-popup-text">
               {!option
-                ? `Turno ${action} con exito`
-                : `Contraseña modificada con exito`}
+                ? `Turno ${action} con éxito`
+                : `Contraseña modificada con éxito`}
             </h1>
             <p className="p-popup-text">
               {!option
                 ? `Gracias por confiar en nuestro servicio`
-                : `Haz click en continuar para iniciar sesion`}
+                : `Haz click en continuar para iniciar sesión`}
             </p>
             <button
               className="popup-button"
@@ -66,7 +66,7 @@ const PopupReservation = ({ state, option, reservationId, editing }) => {
             <h1 className="h1-popup-text">No se pudo realizar el cambio</h1>
             <p className="p-popup-text">
               {!option
-                ? `Este turno ya fue ocupado, vuelve a intentarlo más tarde o
+                ? `Ya no hay disponibilidad de turnos. Vuelve a intentarlo más tarde o
               modificando algún parámetro`
                 : `Ha ocurrido un problema inesperado y no tenemos soporte asique siga intentando`}
             </p>
@@ -74,10 +74,11 @@ const PopupReservation = ({ state, option, reservationId, editing }) => {
               className="popup-button"
               onClick={() => {
                 !option
-                  ? console.log(
-                      "no estoy seguro que deberia hacer aca asi que por ahora lo deje vacio"
-                    )
-                  : window.location.reload();
+                  ? window.location.reload()
+                  : // ? console.log(
+                    //     "no estoy seguro que deberia hacer aca asi que por ahora lo deje vacío"
+                    //   )
+                    window.location.reload();
               }}
             >
               Volver a intentar

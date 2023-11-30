@@ -19,9 +19,9 @@ const PopupTimeOut = () => {
               fill="green"
             />
           </svg>
-          <h1 className="h1-popup-time-text">Se acabo el tiempo</h1>
+          <h1 className="h1-popup-time-text">Se acabó el tiempo</h1>
           <p className="p-popup-time-text">
-            Puede presionar el boton continuar para refrescar la pagina y volver
+            Puede presionar el botón continuar para refrescar la página y volver
             a realizar la reserva
           </p>
           <button

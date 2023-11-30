@@ -28,7 +28,8 @@ export default function ReservationPanel() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   // variable para renderizas popup exitoso o de error
-  let state = true;
+  // let state = true;
+  const [state, setState] = React.useState(true);
   const [appointment, setAppointment] = React.useState({
     reservationId: "",
     branchId: "",
@@ -51,6 +52,7 @@ export default function ReservationPanel() {
   const [notAvailableSchedule, setNotAvilableSchedule] = React.useState("");
   const [reservedDay, setReservedDay] = React.useState([]);
   const [openingTime, setOpeningTime] = React.useState("");
+
   function handleNext() {
     setActiveStep((prev) => prev + 1);
   }
@@ -86,7 +88,7 @@ export default function ReservationPanel() {
       })
       .catch(() => console.log("NO BRANCHES AVAILABLE"));
   }, [reservationId]);
-
+  // const selectedDate = reservationId ? new Date(appointment.date) : null;
   //---------------------------------------------
   const [branchName, setBranchName] = React.useState("");
   //-------------------------------------------------------------
@@ -168,17 +170,36 @@ export default function ReservationPanel() {
 
     for (const schedule in schedulesCounter) {
       // console.log("schedulescONTUNER[schedule]", schedulesCounter[schedule]);
-      if (schedulesCounter[schedule] === capacity - 1) {
+      if (
+        schedulesCounter[schedule] === capacity - 1 &&
+        hourGetter() < schedule
+      ) {
         filteredSchedules.push(
           schedule + "   Último turno disponible en este horario!!"
         );
-      } else if (schedulesCounter[schedule] === capacity - 2) {
+      } else if (
+        schedulesCounter[schedule] === capacity - 2 &&
+        hourGetter() < schedule
+      ) {
         filteredSchedules.push(
           schedule + "   Últimos 2 turnos disponibles en este horario!!"
         );
-      } else if (schedulesCounter[schedule] < capacity - 1) {
+      } else if (
+        schedulesCounter[schedule] < capacity - 1 &&
+        hourGetter() < schedule
+      ) {
         filteredSchedules.push(schedule);
       }
+    }
+    if (filteredSchedules.length < 1) {
+      setState(false);
+      logicPopUp(".body", "add", "make-reservation-container-inactive");
+      logicPopUp(
+        ".fake-container-popup",
+        "remove",
+        "fake-container-popup-inactive"
+      );
+      logicPopUp(".fake-container-popup", "add", "fake-container-popup-active");
     }
     setSchedules(filteredSchedules.sort());
     handleNext();
@@ -447,9 +468,9 @@ export default function ReservationPanel() {
                   onChange={handleSelection}
                   disabled={enabled}
                 >
-                  <option value="" style={{ fontStyle: "italic" }}>
+                  <option value="" style={{ display: "none" }}>
                     {reservationId
-                      ? `${appointment.branchName} es tu sucursal elegida. Confirmala o elegí una nueva`
+                      ? `${appointment.branchName} es tu sucursal elegida. Confirmala o elegí una nueva:`
                       : "Elegí una sucursal:"}
                   </option>
                   {branches.map((branch) => (
@@ -492,8 +513,10 @@ export default function ReservationPanel() {
                       style={{ width: "100%", height: "35px" }}
                       onChange={handleScheduleSelection}
                     >
-                      <option value="">
-                        {reservationId ? appointment.schedule : data.schedule}
+                      <option value="" style={{ display: "none" }}>
+                        {reservationId
+                          ? appointment.schedule
+                          : "Elegí un horario"}
                       </option>
                       {schedules.map((schedule) => (
                         <option key={schedule} value={schedule}>
@@ -651,13 +674,11 @@ export default function ReservationPanel() {
                   }}
                   disablePast
                   onChange={handleDaySelector}
-                  shouldDisableDate={
-                    (day) =>
-                      reservedDay.some((date) =>
-                        dateComparator(day.$d, date)
-                      ) || day.$d.getDay() === 0 // Deshabilita el domingo
+                  shouldDisableDate={(day) =>
+                    reservedDay.some((date) => dateComparator(day.$d, date)) ||
+                    day.$d.getDay() === 0
                   }
-                  date={appointment.date ? new Date(appointment.date) : null}
+                  // defaultValue={selectedDate}
                 />
               </LocalizationProvider>
             ) : (
