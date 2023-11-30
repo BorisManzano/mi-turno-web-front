@@ -100,12 +100,13 @@ const AdministratorProfile = function () {
 
         <div className="itemPerfilAdm">
           <label htmlFor="nombre">Nombre</label>
-          <input type="text" name="name" id="nombre" defaultValue={fullname} />
+          <input className="inputLogin" type="text" name="name" id="nombre" defaultValue={fullname} />
         </div>
 
         <div className="itemPerfilAdm">
           <label htmlFor="email">Correo electrónico</label>
           <input
+            className="inputLogin"
             type="email"
             name="email"
             id="email"
@@ -116,7 +117,7 @@ const AdministratorProfile = function () {
 
         <div className="itemPerfilAdm">
           <label htmlFor="dni">DNI</label>
-          <input type="text" name="Dni" id="dni" defaultValue={dni} readOnly />
+          <input className="inputLogin" type="text" name="Dni" id="dni" defaultValue={dni} readOnly />
         </div>
         {disabled ? (
           <div style={{ width: "801px" }} className="inputs-div-container">

@@ -101,6 +101,7 @@ const CreateBranches = function () {
         <div className="bloqueUno">
           <label htmlFor="nombre">Nombre</label>
           <input
+            className="inputLogin"
             {...nombre}
             type="text"
             name="name"
@@ -118,9 +119,9 @@ const CreateBranches = function () {
               type="email"
               name="email"
               id="email"
+              className="inputLogin"
               placeholder="Ingrese su Email"
               readOnly
-              required
             />
           ) : (
             <input
@@ -138,6 +139,7 @@ const CreateBranches = function () {
           <div className="itemFila">
             <label htmlFor="telefono">Teléfono</label>
             <input
+              className="inputLogin"
               {...telefono}
               type="text"
               name="number"
@@ -154,6 +156,7 @@ const CreateBranches = function () {
               type="number"
               name="cupos"
               id="capacidadMaxima"
+              className="inputLogin"
               required
             />
           </div>
@@ -167,7 +170,7 @@ const CreateBranches = function () {
               onChange={opTime.onChange}
               name="horarioDeInicio"
               id="inicio"
-              className="select-style"
+              className="select-style inputLogin"
               placeholder="6:00"
               required
             >
@@ -196,7 +199,7 @@ const CreateBranches = function () {
               onChange={clTime.onChange}
               name="horarioDeCierre"
               id="H-Cierre"
-              className="select-style"
+              className="select-style inputLogin"
               placeholder="16:00"
               required
             >
