@@ -305,11 +305,7 @@ export default function ReservationPanel() {
     e.preventDefault();
     const toPut = { reservationId: reservationId, email: appointment.email };
     for (const key in inputs) {
-      if (
-        inputs.hasOwnProperty(key) &&
-        inputs[key] &&
-        inputs[key] !== appointment[key]
-      ) {
+      if (inputs[key] && inputs[key] !== appointment[key]) {
         toPut[key] = inputs[key];
       }
     }
