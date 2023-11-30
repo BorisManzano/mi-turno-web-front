@@ -9,7 +9,6 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Countdown from "../../commons/Countdown";
 import PopupReservation from "../../commons/popup-reservation";
-import PopupTimeOut from "../../commons/popup-timeOut";
 import { login } from "../../state/user";
 import "../ReservationPanel/ReservationPanel.scss";
 import {
@@ -22,7 +21,10 @@ import {
   StepLabel,
   Stepper,
 } from "@mui/material";
+
+import Popup from "../../commons/Popup";
 import { Today } from "@mui/icons-material";
+
 
 export default function ReservationPanel() {
   const dispatch = useDispatch();
@@ -706,13 +708,18 @@ export default function ReservationPanel() {
           </Button>
         </Grid>
       </Box>
-      <PopupTimeOut />
+      <Popup
+        title={`Se acabo el tiempo`}
+        text={`Puede presionar el boton continuar para refrescar la pagina y volver
+            a realizar la reserva`}
+        img={false}
+        redirect={true}
+      />
       <PopupReservation
         state={state}
         reservationId={reservationIdParams || reservationId}
         editing={editing}
       />
-
       <ToastContainer />
     </div>
   );
