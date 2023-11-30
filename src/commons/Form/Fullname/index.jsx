@@ -6,7 +6,7 @@ export default function Fullname({ value, handleInputChange }) {
   const location = useLocation();
   const { pathname } = location;
   return (
-    <div className={pathname === "/admin/create/operator" ? s.inputMail : ""}>
+    <div className={pathname === "/admin/create/operador" ? s.inputMail : ""}>
       <label htmlFor="name" className={s.textInputs}>
         Nombre y Apellido
       </label>
