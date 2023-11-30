@@ -8,8 +8,7 @@ import { useParams } from "react-router";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Countdown from "../../commons/Countdown";
-import PopupReservation from "../../commons/popup-reservation";
-import PopupTimeOut from "../../commons/popup-timeOut";
+
 import { login } from "../../state/user";
 import "../ReservationPanel/ReservationPanel.scss";
 import {
@@ -22,14 +21,17 @@ import {
   StepLabel,
   Stepper,
 } from "@mui/material";
+
+import { useState } from "react";
+import Popup from "../../commons/Popup";
+
 import { Today } from "@mui/icons-material";
 
 export default function ReservationPanel() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
-  // variable para renderizas popup exitoso o de error
-  // let state = true;
   const [state, setState] = React.useState(true);
+
   const [appointment, setAppointment] = React.useState({
     reservationId: "",
     branchId: "",
@@ -52,6 +54,13 @@ export default function ReservationPanel() {
   const [notAvailableSchedule, setNotAvilableSchedule] = React.useState("");
   const [reservedDay, setReservedDay] = React.useState([]);
   const [openingTime, setOpeningTime] = React.useState("");
+
+  const [popupInfo, setPopupInfo] = useState({
+    title: undefined,
+    text: undefined,
+    img: undefined,
+    redirect: undefined,
+  });
 
   function handleNext() {
     setActiveStep((prev) => prev + 1);
@@ -213,7 +222,6 @@ export default function ReservationPanel() {
     } else {
       selectedSchedule = e.target.value;
     }
-    // console.log("ASI QUEDA SELECTEDSCHEDULE", selectedSchedule);
     setSchedule(selectedSchedule);
   }
 
@@ -266,7 +274,13 @@ export default function ReservationPanel() {
         dispatch(login({ ...user, telephone: data.telephone }));
       })
       .then(() => {
-        logicPopUp(".body", "add", "make-reservation-container-inactive");
+        setPopupInfo({
+          title: `Turno reservado con exito`,
+          text: `Gracias por confiar en nuestro servicio`,
+          img: true,
+          redirect: `/client/reservationConfirmed/${reservationId}`,
+        });
+        logicPopUp(".body", "add", "external-div-container-inactive");
         logicPopUp(
           ".fake-container-popup",
           "remove",
@@ -304,7 +318,13 @@ export default function ReservationPanel() {
         ...toPut,
       })
       .then(() => {
-        logicPopUp(".body", "add", "make-reservation-container-inactive");
+        setPopupInfo({
+          title: `Turno modificado con exito`,
+          text: `Gracias por confiar en nuestro servicio`,
+          img: true,
+          redirect: `/client/reservationConfirmed/${reservationId}`,
+        });
+        logicPopUp(".body", "add", "external-div-container-inactive");
         logicPopUp(
           ".fake-container-popup",
           "remove",
@@ -324,17 +344,21 @@ export default function ReservationPanel() {
       );
   }
   if (Countdown().props.children === "Tiempo agotado") {
-    logicPopUp(".body", "add", "make-reservation-container-inactive");
+    if (!popupInfo.title) {
+      setPopupInfo({
+        title: `Se acabo el tiempo`,
+        text: `Haga click en el boton continuar para empezar nuevamente`,
+        img: false,
+        redirect: true,
+      });
+    }
+    logicPopUp(".body", "add", "external-div-container-inactive");
     logicPopUp(
-      ".fake-container-popup-time",
+      ".fake-container-popup",
       "remove",
-      "fake-container-popup-time-inactive"
+      "fake-container-popup-inactive"
     );
-    logicPopUp(
-      ".fake-container-popup-time",
-      "add",
-      "fake-container-popup-time-active"
-    );
+    logicPopUp(".fake-container-popup", "add", "fake-container-popup-active");
   }
   const sendConfirmationEmail = (email, branch, date, time) => {
     date = date.slice(0, 10);
@@ -727,13 +751,7 @@ export default function ReservationPanel() {
           </Button>
         </Grid>
       </Box>
-      <PopupTimeOut />
-      <PopupReservation
-        state={state}
-        reservationId={reservationIdParams || reservationId}
-        editing={editing}
-      />
-
+      <Popup popupInfo={popupInfo} />
       <ToastContainer />
     </div>
   );
