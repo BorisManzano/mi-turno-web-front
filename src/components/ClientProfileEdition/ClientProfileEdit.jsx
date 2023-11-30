@@ -34,9 +34,7 @@ export default function ClientProfileEdit() {
             DNI: res.data.DNI,
             userId: res.data.id,
             telephone: res.data.telephone,
-            password: "*******",
-            newPassword: res.data.newPassword,
-            newPasswordConfirm: res.data.newPasswordConfirm,
+            password: user.password,
           });
         })
         .catch((err) => console.log(err));
@@ -49,8 +47,8 @@ export default function ClientProfileEdit() {
     DNI: user.DNI,
     telephone: user.telephone,
     password: user.password,
-    newPassword: user.newPassword,
-    newPasswordConfirm: user.newPasswordConfirm,
+    newPassword: "",
+    newPasswordConfirm: "",
   });
 
   function handleChanges(e) {
@@ -90,7 +88,7 @@ export default function ClientProfileEdit() {
   };
   function handleSubmit(e) {
     e.preventDefault();
-    if (!checklist.validation) {
+    if (data.newPassword && !checklist.validation) {
       toast.error("PASSWORD ERROR", {
         position: toast.POSITION.TOP_CENTER,
       });
@@ -105,8 +103,10 @@ export default function ClientProfileEdit() {
     }
     const toPut = { email: user.email };
     for (const key in data) {
-      if (data.hasOwnProperty(key) && data[key] && data[key] !== user[key]) {
+      if (data[key] && data[key] !== user[key]) {
         toPut[key] = data[key];
+      } else {
+        toPut[key] = user[key];
       }
     }
 
@@ -196,8 +196,8 @@ export default function ClientProfileEdit() {
                   <input
                     disabled={disabled}
                     name="password"
-                    defaultValue={user.password}
-                    className="inputLogin"
+                    defaultValue="*******"
+                    className="input"
                     type="text"
                     onChange={handleChanges}
                   />

@@ -1,15 +1,18 @@
 import "./index.scss";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../state/user";
 import PasswordAndValidations from "../../commons/Form/PasswordAndValidations";
 import s from "../Register/style.module.scss";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const AdministratorProfile = function () {
+  const navigate = useNavigate();
   const [data, setData] = useState({
     fullname: "",
-    DNI: "",
+    dni: "",
     email: "",
     password: "",
   });
@@ -59,23 +62,58 @@ const AdministratorProfile = function () {
         newValue.length >= 8,
     });
   };
+  function handleChanges(e) {
+    e.preventDefault();
+    const { name } = e.target;
 
-  const date = useSelector((state) => state.user);
+    setData((prevState) => {
+      return { ...prevState, [name]: e.target.value };
+    });
+  }
+
+  const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [disabled, setDisabled] = useState(true);
-  const { dni, email, fullname } = date;
+  const { dni, email, fullname } = user;
   function handleEditPasswordClick(e) {
     e.preventDefault();
     setDisabled(false);
   }
   const handleUpdateProfile = (e) => {
     e.preventDefault();
+
+    if (confirmPswd !== password) {
+      return toast.error("LAS CONTRASEÑAS NO COINCIDEN", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+      return;
+    }
+    if (confirmPswd && password && !checklist.validation) {
+      toast.error("PASSWORD ERROR", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+      return;
+    }
+
     const info = {
-      fullname: e.target.name.value,
-      email: e.target.email.value,
+      fullname: data.fullname,
+      DNI: data.dni,
+      password: data.password,
     };
+    const toPut = { email: user.email, ...info };
+
+    for (const key in info) {
+      if (info[key] !== "" && info[key] !== user[key]) {
+        toPut[key] = info[key];
+      } else {
+        toPut[key] = user[key];
+      }
+    }
+
     axios
-      .put("http://localhost:3001/api/users/edit/profile", info)
+      .put("http://localhost:3001/api/users/edit/profile", toPut, {
+        withCredentials: true,
+      })
       .then((resp) => {
         const payload = {
           fullname: resp.data.fullname,
@@ -84,16 +122,13 @@ const AdministratorProfile = function () {
           telephone: null,
         };
         dispatch(login(payload));
+        navigate("/admin/allBranches");
       })
       .catch((error) => console.log(error));
   };
   return (
     <div className="bodyContent">
-      <form
-        action=""
-        className="contentPerfilAdm"
-        onSubmit={handleUpdateProfile}
-      >
+      <form action="" className="contentPerfilAdm">
         <div>
           {" "}
           <h1> MIS DATOS</h1>{" "}
@@ -101,7 +136,14 @@ const AdministratorProfile = function () {
 
         <div className="itemPerfilAdm">
           <label htmlFor="nombre">Nombre</label>
-          <input className="inputLogin" type="text" name="name" id="nombre" defaultValue={fullname} />
+
+          <input
+            type="text"
+            name="fullname"
+            id="nombre"
+            defaultValue={fullname}
+            onChange={handleChanges}
+          />
         </div>
 
         <div className="itemPerfilAdm">
@@ -118,7 +160,14 @@ const AdministratorProfile = function () {
 
         <div className="itemPerfilAdm">
           <label htmlFor="dni">DNI</label>
-          <input className="inputLogin" type="text" name="Dni" id="dni" defaultValue={dni} readOnly />
+
+          <input
+            type="text"
+            name="dni"
+            id="dni"
+            defaultValue={dni}
+            onChange={handleChanges}
+          />
         </div>
         {disabled ? (
           <div style={{ width: "801px" }} className="inputs-div-container">
@@ -153,7 +202,10 @@ const AdministratorProfile = function () {
           />
         )}
         <div>
-          <button className="perfilBtn">Aceptar</button>
+          <button className="perfilBtn" onClick={handleUpdateProfile}>
+            Aceptar
+          </button>
+          <ToastContainer />
         </div>
       </form>
     </div>
