@@ -8,8 +8,6 @@ import { useParams } from "react-router";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Countdown from "../../commons/Countdown";
-import PopupReservation from "../../commons/popup-reservation";
-// import PopupTimeOut from "../../commons/popup-timeOut";
 import { login } from "../../state/user";
 import "../ReservationPanel/ReservationPanel.scss";
 import {
@@ -22,14 +20,15 @@ import {
   StepLabel,
   Stepper,
 } from "@mui/material";
+
+import { useState } from "react";
+import Popup from "../../commons/Popup";
 import { Today } from "@mui/icons-material";
 
 export default function ReservationPanel() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
-  // variable para renderizas popup exitoso o de error
-  // let state = true;
-  const [state, setState] = React.useState(true);
+
   const [appointment, setAppointment] = React.useState({
     reservationId: "",
     branchId: "",
@@ -53,13 +52,19 @@ export default function ReservationPanel() {
   const [reservedDay, setReservedDay] = React.useState([]);
   const [openingTime, setOpeningTime] = React.useState("");
 
+  const [popupInfo, setPopupInfo] = useState({
+    title: undefined,
+    text: undefined,
+    img: undefined,
+    redirect: undefined,
+  });
+
   function handleNext() {
     setActiveStep((prev) => prev + 1);
   }
   //TRAIGO DATOS DE LA RESERVA PARA EDITAR y SUCURSALES DEL BACK--------------------------
   React.useEffect(() => {
     if (reservationId) {
-      setEditing(true);
       axios
         .get(`http://localhost:3001/api/users/appointment/${reservationId}`)
         .then((result) => {
@@ -192,8 +197,13 @@ export default function ReservationPanel() {
       }
     }
     if (filteredSchedules.length < 1) {
-      setState(false);
-      logicPopUp(".body", "add", "make-reservation-container-inactive");
+      setPopupInfo({
+        title: `Error en la reserva`,
+        text: ``,
+        img: false,
+        redirect: true,
+      });
+      logicPopUp(".body", "add", "external-div-container-inactive");
       logicPopUp(
         ".fake-container-popup",
         "remove",
@@ -213,7 +223,6 @@ export default function ReservationPanel() {
     } else {
       selectedSchedule = e.target.value;
     }
-    // console.log("ASI QUEDA SELECTEDSCHEDULE", selectedSchedule);
     setSchedule(selectedSchedule);
   }
 
@@ -252,7 +261,6 @@ export default function ReservationPanel() {
         position: toast.POSITION.TOP_CENTER,
       });
     }
-
     axios
       .post("http://localhost:3001/api/users/newAppointment", { ...inputs })
       .then((res) => {
@@ -264,9 +272,16 @@ export default function ReservationPanel() {
           res.data.schedule
         );
         dispatch(login({ ...user, telephone: data.telephone }));
+        return res.data.reservationId;
       })
-      .then(() => {
-        logicPopUp(".body", "add", "make-reservation-container-inactive");
+      .then((response) => {
+        setPopupInfo({
+          title: `Turno reservado con exito`,
+          text: `Gracias por confiar en nuestro servicio`,
+          img: true,
+          redirect: `/client/reservationConfirmed/${response}`,
+        });
+        logicPopUp(".body", "add", "external-div-container-inactive");
         logicPopUp(
           ".fake-container-popup",
           "remove",
@@ -288,16 +303,6 @@ export default function ReservationPanel() {
   //HANDLE-EDITION------------------------------------------
   function handleEdition(e) {
     e.preventDefault();
-    // if (
-    //   dateComparator(appointment.date, inputs.date) ===
-    //     dateConversor(todayGetter()) &&
-    //   appointment.schedule > hourGetter() &&
-    //   inputs.schedule > hourGetter()
-    // ) {
-    //   toast.error("HORARIO NO VÁLIDO, SELECCIONÁ UNO DE LA LISTA", {
-    //     position: toast.POSITION.TOP_CENTER,
-    //   });
-    // }
     const toPut = { reservationId: reservationId, email: appointment.email };
     for (const key in inputs) {
       if (
@@ -308,13 +313,18 @@ export default function ReservationPanel() {
         toPut[key] = inputs[key];
       }
     }
-
     axios
       .put("http://localhost:3001/api/users/newAppointment", {
         ...toPut,
       })
       .then(() => {
-        logicPopUp(".body", "add", "make-reservation-container-inactive");
+        setPopupInfo({
+          title: `Turno modificado con exito`,
+          text: `Gracias por confiar en nuestro servicio`,
+          img: true,
+          redirect: `/client/reservationConfirmed/${reservationId}`,
+        });
+        logicPopUp(".body", "add", "external-div-container-inactive");
         logicPopUp(
           ".fake-container-popup",
           "remove",
@@ -334,17 +344,21 @@ export default function ReservationPanel() {
       );
   }
   if (Countdown().props.children === "Tiempo agotado") {
-    logicPopUp(".body", "add", "make-reservation-container-inactive");
+    if (!popupInfo.title) {
+      setPopupInfo({
+        title: `Se acabo el tiempo`,
+        text: `Haga click en el boton continuar para empezar nuevamente`,
+        img: false,
+        redirect: true,
+      });
+    }
+    logicPopUp(".body", "add", "external-div-container-inactive");
     logicPopUp(
-      ".fake-container-popup-time",
+      ".fake-container-popup",
       "remove",
-      "fake-container-popup-time-inactive"
+      "fake-container-popup-inactive"
     );
-    logicPopUp(
-      ".fake-container-popup-time",
-      "add",
-      "fake-container-popup-time-active"
-    );
+    logicPopUp(".fake-container-popup", "add", "fake-container-popup-active");
   }
   const sendConfirmationEmail = (email, branch, date, time) => {
     date = date.slice(0, 10);
@@ -367,12 +381,9 @@ export default function ReservationPanel() {
         sx={{
           height: "85vh",
           width: "fixed",
-
           paddingTop: "2.5%",
-
           paddingLeft: "10%",
           backgroundColor: " #f1ebeb",
-
           overflow: "hidden",
           margin: "auto",
         }}
@@ -737,13 +748,7 @@ export default function ReservationPanel() {
           </Button>
         </Grid>
       </Box>
-      {/* <PopupTimeOut /> */}
-      <PopupReservation
-        state={state}
-        reservationId={reservationIdParams || reservationId}
-        editing={editing}
-      />
-
+      <Popup popupInfo={popupInfo} />
       <ToastContainer />
     </div>
   );

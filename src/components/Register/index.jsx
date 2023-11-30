@@ -1,9 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
-import Check from "../../assets/Check";
-import Eye from "../../assets/Eye";
-import Wrong from "../../assets/Wrong";
 import Fullname from "../../commons/Form/Fullname";
 import PasswordAndValidations from "../../commons/Form/PasswordAndValidations";
 import s from "./style.module.scss";
