@@ -9,7 +9,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Countdown from "../../commons/Countdown";
 import PopupReservation from "../../commons/popup-reservation";
-import PopupTimeOut from "../../commons/popup-timeOut";
+// import PopupTimeOut from "../../commons/popup-timeOut";
 import { login } from "../../state/user";
 import "../ReservationPanel/ReservationPanel.scss";
 import {
@@ -110,7 +110,7 @@ export default function ReservationPanel() {
 
   function handleSelection(e) {
     e.preventDefault();
-
+    if (reservationId) setActiveStep(0);
     const [id, name, capacity, openingTime, closingTime] =
       e.target.value.split("-");
     setOpeningTime(openingTime);
@@ -285,9 +285,19 @@ export default function ReservationPanel() {
       );
   }
 
-  //HANDLEEDITION------------------------------------------
+  //HANDLE-EDITION------------------------------------------
   function handleEdition(e) {
     e.preventDefault();
+    // if (
+    //   dateComparator(appointment.date, inputs.date) ===
+    //     dateConversor(todayGetter()) &&
+    //   appointment.schedule > hourGetter() &&
+    //   inputs.schedule > hourGetter()
+    // ) {
+    //   toast.error("HORARIO NO VÁLIDO, SELECCIONÁ UNO DE LA LISTA", {
+    //     position: toast.POSITION.TOP_CENTER,
+    //   });
+    // }
     const toPut = { reservationId: reservationId, email: appointment.email };
     for (const key in inputs) {
       if (
@@ -514,8 +524,8 @@ export default function ReservationPanel() {
                       onChange={handleScheduleSelection}
                     >
                       <option value="" style={{ display: "none" }}>
-                        {reservationId
-                          ? appointment.schedule
+                        {!enabled
+                          ? ` ${appointment.schedule} `
                           : "Elegí un horario"}
                       </option>
                       {schedules.map((schedule) => (
@@ -727,7 +737,7 @@ export default function ReservationPanel() {
           </Button>
         </Grid>
       </Box>
-      <PopupTimeOut />
+      {/* <PopupTimeOut /> */}
       <PopupReservation
         state={state}
         reservationId={reservationIdParams || reservationId}
