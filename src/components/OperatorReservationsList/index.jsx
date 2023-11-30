@@ -20,10 +20,10 @@ export const OperatorReservationsList = () => {
         setReservationsList(
           res.data.map((obj) => {
             //usernamew/reserva n/sucursal/date
-            const { createdBy, reservationId, branch, date } = obj;
+            const { createdBy, reservationId, branch, date, schedule } = obj;
             const username = createdBy.fullname;
             const branchname = branch.name;
-            return { username, reservationId, date, branchname };
+            return { username, reservationId, date, branchname,schedule  };
           })
         );
       })

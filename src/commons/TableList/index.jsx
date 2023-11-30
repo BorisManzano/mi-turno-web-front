@@ -20,12 +20,22 @@ export const TableList = ({ datatype, data }) => {
   const handleOnClickDeleteOperator = (oid, e) => {
     e.preventDefault();
     axios
-      .put(`http://localhost:3001/api/users/removeOperator/${oid}`)
-      .then((msg) => {
-        alert(msg);
-        navigate("/admin/operators");
+      .put(`http://localhost:3001/api/users/admin/deleteOperator/${oid}`)
+      .then(() => {
+        alert("Se eliminó al operador");
+        window.location.reload();
       });
   };
+
+  const handleOnClickDeleteBranch = (id, e) =>{
+    e.preventDefault();
+    axios
+    .put(`http://localhost:3001/api/users/admin/deleteBranch/${id}`)
+    .then(() => {
+        alert("Se eliminó la sucursal");
+        window.location.reload();
+      });
+  }
 
   const dataType = datatype;
   const objKeys = Object.keys(data[0]);
@@ -79,17 +89,18 @@ export const TableList = ({ datatype, data }) => {
                   </div>
                   <div className={s.rowItem}>
                     <p>{column3}</p>
-                    <b>
+                    
                       {dataType.includes("Reservas") ? (
-                        <>
+                        <b>
                           <>{objIns[objKeys[2]].split("T")[0]} </>
                           &nbsp; · &nbsp;
                           <>{objIns[objKeys[4]].slice(0, 5)}hs</>
-                        </>
+                        </b>
+
                       ) : (
-                        objIns[objKeys[2]]
+                        objIns[objKeys[2]] == "Sin asignar" ?( <b style={{color: red[500]}}>Sin asignar</b> ): (<b>{objIns[objKeys[2]]}</b>)
                       )}
-                    </b>
+                   
                   </div>
                   <div className={s.rowItem}>
                     <p>{column4}</p>
@@ -135,21 +146,40 @@ export const TableList = ({ datatype, data }) => {
                       </div>
                     )}
                     {datatype === "Sucursales" && (
-                      <Button
-                        onClick={(e) => {
-                          e.preventDefault();
-                          navigate(`/admin/edit/branch/${objIns[objKeys[4]]}`); //recibe adicion almente el id de la sucursal
-                        }}
-                        variant="contained"
-                        style={{
-                          backgroundColor: "#F5F5F5",
-                          color: "#A442F1",
-                          textTransform: "none",
-                          padding: "0 !important",
-                        }}
-                      >
-                        Editar
-                      </Button>
+                      <div className="horiz">
+                        <Button
+                          onClick={(e) => {
+                            e.preventDefault();
+                            navigate(`/admin/edit/branch/${objIns[objKeys[4]]}`); //recibe adicion almente el id de la sucursal
+                          }}
+                          variant="contained"
+                          style={{
+                            backgroundColor: "#F5F5F5",
+                            color: "#A442F1",
+                            textTransform: "none",
+                            padding: "0 !important",
+                          }}
+                        >
+                          Editar
+                        </Button>
+                        &nbsp; &nbsp;
+                        <Button
+                          onClick={(event) =>
+                            handleOnClickDeleteBranch(
+                              objIns[objKeys[4]],
+                              event
+                            )
+                          }
+                          variant="contained"
+                          style={{
+                            backgroundColor: red[500],
+                            color: "white",
+                            textTransform: "none",
+                          }}
+                        >
+                          Eliminar
+                        </Button>
+                      </div>
                     )}
                     {dataType === "OperatorReservas" && (
                       <Button
