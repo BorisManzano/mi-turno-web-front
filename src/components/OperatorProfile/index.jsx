@@ -109,6 +109,7 @@ const OperatorProfile = function () {
             type="text"
             name="name"
             id="nombre"
+            className="inputLogin"
             defaultValue={date.fullname}
           />
         </div>
@@ -119,6 +120,7 @@ const OperatorProfile = function () {
             type="email"
             name="email"
             id="email"
+            className="inputLogin"
             defaultValue={date.email}
             readOnly
           />
@@ -132,6 +134,7 @@ const OperatorProfile = function () {
               name="Dni"
               id="dni"
               defaultValue={date.dni}
+              className = "inputLogin"
               readOnly
             />
           </div>
@@ -160,7 +163,7 @@ const OperatorProfile = function () {
               <input
                 name="password"
                 readOnly
-                className="input"
+                className="inputLogin"
                 type="password"
                 defaultValue={"Default123"}
                 data-tooltip-id="my-tooltip"

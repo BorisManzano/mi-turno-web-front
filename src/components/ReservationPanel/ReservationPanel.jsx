@@ -484,6 +484,7 @@ export default function ReservationPanel() {
                   }}
                   onChange={handleSelection}
                   disabled={enabled}
+                  className = "inputLogin"
                 >
                   <option value="" style={{ display: "none" }}>
                     {reservationId
@@ -529,6 +530,7 @@ export default function ReservationPanel() {
                     <select
                       style={{ width: "100%", height: "35px" }}
                       onChange={handleScheduleSelection}
+                      className = "inputLogin"
                     >
                       <option value="" style={{ display: "none" }}>
                         {!enabled
@@ -571,7 +573,7 @@ export default function ReservationPanel() {
                           reservationId ? appointment.fullname : user.fullname
                         }
                         type="text"
-                        className="form-control"
+                        className="form-control inputLogin"
                         readOnly
                         onChange={handleChanges}
                       />
@@ -595,7 +597,7 @@ export default function ReservationPanel() {
                         }
                         readOnly={reservationId ? true : false}
                         type="text"
-                        className="input"
+                        className="inputLogin"
                         onChange={handleChanges}
                       />{" "}
                     </Grid>
@@ -613,7 +615,7 @@ export default function ReservationPanel() {
                       reservationId ? appointment.email : user.email
                     }
                     type="text"
-                    className="form-control"
+                    className="form-control inputLogin"
                     readOnly
                     onChange={handleChanges}
                   />

@@ -136,6 +136,7 @@ const AdministratorProfile = function () {
 
         <div className="itemPerfilAdm">
           <label htmlFor="nombre">Nombre</label>
+
           <input
             type="text"
             name="fullname"
@@ -148,6 +149,7 @@ const AdministratorProfile = function () {
         <div className="itemPerfilAdm">
           <label htmlFor="email">Correo electrónico</label>
           <input
+            className="inputLogin"
             type="email"
             name="email"
             id="email"
@@ -158,6 +160,7 @@ const AdministratorProfile = function () {
 
         <div className="itemPerfilAdm">
           <label htmlFor="dni">DNI</label>
+
           <input
             type="text"
             name="dni"

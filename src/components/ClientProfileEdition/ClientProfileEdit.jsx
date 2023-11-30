@@ -134,7 +134,7 @@ export default function ClientProfileEdit() {
                 <input
                   name="fullname"
                   defaultValue={user.fullname}
-                  className="input"
+                  className="inputLogin"
                   type="text"
                   onChange={handleChanges}
                 />
@@ -144,9 +144,9 @@ export default function ClientProfileEdit() {
                 <input
                   name="email"
                   defaultValue={user.email}
-                  className="input"
+                  className="inputLogin"
                   type="email"
-                  disabled
+                  readOnly
                 />
               </div>
             </div>
@@ -169,7 +169,7 @@ export default function ClientProfileEdit() {
                   style={{ width: "100%" }}
                   name="DNI"
                   defaultValue={user.DNI}
-                  className="input"
+                  className="inputLogin"
                   type="text"
                   maxLength="8"
                   pattern="[0-9]{7,8}"
@@ -182,7 +182,7 @@ export default function ClientProfileEdit() {
                   style={{ width: "98.5%" }}
                   name="telephone"
                   defaultValue={user.telephone}
-                  className="input"
+                  className="inputLogin"
                   type="text"
                   onChange={handleChanges}
                 />
