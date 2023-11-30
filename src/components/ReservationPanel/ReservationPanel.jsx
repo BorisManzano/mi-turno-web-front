@@ -621,7 +621,7 @@ export default function ReservationPanel() {
                     readOnly
                     onChange={handleChanges}
                   />
-                  {editing ? (
+                  {reservationId ? (
                     <Button
                       variant="contained"
                       enabled
