@@ -115,7 +115,7 @@ export default function ReservationPanel() {
 
   function handleSelection(e) {
     e.preventDefault();
-
+    if (reservationId) setActiveStep(0);
     const [id, name, capacity, openingTime, closingTime] =
       e.target.value.split("-");
     setOpeningTime(openingTime);
@@ -300,7 +300,7 @@ export default function ReservationPanel() {
       );
   }
 
-  //HANDLEEDITION------------------------------------------
+  //HANDLE-EDITION------------------------------------------
   function handleEdition(e) {
     e.preventDefault();
     const toPut = { reservationId: reservationId, email: appointment.email };
@@ -535,8 +535,8 @@ export default function ReservationPanel() {
                       onChange={handleScheduleSelection}
                     >
                       <option value="" style={{ display: "none" }}>
-                        {reservationId
-                          ? appointment.schedule
+                        {!enabled
+                          ? ` ${appointment.schedule} `
                           : "Elegí un horario"}
                       </option>
                       {schedules.map((schedule) => (
