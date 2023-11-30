@@ -65,6 +65,7 @@ const CreateOperator = function () {
       email: dni ? emailBlocked : email.value,
       branchId: sucursal.value,
       isOperator: true,
+      isConfirmed: true,
     };
     if (password.value != "" && confirmPassword.value == password.value)
       data = { ...data, password: password.value };
