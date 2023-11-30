@@ -5,6 +5,7 @@ import Check from "../../assets/Check";
 import Eye from "../../assets/Eye";
 import Wrong from "../../assets/Wrong";
 import Fullname from "../../commons/Form/Fullname";
+import PasswordAndValidations from "../../commons/Form/PasswordAndValidations";
 import s from "./style.module.scss";
 
 export default function Register() {
@@ -91,7 +92,9 @@ export default function Register() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!checklist.validation) {
+    if (!data.fullname || !data.DNI || !data.email || !data.password) {
+      alert("Debes completar todos los campos");
+    } else if (!checklist.validation) {
       alert("validation");
     } else if (data.password !== confirmPswd) {
       alert("Las contraseñas deben ser iguales");
@@ -113,7 +116,6 @@ export default function Register() {
         });
     }
   };
-  console.log(error);
 
   return (
     <>
@@ -159,170 +161,19 @@ export default function Register() {
                 onChange={handleInputChange}
               />
             </div>
-            <div className={s.rowForm}>
-              <div>
-                <label htmlFor="password" className={s.textInputs}>
-                  Contraseña
-                </label>
-                <div
-                  className={
-                    focus && data.password === confirmPswd
-                      ? s.focus
-                      : data.password !== confirmPswd
-                      ? s.err
-                      : s.inputArea
-                  }
-                >
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    name="password"
-                    id="password"
-                    placeholder="Contraseña"
-                    value={data.password}
-                    className={s.inputPassword}
-                    autoComplete="new-password"
-                    onChange={handleInputPassword}
-                    onFocus={handleToggleFocus}
-                    onBlur={handleToggleFocus}
-                  />
-                  <div onClick={handleTogglePassword}>
-                    <Eye />
-                    <div
-                      className="strike-eye1"
-                      style={{
-                        border: "1px solid",
-                        position: "relative",
-                        top: "-16px",
-                        left: "2px",
-                        width: "18px",
-                        transform: "rotate(29deg)",
-                        display: "none",
-                      }}
-                    ></div>
-                  </div>
-                </div>
-              </div>
-              <div>
-                <label htmlFor="password" className={s.textInputs}>
-                  Repetir Contraseña
-                </label>
-                <div
-                  className={
-                    focus && data.password === confirmPswd
-                      ? s.focus
-                      : data.password !== confirmPswd
-                      ? s.err
-                      : s.inputArea
-                  }
-                >
-                  <input
-                    type={showConfirmPassword ? "text" : "password"}
-                    name="password"
-                    id="pswd"
-                    placeholder="Contraseña"
-                    value={confirmPswd}
-                    className={s.inputPassword}
-                    autoComplete="new-password"
-                    onChange={handleInputConfirmPswd}
-                    onFocus={handleToggleFocus}
-                    onBlur={handleToggleFocus}
-                    onKeyDown={(e) => e.code === "Enter" && handleSubmit(e)}
-                  />
-                  <div onClick={handleToggleConfirmPassword}>
-                    <Eye />
-                    <div
-                      className="strike-eye2"
-                      style={{
-                        border: "1px solid",
-                        position: "relative",
-                        top: "-16px",
-                        left: "2px",
-                        width: "18px",
-                        transform: "rotate(29deg)",
-                        display: "none",
-                      }}
-                    ></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className={s.warning}>
-            {data.password === "" ? (
-              <p className={s.marg2}>La contraseña debe contener:</p>
-            ) : (
-              <p className={s.marg}>La contraseña debe contener:</p>
-            )}
-
-            <div className={s.bBorder}></div>
-            <div className={s.container}>
-              <div className={s.rowOne}>
-                {data.password === "" ? (
-                  <>
-                    <div className={s.row3}>
-                      <p>ABC</p> <p>Una letra mayúscula</p>
-                    </div>
-                    <div className={s.row3}>
-                      <p>abc</p> <p>Una letra minúscula</p>
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    {checklist.uppercaseLetter ? (
-                      <div className={s.row1}>
-                        <Check /> <p>ABC</p> <p>Una letra mayúscula</p>
-                      </div>
-                    ) : (
-                      <div className={s.row2}>
-                        <Wrong /> <p>ABC</p> <p>Una letra mayúscula</p>
-                      </div>
-                    )}
-                    {checklist.lowercaseLetter ? (
-                      <div className={s.row1}>
-                        <Check /> <p>abc</p> <p>Una letra minúscula</p>
-                      </div>
-                    ) : (
-                      <div className={s.row2}>
-                        <Wrong /> <p>abc</p> <p>Una letra minúscula</p>
-                      </div>
-                    )}
-                  </>
-                )}
-              </div>
-              <div className={s.rowOne}>
-                {data.password === "" ? (
-                  <>
-                    <div className={s.row3}>
-                      <p>123</p> <p>Un número</p>
-                    </div>
-                    <div className={s.row3}>
-                      <p>***</p> <p>Mínimo 8 caracteres</p>
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    {checklist.oneNumber ? (
-                      <div className={s.row1}>
-                        <Check /> <p>123</p> <p>Un número</p>
-                      </div>
-                    ) : (
-                      <div className={s.row2}>
-                        <Wrong /> <p>123</p> <p>Un número</p>
-                      </div>
-                    )}
-                    {checklist.large ? (
-                      <div className={s.row1}>
-                        <Check /> <p>***</p> <p>Mínimo 8 caracteres</p>
-                      </div>
-                    ) : (
-                      <div className={s.row2}>
-                        <Wrong /> <p>***</p> <p>Mínimo 8 caracteres</p>
-                      </div>
-                    )}
-                  </>
-                )}
-              </div>
-            </div>
+            <PasswordAndValidations
+              value={data.password}
+              handleInputConfirmPswd={handleInputConfirmPswd}
+              handleInputPassword={handleInputPassword}
+              handleToggleFocus={handleToggleFocus}
+              handleTogglePassword={handleTogglePassword}
+              handleToggleConfirmPassword={handleToggleConfirmPassword}
+              confirmPswd={confirmPswd}
+              showPassword={showPassword}
+              showConfirmPassword={showConfirmPassword}
+              checklist={checklist}
+              focus={focus}
+            />
           </div>
           {error ? <p className={s.error}>{error}</p> : <></>}
           <button className={s.btnSingIn} type="submit">
