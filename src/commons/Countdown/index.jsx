@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 //cuenta regresiva
 
 export default function Countdown() {
-  const [countdown, setCountdown] = useState(5);
+  const [countdown, setCountdown] = useState(500);
   const timerId = useRef();
 
   const formatTime = (time) => {
