@@ -120,6 +120,7 @@ const AdministratorProfile = function () {
           email: resp.data.email,
           dni: resp.data.DNI,
           telephone: null,
+          isAdmin: resp.data.isAdmin,
         };
         dispatch(login(payload));
         navigate("/admin/allBranches");
