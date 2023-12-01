@@ -25,14 +25,14 @@ function PasswordAndValidations({
       <div>
         <div
           className={
-            pathname === "/admin/profile" || "/operator/profile"
+            pathname === ("/admin/profile" || "/operator/profile")
               ? s.password
               : s.rowForm
           }
         >
           <div
             className={
-              pathname === "/admin/profile" || "/operator/profile"
+              pathname === ("/admin/profile" || "/operator/profile")
                 ? s.password1
                 : ""
             }
@@ -42,7 +42,7 @@ function PasswordAndValidations({
             </label>
             <div
               className={
-                pathname === "/admin/profile" || "/operator/profile"
+                pathname === ("/admin/profile" || "/operator/profile")
                   ? focus && value === confirmPswd
                     ? s.focusP
                     : value !== confirmPswd
@@ -78,7 +78,7 @@ function PasswordAndValidations({
             </label>
             <div
               className={
-                pathname === "/admin/profile" || "/operator/profile"
+                pathname === ("/admin/profile" || "/operator/profile")
                   ? focus && value === confirmPswd
                     ? s.focusP
                     : value !== confirmPswd
@@ -112,7 +112,7 @@ function PasswordAndValidations({
       </div>
       <div
         className={
-          pathname === "/admin/profile" || "/operator/profile"
+          pathname === ("/admin/profile" || "/operator/profile")
             ? s.warningP
             : s.warning
         }

@@ -1,13 +1,13 @@
-import "./index.scss";
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { login } from "../../state/user";
-import PasswordAndValidations from "../../commons/Form/PasswordAndValidations";
-import s from "../Register/style.module.scss";
+import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import PasswordAndValidations from "../../commons/Form/PasswordAndValidations";
+import { login } from "../../state/user";
+import s from "../Register/style.module.scss";
+import "./index.scss";
 const AdministratorProfile = function () {
   const navigate = useNavigate();
   const [data, setData] = useState({

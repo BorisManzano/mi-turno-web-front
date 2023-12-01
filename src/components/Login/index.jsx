@@ -21,20 +21,15 @@ const Login = () => {
           withCredentials: true,
         }
       )
-      .then((resp) => {
-        // if(resp.data.isConfirmed){
-        window.location.reload();
-        user.isAdmin
+      .then((res) => {
+        res.data.isAdmin
           ? navigate("/admin/allBranches")
-          : user.isOperator
+          : res.data.isOperator
           ? navigate("/operator/reservationsList")
-          : !user.isAdmin &&
-            !user.isOperator &&
-            user.email &&
+          : !res.data.isAdmin &&
+            !res.data.isOperator &&
+            res.data.email &&
             navigate("/client/newReservation");
-        // }else{
-        //   alert("aun no se ha confirmado el registro, revise su casilla de correo e confirme su registro para poder loguarse")
-        // }
       })
       .catch((err) => {
         setInvalidInformation("¡Email o contraseña incorrectos!");

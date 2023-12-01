@@ -3,11 +3,8 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Check from "../../assets/Check";
-import Eye from "../../assets/Eye";
-import Wrong from "../../assets/Wrong";
+import PasswordAndValidations from "../../commons/Form/PasswordAndValidations";
 import "../ClientProfileEdition/ClientProfileEdit.scss";
-import s from "../Register/style.module.scss";
 
 export default function ClientProfileEdit() {
   const userRedux = useSelector((state) => state.user);
@@ -15,7 +12,10 @@ export default function ClientProfileEdit() {
   const [user, setUser] = useState({});
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
+  const [confirmPswd, setConfirmPswd] = useState("");
+  const [focus, setFocus] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   const [checklist, setChecklist] = useState({
     uppercaseLetter: false,
     lowercaseLetter: false,
@@ -23,6 +23,18 @@ export default function ClientProfileEdit() {
     large: false,
     validation: false,
   });
+
+  const handleToggleFocus = () => {
+    setFocus(!focus);
+  };
+  const handleToggleConfirmPassword = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
+
+  const handleInputConfirmPswd = (e) => {
+    const newValue = e.target.value;
+    setConfirmPswd(newValue);
+  };
   useEffect(() => {
     if (email) {
       axios
@@ -67,9 +79,6 @@ export default function ClientProfileEdit() {
   const handleTogglePassword = () => {
     setShowPassword(!showPassword);
   };
-  const handleTogglePasswordConfirm = () => {
-    setShowPasswordConfirm(!showPasswordConfirm);
-  };
   const handleInputPassword = (e) => {
     const newValue = e.target.value;
     setPassword(newValue);
@@ -109,7 +118,6 @@ export default function ClientProfileEdit() {
         toPut[key] = user[key];
       }
     }
-
     axios
       .put("http://localhost:3001/api/users/edit/profile", {
         ...toPut,
@@ -207,118 +215,19 @@ export default function ClientProfileEdit() {
                 </h4>
               </div>
             ) : (
-              <>
-                <div className="inputs-div-container">
-                  <div className="single-input-container">
-                    <p className="p-form-client">
-                      Nueva Contraseña
-                      <div
-                        className="eye-container"
-                        onClick={handleTogglePassword}
-                      >
-                        <Eye />
-                      </div>
-                    </p>
-                    <input
-                      disabled={disabled}
-                      name="newPassword"
-                      type={showPassword ? "text" : "password"}
-                      value={data.newPassword}
-                      className="input"
-                      onChange={handleInputPassword}
-                    />
-                  </div>
-                  <div className="single-input-container">
-                    <p className="p-form-client">Repetir nueva contraseña</p>
-                    <div
-                      className="eye-container"
-                      onClick={handleTogglePasswordConfirm}
-                    >
-                      <Eye />
-                    </div>
-                    <input
-                      name="newPasswordConfirm"
-                      defaultValue={user.newPasswordConfirm}
-                      className="input"
-                      type={showPasswordConfirm ? "text" : "password"}
-                      onChange={handleChanges}
-                    />
-                  </div>
-                </div>
-                <div className={`${s.warning} restrictions-container`}>
-                  <p className={s.marg}>La contraseña debe contener:</p>
-
-                  <div className={s.bBorder}></div>
-                  <div className={s.container}>
-                    <div className={s.rowOne}>
-                      {data.password === "" ? (
-                        <>
-                          <div className={s.row3}>
-                            <p>ABC</p> <p>Una letra mayúscula</p>
-                          </div>
-                          <div className={s.row3}>
-                            <p>abc</p> <p>Una letra minúscula</p>
-                          </div>
-                        </>
-                      ) : (
-                        <>
-                          {checklist.uppercaseLetter ? (
-                            <div className={s.row1}>
-                              <Check /> <p>ABC</p> <p>Una letra mayúscula</p>
-                            </div>
-                          ) : (
-                            <div className={s.row2}>
-                              <Wrong /> <p>ABC</p> <p>Una letra mayúscula</p>
-                            </div>
-                          )}
-                          {checklist.lowercaseLetter ? (
-                            <div className={s.row1}>
-                              <Check /> <p>abc</p> <p>Una letra minúscula</p>
-                            </div>
-                          ) : (
-                            <div className={s.row2}>
-                              <Wrong /> <p>abc</p> <p>Una letra minúscula</p>
-                            </div>
-                          )}
-                        </>
-                      )}
-                    </div>
-                    <div className={s.rowOne}>
-                      {data.password === "" ? (
-                        <>
-                          <div className={s.row3}>
-                            <p>123</p> <p>Un número</p>
-                          </div>
-                          <div className={s.row3}>
-                            <p>***</p> <p>Mínimo 8 caracteres</p>
-                          </div>
-                        </>
-                      ) : (
-                        <>
-                          {checklist.oneNumber ? (
-                            <div className={s.row1}>
-                              <Check /> <p>123</p> <p>Un número</p>
-                            </div>
-                          ) : (
-                            <div className={s.row2}>
-                              <Wrong /> <p>123</p> <p>Un número</p>
-                            </div>
-                          )}
-                          {checklist.large ? (
-                            <div className={s.row1}>
-                              <Check /> <p>***</p> <p>Mínimo 8 caracteres</p>
-                            </div>
-                          ) : (
-                            <div className={s.row2}>
-                              <Wrong /> <p>***</p> <p>Mínimo 8 caracteres</p>
-                            </div>
-                          )}
-                        </>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </>
+              <PasswordAndValidations
+                value={data.password}
+                handleInputConfirmPswd={handleInputConfirmPswd}
+                handleInputPassword={handleInputPassword}
+                handleToggleFocus={handleToggleFocus}
+                handleTogglePassword={handleTogglePassword}
+                handleToggleConfirmPassword={handleToggleConfirmPassword}
+                confirmPswd={confirmPswd}
+                showPassword={showPassword}
+                showConfirmPassword={showConfirmPassword}
+                checklist={checklist}
+                focus={focus}
+              />
             )}
             <button className="login-button" onClick={handleSubmit}>
               Aceptar
