@@ -87,7 +87,7 @@ const CreateOperator = function () {
       })
       .then(() => {
         setPopupInfo({
-          title: `Operador creado con exito`,
+          title: dni ?`Cambios guardados` :`Operador creado con exito`,
           text: `Gracias por confiar en nuestro servicio`,
           img: true,
           redirect: `/admin/operators`,
