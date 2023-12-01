@@ -67,6 +67,12 @@ export const TableList = ({ datatype, data }) => {
     column4 = "Sucursal";
   }
   //puede ser operadores, sucursales o historial de reservas.
+  // funcion confirmacion de reserva de parte del operador 
+
+  const handleConfirmedAssistence = ()=>{
+    console.log("funcion onclick en funcionamiento")
+    console.log("contenedor de info traida desde el back => ",objKeys)
+  }
   return (
     <>
       <div className={s.container} style={{ marginTop: "1.5%" }}>
@@ -190,6 +196,7 @@ export const TableList = ({ datatype, data }) => {
                           textTransform: "none",
                           padding: "0 !important",
                         }}
+                        onClick = {handleConfirmedAssistence}
                       >
                         Confirmar
                       </Button>
