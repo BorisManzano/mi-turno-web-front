@@ -48,15 +48,15 @@ const RecoverPassword = () => {
   const [password, setPassword] = useState("");
   const handleTogglePassword = () => {
     setShowPassword(!showPassword);
-    document.querySelector(".strike-eye1").style.display = !showPassword
-      ? "inherit"
-      : "none";
+    // document.querySelector(".strike-eye1").style.display = !showPassword
+    //   ? "inherit"
+    //   : "none";
   };
   const handleTogglePasswordConfirm = () => {
     setShowPasswordConfirm(!showPasswordConfirm);
-    document.querySelector(".strike-eye2").style.display = !showPasswordConfirm
-      ? "inherit"
-      : "none";
+    // document.querySelector(".strike-eye2").style.display = !showPasswordConfirm
+    //   ? "inherit"
+    //   : "none";
   };
   const logicPopUp = (tag, option, className) => {
     document.querySelector(tag).classList[option](className);

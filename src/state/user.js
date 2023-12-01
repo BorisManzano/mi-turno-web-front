@@ -9,6 +9,7 @@ const initialState = {
   telephone: null,
   isAdmin: false,
   isOperator: false,
+  isConfirmed: false,
 };
 
 const userReducer = createReducer(initialState, {
