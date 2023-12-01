@@ -171,7 +171,7 @@ export const CancelReservation = () => {
             </div>
             <div className={s.horiz}>
               <p>Horario: </p>
-              <p className={s.Info}>{reservation.schedule.slice(0, 5)}</p>
+              <p className={s.Info}>{reservation.schedule.slice(0, 5)} hs</p>
             </div>
             <div className={s.horiz}>
               <p>Sucursal: </p>
