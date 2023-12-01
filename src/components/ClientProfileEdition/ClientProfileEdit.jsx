@@ -134,17 +134,17 @@ export default function ClientProfileEdit() {
                 <input
                   name="fullname"
                   defaultValue={user.fullname}
-                  className="inputLogin"
+                  className="inputOperator"
                   type="text"
                   onChange={handleChanges}
                 />
               </div>
               <div className="single-input-container">
-                <p className="p-form-client">Mail</p>
+                <p className="p-form-client">Correo electrónico</p>
                 <input
                   name="email"
                   defaultValue={user.email}
-                  className="inputLogin"
+                  className="inputOperator"
                   type="email"
                   readOnly
                 />
@@ -190,14 +190,14 @@ export default function ClientProfileEdit() {
             </div>
 
             {disabled ? (
-              <div className="inputs-div-container">
+              <div className="inputs-div-container-password">
                 <div className="single-input-container special-password">
                   <p className="p-form-client">Contraseña</p>
                   <input
                     disabled={disabled}
                     name="password"
                     defaultValue="*******"
-                    className="input"
+                    className="inputPassword"
                     type="text"
                     onChange={handleChanges}
                   />
