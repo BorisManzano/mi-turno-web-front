@@ -85,8 +85,8 @@ const CreateBranches = function () {
       .then(() => {
         // createdSuccessfully();
         setPopupInfo({
-          title: `Sucursal creada con exito`,
-          text: `No olvide asignarle un operador`,
+          title: id ? `Cambios guardados`:`Sucursal creada con exito`,
+          text: id ? `Gracias por confiar en nuestro servicio`:`No olvide asignarle un operador`,
           img: true,
           redirect: `/admin/allBranches`,
         });
