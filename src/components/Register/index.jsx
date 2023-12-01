@@ -4,6 +4,7 @@ import { useNavigate } from "react-router";
 import Fullname from "../../commons/Form/Fullname";
 import PasswordAndValidations from "../../commons/Form/PasswordAndValidations";
 import s from "./style.module.scss";
+import Popup from "../../commons/Popup";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -26,6 +27,15 @@ export default function Register() {
     large: false,
     validation: false,
   });
+  const [popupInfo, setPopupInfo] = useState({
+    title: undefined,
+    text: undefined,
+    img: undefined,
+    redirect: undefined,
+  });
+  const logicPopUp = (tag, option, className) => {
+    document.querySelector(tag).classList[option](className);
+  };
 
   const handleToggleFocus = () => {
     setFocus(!focus);
@@ -102,12 +112,30 @@ export default function Register() {
           withCredentials: true,
         })
         .then((resp) => {
-          console.log("Registro exitoso");
           axios.post(
             `http://localhost:3001/api/nodeMailer/accountConfirmation/${resp.data.email}`
           );
         })
-        .then(() => navigate("/"))
+        .then(() => {
+          setPopupInfo({
+            title: `Usuario registrado exitosamente`,
+            text: `Bienvenido! Revisa tu correo para confirmar tu cuenta`,
+            img: true,
+            buttonText: `Ir al login`,
+            redirect: `/login`,
+          });
+          logicPopUp(".body", "add", "external-div-container-inactive");
+          logicPopUp(
+            ".fake-container-popup",
+            "remove",
+            "fake-container-popup-inactive"
+          );
+          logicPopUp(
+            ".fake-container-popup",
+            "add",
+            "fake-container-popup-active"
+          );
+        })
         .catch((err) => {
           setError(err.response.data.error);
         });
@@ -116,7 +144,7 @@ export default function Register() {
 
   return (
     <>
-      <div className={s.divs}>
+      <div className={`${s.divs} body`}>
         <form className={s.f} onSubmit={handleSubmit}>
           <div className={s.head}>
             <h1 className={s.textTittle}>Crear cuenta</h1>
@@ -182,6 +210,7 @@ export default function Register() {
           </button>
         </form>
       </div>
+      <Popup popupInfo={popupInfo} />
     </>
   );
 }

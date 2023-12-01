@@ -51,7 +51,6 @@ export default function ReservationPanel() {
   const [notAvailableSchedule, setNotAvilableSchedule] = React.useState("");
   const [reservedDay, setReservedDay] = React.useState([]);
   const [openingTime, setOpeningTime] = React.useState("");
-
   const [popupInfo, setPopupInfo] = useState({
     title: undefined,
     text: undefined,
@@ -199,8 +198,9 @@ export default function ReservationPanel() {
     if (filteredSchedules.length < 1) {
       setPopupInfo({
         title: `Error en la reserva`,
-        text: ``,
+        text: `Ocurrio un error, intente nuevamente.`,
         img: false,
+        bottonText: `Aceptar`,
         redirect: true,
       });
       logicPopUp(".body", "add", "external-div-container-inactive");
@@ -305,11 +305,7 @@ export default function ReservationPanel() {
     e.preventDefault();
     const toPut = { reservationId: reservationId, email: appointment.email };
     for (const key in inputs) {
-      if (
-        inputs.hasOwnProperty(key) &&
-        inputs[key] &&
-        inputs[key] !== appointment[key]
-      ) {
+      if (inputs[key] && inputs[key] !== appointment[key]) {
         toPut[key] = inputs[key];
       }
     }
@@ -488,7 +484,7 @@ export default function ReservationPanel() {
                   }}
                   onChange={handleSelection}
                   disabled={enabled}
-                  className = "inputLogin"
+                  className="inputLogin"
                 >
                   <option value="" style={{ display: "none" }}>
                     {reservationId
@@ -534,7 +530,7 @@ export default function ReservationPanel() {
                     <select
                       style={{ width: "100%", height: "35px" }}
                       onChange={handleScheduleSelection}
-                      className = "inputLogin"
+                      className="inputLogin"
                     >
                       <option value="" style={{ display: "none" }}>
                         {!enabled
