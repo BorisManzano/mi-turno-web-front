@@ -171,7 +171,14 @@ const AdministratorProfile = function () {
           />
         </div>
         {disabled ? (
-          <div style={{ width: "801px" }} className="inputs-div-container">
+          <div
+            style={{
+              width: "92%",
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+            className="inputs-div-container"
+          >
             <div className="single-input-container special-password">
               <p className="p-form-client">Contraseña</p>
               <input

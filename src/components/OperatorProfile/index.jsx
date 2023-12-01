@@ -134,7 +134,7 @@ const OperatorProfile = function () {
               name="Dni"
               id="dni"
               defaultValue={date.dni}
-              className = "inputLogin"
+              className="inputLogin"
               readOnly
             />
           </div>
@@ -157,30 +157,38 @@ const OperatorProfile = function () {
           </div>
         </div>
         {disabled ? (
-          <div style={{ width: "92%" }} className="inputs-div-container">
+          <div
+            style={{
+              width: "92%",
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+            className="inputs-div-container"
+          >
             <div className="single-input-container special-password">
               <p className="p-form-client">Contraseña</p>
               <input
+                style={{ width: "100%" }}
                 name="password"
                 readOnly
                 className="inputLogin"
                 type="password"
                 defaultValue={"Default123"}
-                data-tooltip-id="my-tooltip"
-                data-tooltip-content="Para cambiar tu contraseña debes comunicarte con el administrador"
-                data-tooltip-place="top-start"
+                // data-tooltip-id="my-tooltip"
+                // data-tooltip-content="Para cambiar tu contraseña debes comunicarte con el administrador"
+                // data-tooltip-place="top-start"
               />
             </div>
             <h4
               className="h4-form-edit"
-              data-tooltip-id="my-tooltip"
-              data-tooltip-content="Para cambiar tu contraseña debes comunicarte con el administrador"
-              data-tooltip-place="top-end"
+              // data-tooltip-id="my-tooltip"
+              // data-tooltip-content="Para cambiar tu contraseña debes comunicarte con el administrador"
+              // data-tooltip-place="top-end"
               onClick={handleEditPasswordClick}
             >
               Editar contraseña
             </h4>
-            <Tooltip
+            {/* <Tooltip
               id="my-tooltip"
               style={{
                 background: "#a442f1",
@@ -188,7 +196,7 @@ const OperatorProfile = function () {
                 fontSize: "13.5px",
                 padding: "12px",
               }}
-            />
+            /> */}
           </div>
         ) : (
           <PasswordAndValidations

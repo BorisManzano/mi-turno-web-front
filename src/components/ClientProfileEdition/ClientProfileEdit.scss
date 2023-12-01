@@ -31,7 +31,7 @@
 .p-form-client {
   margin-bottom: 6px;
 }
-.inputOperator{
+.inputOperator {
   width: 100%;
   border: 0.8px solid rgba(128, 128, 128, 0.541);
   border-radius: 5px;
@@ -42,14 +42,14 @@
 }
 .inputOperator:focus {
   outline: none;
-  border: 1.9px solid #8A26A6;
+  border: 1.9px solid #8a26a6;
 }
 .inputOperator:hover {
   border: 1px solid rgba(100, 100, 100, 0.774);
 }
 .inputOperator:hover:focus {
   outline: none;
-  border: 1.9px solid #8A26A6;
+  border: 1.9px solid #8a26a6;
 }
 
 .h4-form-edit {
@@ -62,7 +62,6 @@
   border-radius: 6px;
   background-color: #dabcf15c;
   transition: all 0.7s ease;
-  width: 40%;
   &:hover {
     background-color: rgb(218 188 241 / 71%);
     transform: translateX(-8px) scale(1.02);
@@ -91,7 +90,7 @@
   height: 0;
   border: 0.1px solid rgba(189, 185, 185, 0.541);
 }
-.inputPassword{
+.inputPassword {
   width: 100%;
   border: 0.8px solid rgba(128, 128, 128, 0.541);
   border-radius: 5px;
@@ -101,10 +100,10 @@
   transition: all 0.4s ease;
 }
 .inputs-div-container-password {
-  width: max-content;
+  width: 100%;
   display: flex;
   flex-direction: row;
-  justify-content:space-between;
+  justify-content: space-between;
   gap: 20px;
 }
 .restrictions-container {
