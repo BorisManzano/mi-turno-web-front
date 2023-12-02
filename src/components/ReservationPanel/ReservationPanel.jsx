@@ -156,7 +156,7 @@ export default function ReservationPanel() {
     let fulfilledSlots = [];
     reservations.forEach((appointment) => {
       if (dateComparator(e.$d, appointment.date))
-        fulfilledSlots.push(appointment.schedule);
+        fulfilledSlots.push(appointment.schedule.slice(0, 5));
     });
     // console.log("HORARIOS USADOS", fulfilledSlots);
     let schedulesCounter = {};
@@ -174,24 +174,15 @@ export default function ReservationPanel() {
 
     for (const schedule in schedulesCounter) {
       // console.log("schedulescONTUNER[schedule]", schedulesCounter[schedule]);
-      if (
-        schedulesCounter[schedule] === capacity - 1 &&
-        hourGetter() < schedule
-      ) {
+      if (schedulesCounter[schedule] === capacity - 1) {
         filteredSchedules.push(
           schedule + "   Último turno disponible en este horario!!"
         );
-      } else if (
-        schedulesCounter[schedule] === capacity - 2 &&
-        hourGetter() < schedule
-      ) {
+      } else if (schedulesCounter[schedule] === capacity - 2) {
         filteredSchedules.push(
           schedule + "   Últimos 2 turnos disponibles en este horario!!"
         );
-      } else if (
-        schedulesCounter[schedule] < capacity - 1 &&
-        hourGetter() < schedule
-      ) {
+      } else if (schedulesCounter[schedule] < capacity - 1) {
         filteredSchedules.push(schedule);
       }
     }
@@ -766,7 +757,7 @@ function hourGetter() {
   const now = new Date();
   const currentHour = now.getHours().toString().padStart(2, "0");
   const currentMinutes = now.getMinutes().toString().padStart(2, "0");
-  return `${currentHour}:${currentMinutes}:00`;
+  return `${currentHour}:${currentMinutes}`;
 }
 function todayGetter() {
   const today = new Date();
@@ -796,7 +787,7 @@ function calculateTimeSlots(openingTime, closingTime, capacity) {
     const formattedHour = hour.toString().padStart(2, "0");
     const formattedMinute = minute.toString().padStart(2, "0");
 
-    timeSlots.push(`${formattedHour}:${formattedMinute}:00`);
+    timeSlots.push(`${formattedHour}:${formattedMinute}`);
   }
 
   return timeSlots;
