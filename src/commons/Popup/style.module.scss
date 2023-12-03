@@ -23,6 +23,9 @@
   position: fixed;
   z-index: -1;
 }
+#displayNone {
+  display: none;
+}
 .popup-container {
   height: 30vh;
   width: 47vh;
@@ -120,6 +123,9 @@
     scale: 1;
     transform: translateY(0vh);
   }
+}
+.fake-container-popup-active > #displayNone {
+  display: flex;
 }
 
 // // P O P U P   A C T I V E  R O T A T E   D E S D E   A T R A S
