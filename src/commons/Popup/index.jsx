@@ -1,13 +1,18 @@
 import React from "react";
 import Success from "../../assets/Success";
 import Failed from "../../assets/Failed";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 
 const Popup = ({ popupInfo }) => {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
+  console.log(pathname.includes("/client/cancelReservation/"));
   return (
     <div className="fake-container-popup fake-container-popup-inactive">
-      <div className="popup-container">
+      <div
+        className="popup-container"
+        id={pathname.includes("/client/cancelReservation/") && "displayNone"}
+      >
         <div className="popup-content-container">
           {popupInfo.img ? <Success /> : <Failed />}
           <h1 className="h1-popup-text">{popupInfo.title}</h1>

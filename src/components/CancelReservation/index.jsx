@@ -4,16 +4,25 @@ import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Button from "@mui/material/Button";
 import { red } from "@mui/material/colors";
-import Navbar from "../../commons/Navbar/Navbar.jsx";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router";
 import { useSelector } from "react-redux";
+import Popup from "../../commons/Popup/index.jsx";
 
 export const CancelReservation = () => {
   const [reservation, setReservation] = useState({ createdBy: {}, branch: {} });
   const [loading, setLoading] = useState(true);
   const { reservationId } = useParams();
-
+  const [popupInfo, setPopupInfo] = useState({
+    title: undefined,
+    text: undefined,
+    img: undefined,
+    buttonText: undefined,
+    redirect: undefined,
+  });
+  const logicPopUp = (tag, option, className) => {
+    document.querySelector(tag).classList[option](className);
+  };
   useEffect(() => {
     axios
       .get(`http://localhost:3001/api/users/appointment/${reservationId}`)
@@ -34,8 +43,26 @@ export const CancelReservation = () => {
         `http://localhost:3001/api/users/removeAppointment/${reservationId}`
       )
       .then((res) => {
-        alert("Se eliminó la reserva");
-        navigate("/client/reservations");
+        setPopupInfo({
+          title: `Reserva cancelada exitosamente`,
+          text: ``,
+          img: true,
+          buttonText: `Continuar`,
+          redirect: `/client/reservations`,
+        });
+        logicPopUp(".body", "add", "external-div-container-inactive");
+        logicPopUp(
+          ".fake-container-popup",
+          "remove",
+          "fake-container-popup-inactive"
+        );
+        logicPopUp(
+          ".fake-container-popup",
+          "add",
+          "fake-container-popup-active"
+        );
+        // document.querySelector(".fake-container-popup-active").style.display =
+        //   "flex";
       })
       .catch((error) => {
         alert("Ocurrió un error al eliminar la reserva");
@@ -71,7 +98,7 @@ export const CancelReservation = () => {
   if (loading) return <>Loading...</>;
   return (
     <>
-      <div className={s.container}>
+      <div className={`${s.container} body`}>
         <div className={s.divleft}>
           <div className={s.horiz}>
             <Button
@@ -181,6 +208,7 @@ export const CancelReservation = () => {
           <div className={s.line}></div>
         </div>
       </div>
+      <Popup popupInfo={popupInfo} />
     </>
   );
 };

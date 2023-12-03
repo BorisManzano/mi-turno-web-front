@@ -51,7 +51,7 @@ const ReservationConfirmed = function () {
             <p>
               Para el{" "}
               {reservation.createdBy ? reservation.date.slice(0, 10) : ""} a las{" "}
-              {reservation.createdBy ? reservation.schedule : ""}hs
+              {reservation.createdBy ? reservation.schedule.slice(0, 5) : ""}hs
             </p>
           </div>
 
@@ -98,7 +98,8 @@ const ReservationConfirmed = function () {
             </p>
 
             <p>
-              Horario: {reservation.createdBy ? reservation.schedule : ""} hs
+              Horario:{" "}
+              {reservation.createdBy ? reservation.schedule.slice(0, 5) : ""} hs
             </p>
           </div>
 
