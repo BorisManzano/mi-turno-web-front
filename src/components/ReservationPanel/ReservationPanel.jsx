@@ -4,7 +4,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import axios from "axios";
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router";
+import { useParams, useNavigate } from "react-router";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Countdown from "../../commons/Countdown";
@@ -19,16 +19,16 @@ import {
   Step,
   StepLabel,
   Stepper,
+  Stack,
 } from "@mui/material";
 
 import { useState } from "react";
 import Popup from "../../commons/Popup";
-import { Today } from "@mui/icons-material";
 
 export default function ReservationPanel() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
-
+  const navigate = useNavigate();
   const [appointment, setAppointment] = React.useState({
     reservationId: "",
     branchId: "",
@@ -399,12 +399,43 @@ export default function ReservationPanel() {
               padding: "32px 40px 32px 40px",
             }}
           >
-            <div
-              className="title-panel"
-              style={{ fontWeight: "bold", paddingBottom: "10px" }}
+            <Stack
+              direction="row"
+              useFlexGap
+              flexWrap="wrap"
+              marginTop={"5px"}
+              spacing={{ xs: 1, sm: 2, md: 4 }}
+              justifyContent={"space-between"}
             >
-              Reserva
-            </div>{" "}
+              {" "}
+              <div
+                className="title-panel"
+                style={{ fontWeight: "bold", paddingBottom: "10px" }}
+              >
+                Reserva
+              </div>{" "}
+              {activeStep > 0 && (
+                <Button
+                  variant="contained"
+                  sx={{
+                    color: "white",
+                    background: "#a442f1",
+                    transition: "all 0.7s ease",
+                    "&:hover": {
+                      background: "#7412be ",
+                      transform: "scale(1.05)",
+                    },
+                  }}
+                  onClick={() =>
+                    activeStep === 1
+                      ? window.location.reload()
+                      : setActiveStep(1)
+                  }
+                >
+                  Volver
+                </Button>
+              )}
+            </Stack>
             {activeStep === 0 ? (
               <div className="tx-panel">Selecciona tu sucursal</div>
             ) : (
