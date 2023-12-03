@@ -11,7 +11,7 @@ import OperatorRoutes from "./navigation/OperatorRoutes";
 import { login } from "./state/user";
 import Navbar from "./commons/Navbar/Navbar";
 import Register from "./components/Register";
-import ConfirmationOfRegistration from "./components/ConfirmationOfRegistration";
+import ConfirmAccount from "./components/ConfirmAccount";
 import RouteNotFound from "./components/RouteNotFound";
 function App() {
   const location = useLocation();
@@ -71,10 +71,7 @@ function App() {
 
         {user.isAdmin && <Route path="/admin/*" element={<AdminRoutes />} />}
         <Route path="/recoverPassword/:token" element={<RecoverPassword />} />
-        <Route
-          path="/ConfirmationOfRegistration/:token"
-          element={<ConfirmationOfRegistration />}
-        />
+        <Route path="/account/confirm/:token" element={<ConfirmAccount />} />
         <Route path="/*" element={<RouteNotFound />} />
       </Routes>
     </div>
