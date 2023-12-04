@@ -34,7 +34,16 @@ const ReservationConfirmed = function () {
           deseado o promociones.
         </p>
 
-        <button className="impresion"> ¿Quéres imprimir tu comprobante?</button>
+        <button
+          className="impresion"
+          id="dont-print-me"
+          onClick={() => {
+            window.print();
+          }}
+        >
+          {" "}
+          ¿Quéres imprimir tu comprobante?
+        </button>
       </div>
 
       <div className="contentReservation">
@@ -55,7 +64,7 @@ const ReservationConfirmed = function () {
             </p>
           </div>
 
-          <div className="itemPedidoButton">
+          <div className="itemPedidoButton" id="dont-print-me">
             <button
               className="editReservationBtn"
               onClick={() =>
@@ -102,8 +111,6 @@ const ReservationConfirmed = function () {
               {reservation.createdBy ? reservation.schedule.slice(0, 5) : ""} hs
             </p>
           </div>
-
-          {/* <div className="item3"></div> */}
         </section>
       </div>
     </div>
