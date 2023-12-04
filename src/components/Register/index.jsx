@@ -31,6 +31,7 @@ export default function Register() {
     title: undefined,
     text: undefined,
     img: undefined,
+    buttonText: undefined,
     redirect: undefined,
   });
   const logicPopUp = (tag, option, className) => {

@@ -10,7 +10,12 @@ const Popup = ({ popupInfo }) => {
     <div className="fake-container-popup fake-container-popup-inactive">
       <div
         className="popup-container"
-        id={pathname.includes("/client/cancelReservation/") && "displayNone"}
+        id={
+          (pathname.includes("/client/cancelReservation/") ||
+            pathname === "/" ||
+            pathname === "/login") &&
+          "displayNone"
+        }
       >
         <div className="popup-content-container">
           {popupInfo.img ? <Success /> : <Failed />}
