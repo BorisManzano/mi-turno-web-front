@@ -302,7 +302,15 @@ export default function ReservationPanel() {
       .put("http://localhost:3001/api/users/newAppointment", {
         ...toPut,
       })
-      .then(() => {
+      .then((resp) => {
+        axios.post("http://localhost:3001/api/nodeMailer/appointment/EditConfirmation",{
+          email:user.email,
+          reservationId:toPut.reservationId,
+          date:resp.data[1][0].date.split("T")[0],
+          time:resp.data[1][0].schedule.split(':').slice(0, 2).join(':')
+        }).then((res)=>console.log("email enviado"))
+        .catch((error)=>console.log(error))
+        
         setPopupInfo({
           title: `Turno modificado con exito`,
           text: `Gracias por confiar en nuestro servicio`,

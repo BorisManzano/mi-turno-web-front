@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 import Popup from "../../commons/Popup/index.jsx";
 
 export const CancelReservation = () => {
+const userRedux = useSelector((state) => state.user);
   const [reservation, setReservation] = useState({ createdBy: {}, branch: {} });
   const [loading, setLoading] = useState(true);
   const { reservationId } = useParams();
@@ -61,6 +62,14 @@ export const CancelReservation = () => {
           "add",
           "fake-container-popup-active"
         );
+
+        axios.post("http://localhost:3001/api/nodeMailer/appointment/cancellation",{
+          email:userRedux.email,
+          branch:reservation.branch.name,
+          date:reservation.date.split("T")[0],
+          time:reservation.schedule.slice(0, 5)
+        }).then((res)=>"")
+        .catch((error)=>console.log(error))
         // document.querySelector(".fake-container-popup-active").style.display =
         //   "flex";
       })
@@ -134,7 +143,7 @@ export const CancelReservation = () => {
           <h1>Cancelar Reserva</h1>
           <br />
           <br />
-          <p>Hola {reservation.createdBy.nameAndLast_name},</p>
+          <p>Hola {reservation.createdBy.fullname},</p>
 
           <h3>¿Por qué desea cancelar su reserva?</h3>
 
