@@ -109,7 +109,7 @@ const RecoverPassword = () => {
             <p className="p-recover-password">Nueva contraseña</p>
             <div className="input-container">
               <input
-                className="input"
+                className="inputLogin"
                 type={showPassword ? "text" : "password"}
                 onKeyUp={(e) => setNewPassword(e.target.value)}
                 onChange={handleInputPassword}
@@ -133,7 +133,7 @@ const RecoverPassword = () => {
             <p className="p-recover-password">Repetir contraseña</p>
             <div className="input-container">
               <input
-                className="input"
+                className="inputLogin"
                 type={showPasswordConfirm ? "text" : "password"}
                 onChange={(e) => setNewPasswordConfirmation(e.target.value)}
               />
