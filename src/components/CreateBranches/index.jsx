@@ -45,19 +45,6 @@ const CreateBranches = function () {
     }
   }, []);
 
-  const createdSuccessfully = () => {
-    toast.success(message, {
-      position: "top-center",
-      autoClose: 2000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "dark",
-    });
-  };
-
   const errorMessage = () => {
     toast.error("error creating branch!", {
       position: "top-center",
@@ -205,16 +192,25 @@ const CreateBranches = function () {
                   seleccione un horario de inicio
                 </option>
                 <option value="6:00AM" selected={opTime.value === "6:00AM"}>
-                  6:00 am
+                  6:00 hs
                 </option>
                 <option value="7:00AM" selected={opTime.value === "7:00AM"}>
-                  7:00 am
+                  7:00 hs
                 </option>
                 <option value="8:00AM" selected={opTime.value === "8:00AM"}>
-                  8:00 am
+                  8:00 hs
                 </option>
                 <option value="9:00AM" selected={opTime.value === "9:00AM"}>
-                  9:00 am
+                  9:00 hs
+                </option>
+                <option value="10:00AM" selected={opTime.value === "10:00AM"}>
+                  10:00 hs
+                </option>
+                <option value="11:00AM" selected={opTime.value === "11:00AM"}>
+                  11:00 hs
+                </option>
+                <option value="12:00PM" selected={opTime.value === "12:00PM"}>
+                  12:00 hs
                 </option>
               </select>
             </div>
@@ -233,17 +229,26 @@ const CreateBranches = function () {
                 <option disabled selected>
                   seleccione un horario de cierre
                 </option>
-                <option value="4:00PM" selected={clTime.value === "4:00PM"}>
-                  4:00 pm
+                <option value="15:00" selected={clTime.value === "15:00"}>
+                  15:00 hs
                 </option>
-                <option value="5:00PM" selected={clTime.value === "5:00PM"}>
-                  5:00 pm
+                <option value="16:00" selected={clTime.value === "16:00"}>
+                  16:00 hs
                 </option>
-                <option value="6:00PM" selected={clTime.value === "6:00PM"}>
-                  6:00 pm
+                <option value="17:00" selected={clTime.value === "17:00"}>
+                  17:00 hs
                 </option>
-                <option value="7:00PM" selected={clTime.value === "7:00PM"}>
-                  7:00 pm
+                <option value="18:00" selected={clTime.value === "18:00"}>
+                  18:00 hs
+                </option>
+                <option value="19:00" selected={clTime.value === "19:00"}>
+                  19:00 hs
+                </option>
+                <option value="20:00" selected={clTime.value === "20:00"}>
+                  20:00 hs
+                </option>
+                <option value="21:00" selected={clTime.value === "21:00"}>
+                  21:00 hs
                 </option>
               </select>
             </div>
