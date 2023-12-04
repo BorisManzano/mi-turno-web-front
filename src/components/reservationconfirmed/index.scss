@@ -164,8 +164,7 @@ h1 {
   align-self: stretch;
 }
 .item2 {
-  margin-right: 48px;
-  margin-left: 48px;
+  margin: 0 48px;
 }
 .item1 > h2 {
   color: var(--Black, #000);
@@ -273,4 +272,38 @@ h1 {
 .impresion:hover {
   transform: scale(1.08);
   box-shadow: 0px 3px 19px 1px #8631c7;
+}
+@media print {
+  #dont-print-me,
+  .navbar,
+  .div-promotion-message {
+    display: none;
+  }
+  .contentMessaje {
+    margin-top: 30%;
+    .messaje {
+      width: 80%;
+    }
+  }
+  .contentReservation {
+    gap: 0;
+    .contentPedido {
+      justify-content: center;
+      margin-top: 30%;
+      p {
+        text-align: center;
+      }
+    }
+  }
+  .contentInfo {
+    display: flex;
+    align-self: center;
+    align-content: center;
+    width: 85%;
+    gap: 0;
+    .item2 {
+      margin: 0;
+      flex: none;
+    }
+  }
 }
