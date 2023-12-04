@@ -67,6 +67,21 @@ export const TableList = ({ datatype, data }) => {
     column4 = "Sucursal";
   }
   //puede ser operadores, sucursales o historial de reservas.
+  // funcion confirmacion de reserva de parte del operador 
+
+  const handleConfirmedAssistence = (id, e)=>{
+    const button = document.getElementById(`${id}`)
+    axios.put(`http://localhost:3001/api/appointments/attended/${id}`)
+    .then(()=>{ 
+      alert("asistencia confirmada")
+   
+    })
+    .catch(()=>alert("no fue posible confirmar la asistencia"))
+    console.log("evento y id =>", id, e)
+    button.disabled = true   
+    button.innerText = "confirmado!"
+    button.onClick = null
+  }
   return (
     <>
       <div className={s.container} style={{ marginTop: "1.5%" }}>
@@ -182,6 +197,7 @@ export const TableList = ({ datatype, data }) => {
                     )}
                     {dataType === "OperatorReservas" && (
                       <Button
+                        id={`${objIns[objKeys[1]]}`}
                         variant="contained"
                         style={{
                           backgroundColor: "#F5F5F5",
@@ -189,6 +205,13 @@ export const TableList = ({ datatype, data }) => {
                           textTransform: "none",
                           padding: "0 !important",
                         }}
+                        onClick={
+                          (event) =>
+                          handleConfirmedAssistence(
+                             objIns[objKeys[1]],
+                              event
+                            )
+                        }
                       >
                         Confirmar
                       </Button>
