@@ -5,7 +5,7 @@ export const logout = createAction("LOGOUT");
 const initialState = {
   fullname: null,
   email: null,
-  dni: null,
+  DNI: null,
   telephone: null,
   isAdmin: false,
   isOperator: false,

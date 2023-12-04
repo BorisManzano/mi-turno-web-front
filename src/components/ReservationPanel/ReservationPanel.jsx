@@ -80,7 +80,7 @@ export default function ReservationPanel() {
 
           setAppointment(data);
         })
-        .catch(() => console.log("ERROR AXIOS RESERVATION"));
+        .catch(() => console.error("ERROR AXIOS RESERVATION"));
     } else {
       setEditing(false);
     }
@@ -90,7 +90,7 @@ export default function ReservationPanel() {
       .then((result) => {
         setBranches(result.data);
       })
-      .catch(() => console.log("NO BRANCHES AVAILABLE"));
+      .catch(() => console.error("NO BRANCHES AVAILABLE"));
   }, [reservationId]);
   // const selectedDate = reservationId ? new Date(appointment.date) : null;
   //---------------------------------------------
@@ -158,7 +158,6 @@ export default function ReservationPanel() {
       if (dateComparator(e.$d, appointment.date))
         fulfilledSlots.push(appointment.schedule.slice(0, 5));
     });
-    // console.log("HORARIOS USADOS", fulfilledSlots);
     let schedulesCounter = {};
     OcurrencyChecker(fulfilledSlots, schedulesCounter);
 
@@ -173,7 +172,6 @@ export default function ReservationPanel() {
     });
 
     for (const schedule in schedulesCounter) {
-      // console.log("schedulescONTUNER[schedule]", schedulesCounter[schedule]);
       if (schedulesCounter[schedule] === capacity - 1) {
         filteredSchedules.push(
           schedule + "   Último turno disponible en este horario!!"

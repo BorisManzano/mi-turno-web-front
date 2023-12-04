@@ -49,7 +49,7 @@ export default function ClientProfileEdit() {
             password: user.password,
           });
         })
-        .catch((err) => console.log(err));
+        .catch((err) => console.error(err));
     }
   }, [email]);
   const [disabled, setDisabled] = useState(true);
@@ -127,7 +127,7 @@ export default function ClientProfileEdit() {
           position: toast.POSITION.TOP_CENTER,
         });
       })
-      .catch((err) => console.log("ERROR EN PEDIDO AXIOS", err));
+      .catch((err) => console.error("ERROR EN PEDIDO AXIOS", err));
   }
 
   return (

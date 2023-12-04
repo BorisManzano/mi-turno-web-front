@@ -14,7 +14,7 @@ export const OperatorReservationsList = () => {
   useEffect(() => {
     axios
       .get(
-        `http://localhost:3001/api/users/operator/reservationsList/${user.dni}`
+        `http://localhost:3001/api/users/operator/reservationsList/${user.DNI}`
       )
       .then((res) => {
         setReservationsList(
@@ -23,7 +23,7 @@ export const OperatorReservationsList = () => {
             const { createdBy, reservationId, branch, date, schedule } = obj;
             const username = createdBy.fullname;
             const branchname = branch.name;
-            return { username, reservationId, date, branchname,schedule  };
+            return { username, reservationId, date, branchname, schedule };
           })
         );
       })

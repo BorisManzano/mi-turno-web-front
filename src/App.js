@@ -27,7 +27,7 @@ function App() {
           const userData = {
             fullname: res.data.fullname,
             email: res.data.email,
-            dni: res.data.DNI,
+            DNI: res.data.DNI,
             isAdmin: res.data.isAdmin,
             isOperator: res.data.isOperator,
             isConfirmed: res.data.isConfirmed,
