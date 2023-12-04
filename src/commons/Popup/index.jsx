@@ -6,7 +6,6 @@ import { useLocation, useNavigate } from "react-router";
 const Popup = ({ popupInfo }) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  console.log(pathname.includes("/client/cancelReservation/"));
   return (
     <div className="fake-container-popup fake-container-popup-inactive">
       <div

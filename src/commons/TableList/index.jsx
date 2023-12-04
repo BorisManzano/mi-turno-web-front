@@ -27,15 +27,15 @@ export const TableList = ({ datatype, data }) => {
       });
   };
 
-  const handleOnClickDeleteBranch = (id, e) =>{
+  const handleOnClickDeleteBranch = (id, e) => {
     e.preventDefault();
     axios
-    .put(`http://localhost:3001/api/users/admin/deleteBranch/${id}`)
-    .then(() => {
+      .put(`http://localhost:3001/api/users/admin/deleteBranch/${id}`)
+      .then(() => {
         alert("Se eliminó la sucursal");
         window.location.reload();
       });
-  }
+  };
 
   const dataType = datatype;
   const objKeys = Object.keys(data[0]);
@@ -89,18 +89,18 @@ export const TableList = ({ datatype, data }) => {
                   </div>
                   <div className={s.rowItem}>
                     <p>{column3}</p>
-                    
-                      {dataType.includes("Reservas") ? (
-                        <b>
-                          <>{objIns[objKeys[2]].split("T")[0]} </>
-                          &nbsp; · &nbsp;
-                          <>{objIns[objKeys[4]].slice(0, 5)}hs</>
-                        </b>
 
-                      ) : (
-                        objIns[objKeys[2]] == "Sin asignar" ?( <b style={{color: red[500]}}>Sin asignar</b> ): (<b>{objIns[objKeys[2]]}</b>)
-                      )}
-                   
+                    {dataType.includes("Reservas") ? (
+                      <b>
+                        <>{objIns[objKeys[2]].split("T")[0]} </>
+                        &nbsp; · &nbsp;
+                        <>{objIns[objKeys[4]].slice(0, 5)}hs</>
+                      </b>
+                    ) : objIns[objKeys[2]] == "Sin asignar" ? (
+                      <b style={{ color: red[500] }}>Sin asignar</b>
+                    ) : (
+                      <b>{objIns[objKeys[2]]}</b>
+                    )}
                   </div>
                   <div className={s.rowItem}>
                     <p>{column4}</p>
@@ -150,7 +150,9 @@ export const TableList = ({ datatype, data }) => {
                         <Button
                           onClick={(e) => {
                             e.preventDefault();
-                            navigate(`/admin/edit/branch/${objIns[objKeys[4]]}`); //recibe adicion almente el id de la sucursal
+                            navigate(
+                              `/admin/edit/branch/${objIns[objKeys[4]]}`
+                            ); //recibe adicion almente el id de la sucursal
                           }}
                           variant="contained"
                           style={{
@@ -165,10 +167,7 @@ export const TableList = ({ datatype, data }) => {
                         &nbsp; &nbsp;
                         <Button
                           onClick={(event) =>
-                            handleOnClickDeleteBranch(
-                              objIns[objKeys[4]],
-                              event
-                            )
+                            handleOnClickDeleteBranch(objIns[objKeys[4]], event)
                           }
                           variant="contained"
                           style={{

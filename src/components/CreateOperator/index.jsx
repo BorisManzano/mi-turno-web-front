@@ -8,7 +8,7 @@ import Popup from "../../commons/Popup";
 
 const CreateOperator = function () {
   const navigate = useNavigate();
-  const { dni } = useParams();
+  const { DNI } = useParams();
   const fullname = useInput("");
   const [emailBlocked, setEmailBlocked] = useState("");
   const email = useInput("");
@@ -33,9 +33,9 @@ const CreateOperator = function () {
   }, []);
 
   useEffect(() => {
-    if (dni) {
+    if (DNI) {
       axios
-        .get(`http://localhost:3001/api/users/operator/info/${dni}`)
+        .get(`http://localhost:3001/api/users/operator/info/${DNI}`)
         .then((res) => {
           fullname.setValue(res.data.operator.fullname);
           setEmailBlocked(res.data.operator.email);
@@ -72,7 +72,7 @@ const CreateOperator = function () {
     let data = {
       fullname: fullname.value,
       DNI: dni_.value,
-      email: dni ? emailBlocked : email.value,
+      email: DNI ? emailBlocked : email.value,
       branchId: sucursal.value,
       isOperator: true,
       isConfirmed: true,
@@ -87,7 +87,7 @@ const CreateOperator = function () {
       })
       .then(() => {
         setPopupInfo({
-          title: dni ?`Cambios guardados` :`Operador creado con exito`,
+          title: DNI ? `Cambios guardados` : `Operador creado con exito`,
           text: `Gracias por confiar en nuestro servicio`,
           img: true,
           redirect: `/admin/operators`,
@@ -115,7 +115,7 @@ const CreateOperator = function () {
     <>
       <div className={`${s.parent} body`}>
         <form onSubmit={handleSubmit} className={s.f}>
-          <h1>{dni ? "Editar Operador" : "Crear Operador"}</h1>
+          <h1>{DNI ? "Editar Operador" : "Crear Operador"}</h1>
           <div className={s.inputMail}>
             <Fullname
               value={fullname.value}
@@ -126,7 +126,7 @@ const CreateOperator = function () {
             <label htmlFor="email" className={s.textInputs}>
               Mail
             </label>
-            {dni ? (
+            {DNI ? (
               <input
                 style={{
                   backgroundColor: "#E3E3E3",
@@ -153,7 +153,7 @@ const CreateOperator = function () {
           </div>
           <div className={s.rowForm}>
             <div>
-              <label htmlFor="dni" className={s.textInputs}>
+              <label htmlFor="DNI" className={s.textInputs}>
                 DNI
               </label>
               <input
@@ -196,7 +196,7 @@ const CreateOperator = function () {
           <div className={s.rowForm}>
             <div>
               <label htmlFor="password" className={s.textInputs}>
-                {dni
+                {DNI
                   ? "Nueva Contraseña (opcional)"
                   : "Contraseña (obligatorio)"}
               </label>
@@ -218,7 +218,7 @@ const CreateOperator = function () {
                   {...password}
                   onFocus={handleToggleFocus}
                   onBlur={handleToggleFocus}
-                  required={dni == null}
+                  required={DNI == null}
                 />
               </div>
             </div>
@@ -244,7 +244,7 @@ const CreateOperator = function () {
                   className={s.inputPassword}
                   onFocus={handleToggleFocus}
                   onBlur={handleToggleFocus}
-                  required={dni == null}
+                  required={DNI == null}
                 />
               </div>
             </div>
@@ -254,7 +254,7 @@ const CreateOperator = function () {
             className={s.btnSingIn}
             style={{ marginTop: "3%" }}
           >
-            <h3>{dni ? "Guardar Cambios" : "Registrar"}</h3>
+            <h3>{DNI ? "Guardar Cambios" : "Registrar"}</h3>
           </button>
         </form>
       </div>

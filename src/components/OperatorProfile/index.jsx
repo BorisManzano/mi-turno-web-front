@@ -17,7 +17,7 @@ const OperatorProfile = function () {
   const user = useSelector((state) => state.user);
   useEffect(() => {
     axios
-      .get(`http://localhost:3001/api/users/operator/info/${user.dni}`)
+      .get(`http://localhost:3001/api/users/operator/info/${user.DNI}`)
       .then((result) => {
         setBranchName(result.data.name);
       });
@@ -112,7 +112,7 @@ const OperatorProfile = function () {
         const payload = {
           fullname: resp.data.fullname,
           email: resp.data.email,
-          dni: resp.data.DNI,
+          DNI: resp.data.DNI,
           telephone: null,
           isOperator: resp.data.isOperator,
         };
@@ -123,7 +123,7 @@ const OperatorProfile = function () {
         });
         setDisabled(true);
       })
-      .catch((error) => console.log(error));
+      .catch((error) => console.error(error));
   };
 
   return (
@@ -163,12 +163,12 @@ const OperatorProfile = function () {
 
         <div className="itemFila-O-P">
           <div className="subItemFila">
-            <label htmlFor="dni">DNI</label>
+            <label htmlFor="DNI">DNI</label>
             <input
               type="text"
               name="Dni"
-              id="dni"
-              defaultValue={user.dni}
+              id="DNI"
+              defaultValue={user.DNI}
               className="inputLogin"
               readOnly
             />

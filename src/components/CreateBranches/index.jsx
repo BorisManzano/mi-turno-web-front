@@ -40,7 +40,7 @@ const CreateBranches = function () {
           setMesagge("Updated Successfully");
         })
         .catch((error) => {
-          console.log("Error:", error);
+          console.error("Error:", error);
         });
     }
   }, []);
@@ -85,8 +85,10 @@ const CreateBranches = function () {
       .then(() => {
         // createdSuccessfully();
         setPopupInfo({
-          title: id ? `Cambios guardados`:`Sucursal creada con exito`,
-          text: id ? `Gracias por confiar en nuestro servicio`:`No olvide asignarle un operador`,
+          title: id ? `Cambios guardados` : `Sucursal creada con exito`,
+          text: id
+            ? `Gracias por confiar en nuestro servicio`
+            : `No olvide asignarle un operador`,
           img: true,
           redirect: `/admin/allBranches`,
         });
@@ -106,8 +108,6 @@ const CreateBranches = function () {
         errorMessage();
         return error;
       });
-
-    console.log(info);
   };
 
   return (

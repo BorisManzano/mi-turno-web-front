@@ -12,7 +12,7 @@ const AdministratorProfile = function () {
   const navigate = useNavigate();
   const [data, setData] = useState({
     fullname: "",
-    dni: "",
+    DNI: "",
     email: "",
     password: "",
   });
@@ -74,7 +74,7 @@ const AdministratorProfile = function () {
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [disabled, setDisabled] = useState(true);
-  const { dni, email, fullname } = user;
+  const { DNI, email, fullname } = user;
   function handleEditPasswordClick(e) {
     e.preventDefault();
     setDisabled(false);
@@ -97,7 +97,7 @@ const AdministratorProfile = function () {
 
     const info = {
       fullname: data.fullname,
-      DNI: data.dni,
+      DNI: data.DNI,
       password: data.password,
     };
     const toPut = { email: user.email, ...info };
@@ -118,14 +118,14 @@ const AdministratorProfile = function () {
         const payload = {
           fullname: resp.data.fullname,
           email: resp.data.email,
-          dni: resp.data.DNI,
+          DNI: resp.data.DNI,
           telephone: null,
           isAdmin: resp.data.isAdmin,
         };
         dispatch(login(payload));
         navigate("/admin/allBranches");
       })
-      .catch((error) => console.log(error));
+      .catch((error) => console.error(error));
   };
   return (
     <div className="bodyContent">
@@ -160,13 +160,13 @@ const AdministratorProfile = function () {
         </div>
 
         <div className="itemPerfilAdm">
-          <label htmlFor="dni">DNI</label>
+          <label htmlFor="DNI">DNI</label>
 
           <input
             type="text"
-            name="dni"
-            id="dni"
-            defaultValue={dni}
+            name="DNI"
+            id="DNI"
+            defaultValue={DNI}
             onChange={handleChanges}
           />
         </div>

@@ -13,7 +13,6 @@ const ConfirmAccount = function () {
     axios
       .put(`http://localhost:3001/api/nodeMailer/confirmation/${token}`)
       .then((response) => {
-        console.log(response);
         setConfirmed(true);
       })
       .catch((error) => {
