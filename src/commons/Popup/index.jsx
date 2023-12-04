@@ -6,12 +6,16 @@ import { useLocation, useNavigate } from "react-router";
 const Popup = ({ popupInfo }) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  console.log(pathname.includes("/client/cancelReservation/"));
   return (
     <div className="fake-container-popup fake-container-popup-inactive">
       <div
         className="popup-container"
-        id={pathname.includes("/client/cancelReservation/") && "displayNone"}
+        id={
+          (pathname.includes("/client/cancelReservation/") ||
+            pathname === "/" ||
+            pathname === "/login") &&
+          "displayNone"
+        }
       >
         <div className="popup-content-container">
           {popupInfo.img ? <Success /> : <Failed />}

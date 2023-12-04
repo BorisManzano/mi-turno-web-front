@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import s from "./style.module.scss";
 import useInput from "../../hooks/useInput";
 import axios from "axios";
+import Bag from "../../assets/Bag";
 
 function Reports() {
   const sucursal = useInput("");
@@ -44,6 +45,18 @@ function Reports() {
             );
           })}
         </select>
+      </div>
+      <div className={s.cont}>
+        <div className={s.number}>
+          <div className={s.pos}>
+            <div>
+              <p className={s.num}>100</p>
+              <p className={s.text}>Total de reservas</p>
+            </div>
+            <Bag className={s.icon} />
+          </div>
+          <div className={s.borderBtn} />
+        </div>
       </div>
     </div>
   );

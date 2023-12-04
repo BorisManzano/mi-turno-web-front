@@ -20,7 +20,11 @@ export const AdministratorSucursalesList = () => {
           res.data.map((obj) => {
             const { name, email, capacity, openingTime, closingTime, id } = obj;
             const operator = obj.operator;
-            const horario = openingTime + " to " + closingTime;
+            const horario =
+              openingTime.slice(0, 5) +
+              "hs to " +
+              closingTime.slice(0, 5) +
+              "hs";
             return { name, email, capacity, horario, id, operator };
           })
         );

@@ -17,21 +17,19 @@ export const AdministratorOperatorsList = () => {
       .then((res) => {
         setAllData(
           res.data.map((obj) => {
-            const { fullname, email,DNI,id , branchInfo } = obj;
+            const { fullname, email, DNI, id, branchInfo } = obj;
             const branchName = branchInfo ? branchInfo.name : "Sin asignar";
             return { fullname, email, branchName, DNI, id };
           })
         );
-    
       })
-      .then(()=>{
+      .then(() => {
         setLoading(false);
       })
       .catch((error) => {
         setLoading(false);
         console.error(error);
       });
-      
   }, []);
   // const operators = allData;
 
@@ -67,4 +65,3 @@ export const AdministratorOperatorsList = () => {
     </>
   );
 };
-

@@ -3,17 +3,27 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../state/user";
 import { Tooltip } from "react-tooltip";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { useState } from "react";
 import PasswordAndValidations from "../../commons/Form/PasswordAndValidations";
-
+import { useEffect } from "react";
+import s from "../Register/style.module.scss";
 const OperatorProfile = function () {
-  const [disabled, setDisabled] = useState(true);
+  const [branchName, setBranchName] = useState("");
   const [data, setData] = useState({
-    fullname: "",
-    DNI: "",
-    email: "",
     password: "",
   });
+  const user = useSelector((state) => state.user);
+  useEffect(() => {
+    axios
+      .get(`http://localhost:3001/api/users/operator/info/${user.DNI}`)
+      .then((result) => {
+        setBranchName(result.data.name);
+      });
+  }, []);
+
+  const [disabled, setDisabled] = useState(true);
   const [password, setPassword] = useState("");
   const [confirmPswd, setConfirmPswd] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -66,29 +76,54 @@ const OperatorProfile = function () {
     setDisabled(false);
   }
 
-  const date = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   const handleUpdateProfile = (e) => {
     e.preventDefault();
+    if (confirmPswd !== password) {
+      return toast.error("LAS CONTRASEÑAS NO COINCIDEN", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+      return;
+    }
+    if (confirmPswd && password && !checklist.validation) {
+      toast.error("PASSWORD ERROR", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+      return;
+    }
     const info = {
-      fullname: e.target.name.value,
-      email: e.target.email.value,
+      password: data.password,
     };
+    const toPut = { email: user.email, ...info };
 
+    for (const key in info) {
+      if (info[key] !== "" && info[key] !== user[key]) {
+        toPut[key] = info[key];
+      } else {
+        toPut[key] = user[key];
+      }
+    }
     axios
-      .put("http://localhost:3001/api/users/edit/profile", info)
+      .put("http://localhost:3001/api/users/edit/profile", toPut, {
+        withCredentials: true,
+      })
       .then((resp) => {
         const payload = {
           fullname: resp.data.fullname,
           email: resp.data.email,
-          dni: resp.data.DNI,
+          DNI: resp.data.DNI,
           telephone: null,
+          isOperator: resp.data.isOperator,
         };
 
         dispatch(login(payload));
+        toast.success("TU PERFIL FUE ACTUALIZADO", {
+          position: toast.POSITION.TOP_CENTER,
+        });
+        setDisabled(true);
       })
-      .catch((error) => console.log(error));
+      .catch((error) => console.error(error));
   };
 
   return (
@@ -110,7 +145,7 @@ const OperatorProfile = function () {
             name="name"
             id="nombre"
             className="inputLogin"
-            defaultValue={date.fullname}
+            defaultValue={user.fullname}
           />
         </div>
 
@@ -121,19 +156,19 @@ const OperatorProfile = function () {
             name="email"
             id="email"
             className="inputLogin"
-            defaultValue={date.email}
+            defaultValue={user.email}
             readOnly
           />
         </div>
 
         <div className="itemFila-O-P">
           <div className="subItemFila">
-            <label htmlFor="dni">DNI</label>
+            <label htmlFor="DNI">DNI</label>
             <input
               type="text"
               name="Dni"
-              id="dni"
-              defaultValue={date.dni}
+              id="DNI"
+              defaultValue={user.DNI}
               className="inputLogin"
               readOnly
             />
@@ -147,12 +182,7 @@ const OperatorProfile = function () {
               className="select-style"
               disabled
             >
-              <option selected>
-                /sucursal a la que pertenece valor por default/
-              </option>
-              <option value="moreno">moreno</option>
-              <option value="puerto madero">puerto madero</option>
-              <option value="palermo">palermo</option>
+              <option selected>{branchName}</option>
             </select>
           </div>
         </div>
@@ -171,7 +201,7 @@ const OperatorProfile = function () {
                 style={{ width: "100%" }}
                 name="password"
                 readOnly
-                className="inputLogin"
+                className={s.inputAreaPV}
                 type="password"
                 defaultValue={"Default123"}
                 // data-tooltip-id="my-tooltip"
@@ -215,6 +245,7 @@ const OperatorProfile = function () {
         )}
         <div className="divBtn">
           <button className="O-perfilBtn">Aceptar</button>
+          <ToastContainer />
         </div>
       </form>
     </div>
