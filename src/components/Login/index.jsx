@@ -1,11 +1,12 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
+import { login } from "../../state/user";
 
 const Login = () => {
-  const user = useSelector((state) => state.user);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [userInputValue, setUserInputValue] = useState();
   const [passwordInputValue, setPasswordInputValue] = useState();
   const [invalidInformation, setInvalidInformation] = useState();
@@ -22,6 +23,7 @@ const Login = () => {
         }
       )
       .then((res) => {
+        dispatch(login(res.data));
         res.data.isAdmin
           ? navigate("/admin/allBranches")
           : res.data.isOperator
