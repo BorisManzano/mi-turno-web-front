@@ -1,6 +1,8 @@
 import React from "react";
+import { useLocation } from "react-router";
 
 export default function Check() {
+  const location = useLocation();
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -8,6 +10,7 @@ export default function Check() {
       height="24"
       viewBox="0 0 24 24"
       fill="none"
+      style={location.pathname === "/login" && { width: "70", height: "70" }}
     >
       <path
         fillRule="evenodd"
