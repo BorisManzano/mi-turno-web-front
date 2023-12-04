@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { TableList } from "../../commons/TableList";
 import axios from "axios";
-import s from "./index.scss";
+import s from "./style.module.scss";
 import { Button, accordionActionsClasses } from "@mui/material";
 import { useNavigate } from "react-router";
 
@@ -36,11 +36,13 @@ export const AdministratorOperatorsList = () => {
   if (loading) return <>Loading...</>;
   else if (allData.length == 0)
     return (
-      <div className={s.mid}>
-        <h1>No hay operadores</h1>
+  <div className={s.container}>
+     
+        <h1 style={{margin:"20px"}}>No hay operadores</h1>
+       
         <Button
           onClick={(e) => {
-            navigate(`/`);
+            navigate(`/admin/create/operador`);
           }}
           variant="contained"
           style={{
@@ -48,10 +50,13 @@ export const AdministratorOperatorsList = () => {
             color: "#A442F1",
             textTransform: "none",
             padding: "0 !important",
+            margin:"0",
           }}
         >
           Crear operador
         </Button>
+        
+      
       </div>
     );
   return (

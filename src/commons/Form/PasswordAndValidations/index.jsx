@@ -21,16 +21,16 @@ function PasswordAndValidations({
   const location = useLocation();
   const { pathname } = location;
   return (
-    <div>
-      <div>
-        <div
+    <div style={{width:"100%"}}>
+      <div style={{width:"100%"}}>
+        <div style={{width:"100%"}} 
           className={
             pathname === ("/admin/profile" || "/operator/profile")
               ? s.password
               : s.rowForm
           }
         >
-          <div
+          <div style={{width:"100%"}}
             className={
               pathname === ("/admin/profile" || "/operator/profile")
                 ? s.password1
@@ -40,7 +40,7 @@ function PasswordAndValidations({
             <label htmlFor="password" className={s.textInputs}>
               Contraseña
             </label>
-            <div
+            <div style={{width:"95%"}}
               className={
                 pathname === ("/admin/profile" || "/operator/profile")
                   ? focus && value === confirmPswd
@@ -76,7 +76,7 @@ function PasswordAndValidations({
             <label htmlFor="password" className={s.textInputs}>
               Repetir Contraseña
             </label>
-            <div
+            <div style={{width:"95%"}}
               className={
                 pathname === ("/admin/profile" || "/operator/profile")
                   ? focus && value === confirmPswd
@@ -110,7 +110,7 @@ function PasswordAndValidations({
           </div>
         </div>
       </div>
-      <div
+      <div style={{width:"96%"}}
         className={
           pathname === ("/admin/profile" || "/operator/profile")
             ? s.warningP

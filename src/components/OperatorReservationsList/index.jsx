@@ -3,7 +3,7 @@ import { TableList } from "../../commons/TableList";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { Button } from "@mui/material";
-import s from "./index.scss";
+import s from "./style.module.scss";
 import { useNavigate } from "react-router";
 
 export const OperatorReservationsList = () => {
@@ -38,7 +38,7 @@ export const OperatorReservationsList = () => {
   if (loading) return <>Loading...</>;
   else if (reservationsList.length == 0)
     return (
-      <div className={s.mid}>
+      <div className={s.container}>
         <h1>No hay Reservas por confirmar</h1>
       </div>
     );
