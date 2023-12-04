@@ -195,6 +195,7 @@ const AdministratorProfile = function () {
             </h4>
           </div>
         ) : (
+          <div style={{width:"91%"}}>
           <PasswordAndValidations
             value={data.password}
             handleInputConfirmPswd={handleInputConfirmPswd}
@@ -208,6 +209,7 @@ const AdministratorProfile = function () {
             checklist={checklist}
             focus={focus}
           />
+          </div>
         )}
         <div>
           <button className="perfilBtn" onClick={handleUpdateProfile}>

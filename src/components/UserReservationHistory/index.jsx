@@ -36,22 +36,24 @@ export const UserReservationHistory = () => {
   if (loading) return <>Loading...</>;
   else if (reservations.length == 0)
     return (
-      <div className={s.mid}>
-        <h1>No hay reservas</h1>
-        <Button
-          onClick={(e) => {
-            navigate(`/`);
-          }}
-          variant="contained"
-          style={{
-            backgroundColor: "#F5F5F5",
-            color: "#A442F1",
-            textTransform: "none",
-            padding: "0 !important",
-          }}
-        >
-          Crear Reserva
-        </Button>
+      <div className={s.container}>
+    
+          <h1 style={{margin:"20px"}}>No hay reservas</h1>
+          <Button
+            onClick={(e) => {
+              navigate(`/client/newReservation`);
+            }}
+            variant="contained"
+            style={{
+              backgroundColor: "#F5F5F5",
+              color: "#A442F1",
+              textTransform: "none",
+              padding: "0 !important",
+            }}
+          >
+            Crear Reserva
+          </Button>
+      
       </div>
     );
   else
