@@ -8,6 +8,7 @@ import Popup from "../../commons/Popup";
 import PasswordAndValidations from "../../commons/Form/PasswordAndValidations";
 
 const CreateOperator = function () {
+
   const navigate = useNavigate();
   const { dni } = useParams();
   const fullname = useInput("");
@@ -16,6 +17,47 @@ const CreateOperator = function () {
   const dni_ = useInput(0);
   const sucursal = useInput("");
   const [disabled, setDisabled] = useState(false);
+
+  const sucursales = useInput([]);
+  const [sinSuc, setSinSuc] = useState(false);
+  const [data, setData] = useState({});
+  const [popupInfo, setPopupInfo] = useState({
+    title: undefined,
+    text: undefined,
+    img: undefined,
+    redirect: undefined,
+  });
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:3001/api/users/admin/sucursalesList")
+      .then((res) => {
+        sucursales.setValue(res.data);
+      });
+  }, []);
+
+  useEffect(() => {
+    if (dni) {
+      setDisabled(true);
+      axios
+        .get(`http://localhost:3001/api/users/operator/info/${dni}`)
+        .then((res) => {
+          fullname.setValue(res.data.operator.fullname);
+          setEmailBlocked(res.data.operator.email);
+          dni_.setValue(res.data.operator.DNI);
+          if (res.data.name) {
+            console.log(
+              sucursales.value.filter((suc) => suc.name === res.data.name)
+            );
+            const obj = sucursales.value.filter(
+              (suc) => suc.name === res.data.name
+            )[0];
+            sucursal.setValue(obj ? obj.id : null);
+          } else if (!res.data.name) setSinSuc(true);
+        });
+    }
+  }, [sucursales.value]);
+
  //====================PASSWORD=========================
  const [password, setPassword] = useState("");
  const [confirmPswd, setConfirmPswd] = useState("");
@@ -65,57 +107,12 @@ const CreateOperator = function () {
  };
  //====================================================
  
-  //const password = useInput("");
- //const confirmPassword = useInput("");
-  const sucursales = useInput([]);
-  const [sinSuc, setSinSuc] = useState(false);
-  const [showValids, setShowValids] = useState(false);
-  const [data, setData] = useState({});
-  const [popupInfo, setPopupInfo] = useState({
-    title: undefined,
-    text: undefined,
-    img: undefined,
-    redirect: undefined,
-  });
-  useEffect(() => {
-    axios
-      .get("http://localhost:3001/api/users/admin/sucursalesList")
-      .then((res) => {
-        sucursales.setValue(res.data);
-      });
-  }, []);
-
-  useEffect(() => {
-    if (dni) {
-      setDisabled(true);
-      axios
-        .get(`http://localhost:3001/api/users/operator/info/${dni}`)
-        .then((res) => {
-          fullname.setValue(res.data.operator.fullname);
-          setEmailBlocked(res.data.operator.email);
-          dni_.setValue(res.data.operator.DNI);
-          if (res.data.name) {
-            console.log(
-              sucursales.value.filter((suc) => suc.name === res.data.name)
-            );
-            const obj = sucursales.value.filter(
-              (suc) => suc.name === res.data.name
-            )[0];
-            sucursal.setValue(obj ? obj.id : null);
-          } else if (!res.data.name) setSinSuc(true);
-        });
-    }
-  }, [sucursales.value]);
-
-  //
- 
   const logicPopUp = (tag, option, className) => {
     document.querySelector(tag).classList[option](className);
   };
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    //if(fullname.value !== "" && dni_.value !== 0 && sucursal.value !== "" && (email.value !== "" || emailBlocked != "")){
     console.log(parseInt(sucursal.value))
     let data = {
       fullname: fullname.value,
