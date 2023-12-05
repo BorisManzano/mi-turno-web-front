@@ -133,7 +133,7 @@ export default function ClientProfileEdit() {
       .catch((err) => console.error("ERROR EN PEDIDO AXIOS", err));
   }
    const handleDeleteUser =(e)=>{
-    axios.delete("http://localhost:3001/api/users/delete",{email:email})
+    axios.put("http://localhost:3001/api/users/delete",{email:email})
     .then((resp)=>{
       console.log("se elimino correctamente")
       document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
