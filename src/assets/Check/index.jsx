@@ -6,11 +6,10 @@ export default function Check() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
+      width={location.pathname === ("/" || "login") ? `70` : `24`}
+      height={location.pathname === ("/" || "login") ? `70` : `24`}
       viewBox="0 0 24 24"
       fill="none"
-      style={location.pathname === "/login" && { width: "70", height: "70" }}
     >
       <path
         fillRule="evenodd"
