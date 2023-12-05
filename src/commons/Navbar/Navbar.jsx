@@ -20,7 +20,7 @@ const Navbar = () => {
           pathname !== "/register" ? navigate("/register") : navigate("/login");
         } else {
           dispatch(logout());
-          navigate("/");
+          navigate("/index");
         }
       })
       .catch((err) => console.error(err));
@@ -229,9 +229,18 @@ const Navbar = () => {
                 </div>
               ) : (
                 <div>
-                  {document
+                  {/* {document
                     .querySelector(".navbar")
-                    ?.classList.add("special-notLoggedIn")}
+                    ?.classList.add("special-notLoggedIn")} */}
+                  <button
+                    className="navbar-button"
+                    onClick={() => navigate("/login")}
+                    style={{
+                      display: pathname === `/index` ? `flex` : `none`,
+                    }}
+                  >
+                    <h4 className="h4-navbar">Login</h4>
+                  </button>
                 </div>
               )}
               <div style={{ margin: "0px 0px 0px 35px" }}>
