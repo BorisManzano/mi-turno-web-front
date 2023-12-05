@@ -3,7 +3,6 @@ import { red } from "@mui/material/colors";
 import React, { useState } from "react";
 import s from "./style.module.scss";
 import { Tooltip } from "react-tooltip";
-
 import { useNavigate } from "react-router";
 import axios from "axios";
 
@@ -79,10 +78,12 @@ export const TableList = ({ datatype, data }) => {
         alert("asistencia confirmada");
       })
       .catch(() => alert("no fue posible confirmar la asistencia"));
+    console.log("reservas traidas del back",objKeys)
     console.log("evento y id =>", id, e);
     button.disabled = true;
-    button.innerText = "confirmado!";
+    button.innerText = "Confirmado ✓";   
     button.onClick = null;
+    window.location.reload()
   };
   return (
     <>
@@ -248,17 +249,26 @@ export const TableList = ({ datatype, data }) => {
                       <Button
                         id={`${objIns[objKeys[1]]}`}
                         variant="contained"
-                        style={{
+                        style={
+                          objIns[objKeys[5]] === false ?
+                          {
                           backgroundColor: "#F5F5F5",
                           color: "#A442F1",
                           textTransform: "none",
                           padding: "0 !important",
-                        }}
+                        }:{
+                          backgroundColor: "#b93af8",
+                          color: "white",
+                          textTransform: "none",
+                          padding: "0 !important",
+                        }
+                       
+                      }
                         onClick={(event) =>
-                          handleConfirmedAssistence(objIns[objKeys[1]], event)
+                          objIns[objKeys[5]] === false? handleConfirmedAssistence(objIns[objKeys[1]], event) : ""
                         }
                       >
-                        Confirmar
+                       {objIns[objKeys[5]] === false? "Confirmar" : "Confirmado ✓" } 
                       </Button>
                     )}
 

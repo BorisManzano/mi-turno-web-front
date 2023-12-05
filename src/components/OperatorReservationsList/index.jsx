@@ -17,13 +17,14 @@ export const OperatorReservationsList = () => {
         `http://localhost:3001/api/users/operator/reservationsList/${user.DNI}`
       )
       .then((res) => {
+        console.log("reservas traidas del back =>",res.data)
         setReservationsList(
           res.data.map((obj) => {
             //usernamew/reserva n/sucursal/date
-            const { createdBy, reservationId, branch, date, schedule } = obj;
+            const { createdBy, reservationId, branch, date, schedule, attended} = obj;
             const username = createdBy.fullname;
             const branchname = branch.name;
-            return { username, reservationId, date, branchname, schedule };
+            return { username, reservationId, date, branchname, schedule, attended};
           })
         );
       })
@@ -35,6 +36,15 @@ export const OperatorReservationsList = () => {
         console.error(error);
       });
   }, []);
+  const reservationsListSort = reservationsList.slice().sort((a, b) => {
+    if (a.attended && !b.attended) {
+      return 1;
+    }
+    if (!a.attended && b.attended) {
+      return -1;
+    }
+    return 0;
+  });
   if (loading) return <>Loading...</>;
   else if (reservationsList.length == 0)
     return (
@@ -42,5 +52,5 @@ export const OperatorReservationsList = () => {
         <h1>No hay Reservas por confirmar</h1>
       </div>
     );
-  else return <TableList datatype="OperatorReservas" data={reservationsList} />;
+  else return <TableList datatype="OperatorReservas" data={reservationsListSort} />;
 };
