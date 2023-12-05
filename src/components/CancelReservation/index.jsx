@@ -8,9 +8,15 @@ import axios from "axios";
 import { useNavigate, useParams } from "react-router";
 import { useSelector } from "react-redux";
 import Popup from "../../commons/Popup/index.jsx";
-
+import {
+  dateComparator,
+  hourGetter,
+  todayGetter,
+} from "../../utils/date-functions.js";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 export const CancelReservation = () => {
-const userRedux = useSelector((state) => state.user);
+  const userRedux = useSelector((state) => state.user);
   const [reservation, setReservation] = useState({ createdBy: {}, branch: {} });
   const [loading, setLoading] = useState(true);
   const { reservationId } = useParams();
@@ -39,44 +45,63 @@ const userRedux = useSelector((state) => state.user);
 
   const handleOnClick = (e) => {
     e.preventDefault();
-    axios
-      .delete(
-        `http://localhost:3001/api/users/removeAppointment/${reservationId}`
-      )
-      .then((res) => {
-        setPopupInfo({
-          title: `Reserva cancelada exitosamente`,
-          text: ``,
-          img: true,
-          buttonText: `Continuar`,
-          redirect: `/client/reservations`,
-        });
-        logicPopUp(".body", "add", "external-div-container-inactive");
-        logicPopUp(
-          ".fake-container-popup",
-          "remove",
-          "fake-container-popup-inactive"
-        );
-        logicPopUp(
-          ".fake-container-popup",
-          "add",
-          "fake-container-popup-active"
-        );
+    if (
+      reservation.schedule.slice(0, 5) > hourGetter() &&
+      dateComparator(reservation.date, todayGetter()) &&
+      parseInt(hourGetter()) - parseInt(reservation.schedule.slice(0, 5)) < 2
+    ) {
+      toast.error(
+        "NO PUEDE RESERVAR UN TURNO CON MENOS DE DOS HORAS DE ANTICIPACION",
+        {
+          position: toast.POSITION.TOP_CENTER,
+        }
+      );
+      return;
+    } else {
+      axios
+        .delete(
+          `http://localhost:3001/api/users/removeAppointment/${reservationId}`
+        )
+        .then((res) => {
+          setPopupInfo({
+            title: `Reserva cancelada exitosamente`,
+            text: ``,
+            img: true,
+            buttonText: `Continuar`,
+            redirect: `/client/reservations`,
+          });
+          logicPopUp(".body", "add", "external-div-container-inactive");
+          logicPopUp(
+            ".fake-container-popup",
+            "remove",
+            "fake-container-popup-inactive"
+          );
+          logicPopUp(
+            ".fake-container-popup",
+            "add",
+            "fake-container-popup-active"
+          );
 
-        axios.post("http://localhost:3001/api/nodeMailer/appointment/cancellation",{
-          email:userRedux.email,
-          branch:reservation.branch.name,
-          date:reservation.date.split("T")[0],
-          time:reservation.schedule.slice(0, 5)
-        }).then((res)=>"")
-        .catch((error)=>console.log(error))
-        // document.querySelector(".fake-container-popup-active").style.display =
-        //   "flex";
-      })
-      .catch((error) => {
-        alert("Ocurrió un error al eliminar la reserva");
-        console.error(error);
-      });
+          axios
+            .post(
+              "http://localhost:3001/api/nodeMailer/appointment/cancellation",
+              {
+                email: userRedux.email,
+                branch: reservation.branch.name,
+                date: reservation.date.split("T")[0],
+                time: reservation.schedule.slice(0, 5),
+              }
+            )
+            .then((res) => "")
+            .catch((error) => console.log(error));
+          // document.querySelector(".fake-container-popup-active").style.display =
+          //   "flex";
+        })
+        .catch((error) => {
+          alert("Ocurrió un error al eliminar la reserva");
+          console.error(error);
+        });
+    }
   };
   const [checkedOption, setCheckedOptions] = useState({
     0: false,
@@ -195,7 +220,7 @@ const userRedux = useSelector((state) => state.user);
             );
           })}
         </div>
-
+        <ToastContainer />
         <div className={s.divright}>
           <br />
           <p className={s.Info}>Información de la reserva</p>
