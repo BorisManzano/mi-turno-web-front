@@ -1,13 +1,12 @@
-import "./index.scss";
-import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
-import { useNavigate, useParams } from "react-router";
 import { useEffect, useState } from "react";
-import useInput from "../../hooks/useInput";
+import { useParams } from "react-router";
+import { toast } from "react-toastify";
 import Popup from "../../commons/Popup";
+import useInput from "../../hooks/useInput";
+import "./index.scss";
 
 const CreateBranches = function () {
-  const navigate = useNavigate();
   const { id } = useParams();
   const nombre = useInput("");
   const [correoBlocked, setCorreoBlocked] = useState("");
@@ -68,9 +67,10 @@ const CreateBranches = function () {
       capacity: maxCap.value,
     };
     axios
-      .post("http://localhost:3001/api/branches/", info)
+      .post("http://localhost:3001/api/branches/", info, {
+        withCredentials: true,
+      })
       .then(() => {
-        // createdSuccessfully();
         setPopupInfo({
           title: id ? `Cambios guardados` : `Sucursal creada con exito`,
           text: id
@@ -96,7 +96,7 @@ const CreateBranches = function () {
         return error;
       });
   };
-
+  // console.log(document.cookie);
   return (
     <>
       <div className="bodyContent">
