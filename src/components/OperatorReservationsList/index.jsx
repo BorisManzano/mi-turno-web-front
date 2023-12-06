@@ -65,6 +65,6 @@ export const OperatorReservationsList = () => {
     );
   else
     return (
-      <TableList datatype="OperatorReservas" data={reservationsListSort} />
+      <TableList datatype="OperatorReservas" data_={reservationsListSort} />
     );
 };

@@ -1,14 +1,16 @@
 import Button from "@mui/material/Button";
 import { red } from "@mui/material/colors";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import s from "./style.module.scss";
 import { Tooltip } from "react-tooltip";
 import { useNavigate } from "react-router";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { PopupConfirm } from "../PopupConfirm";
 
-export const TableList = ({ datatype, data }) => {
+export const TableList = ({ datatype, data_ }) => {
+  const [data, setData] = useState(data_);
   const [filter, setFilter] = useState("all");
   const navigate = useNavigate();
   const handleOnClickEdit = (rid, e) => {
@@ -20,29 +22,61 @@ export const TableList = ({ datatype, data }) => {
     e.preventDefault();
     navigate(`/client/cancelReservation/${rid}`);
   };
-  const handleOnClickDeleteOperator = (oid, e) => {
+
+//==========================eliminar operador==================================
+  const [showPopUpConfirm, setShowPopUpConfirm] = useState(false);
+  const [estadoSubmit, setEstadoSubmit] = useState("none");
+  const [deleteInfo, setDeleteInfo] = useState("");
+
+  const manejarCambio = (nuevoEstado) => {
+    setEstadoSubmit(nuevoEstado);
+    console.log(estadoSubmit);
+  };
+
+  const handleConditionDelete = (info, e) =>{
+    setDeleteInfo(info);
     e.preventDefault();
+    setShowPopUpConfirm(true);
+  }
+
+  const handleDeleteOperator = (oid, e) => {
+    if(e) e.preventDefault();
     axios
       .put(`http://localhost:3001/api/users/admin/deleteOperator/${oid}`)
       .then(() => {
+        const newData = data.filter(obj=>obj.id != oid);
+        if(newData.length == 0) window.location.reload();
+        else {setData(newData);
         toast.success("Se eliminó al operador",{
           position: toast.POSITION.TOP_CENTER,
-        }) 
-        window.location.reload();
+        })  }
       });
   };
 
-  const handleOnClickDeleteBranch = (id, e) => {
-    e.preventDefault();
+  const handleDeleteBranch = (id, e) => {
+    if(e) e.preventDefault();
     axios
       .put(`http://localhost:3001/api/users/admin/deleteBranch/${id}`)
       .then(() => {
+        const newData = data.filter(obj=>obj.id != id);
+        if(newData.length == 0) window.location.reload();
+        else {setData(newData);
         toast.success("Se eliminó la sucursal",{
           position: toast.POSITION.TOP_CENTER,
-        }) 
-        window.location.reload();
+        })}
       });
   };
+
+  useEffect(() => {
+    if (estadoSubmit == "accepted") {
+      setEstadoSubmit("none");
+      setShowPopUpConfirm(false);
+      dataType === "Sucursales" ? handleDeleteBranch(deleteInfo) : handleDeleteOperator(deleteInfo);
+    } else {
+      setEstadoSubmit("none");
+      setShowPopUpConfirm(false);
+    }
+  }, [estadoSubmit]);
 
   const dataType = datatype;
   const objKeys = Object.keys(data[0]);
@@ -51,17 +85,20 @@ export const TableList = ({ datatype, data }) => {
   let column2 = "";
   let column3 = "";
   let column4 = "";
+  let popUpMessage = "";
 
   if (dataType === "Sucursales") {
     column1 = "Nombre";
     column2 = "Correo";
     column3 = "Capacidad";
     column4 = "Horario de Inicio y cierre";
+    popUpMessage = "<h2>¿Estás seguro que quieres eliminar la sucursal?</h2><br/>Se eliminarán las reservas asociadas a la sucursal y la asociación al operador.<br/><p>Contacta a los clientes de ser necesario.</p>";
   } else if (dataType === "Operadores") {
     column1 = "Nombre y Apellido";
     column2 = "Mail";
     column3 = "Sucursal";
     column4 = "DNI";
+    popUpMessage = "<h2>¿Estás seguro que quieres eliminar al operador?</h2><br/>Se eliminará la información del mismo y su asociación a la sucursal.<br/><p>Asigna a otro operador de ser necesario.</p>";
   } else if (dataType === "Reservas") {
     column1 = "N° reserva";
     column2 = "Sucursal";
@@ -95,6 +132,7 @@ export const TableList = ({ datatype, data }) => {
   };
   return (
     <>
+    {showPopUpConfirm && <PopupConfirm onChange={manejarCambio} message={popUpMessage}/>}
       <div className={s.container} style={{ marginTop: "1.5%" }}>
         <div
           className={s.headerContainer}
@@ -202,7 +240,7 @@ export const TableList = ({ datatype, data }) => {
                         &nbsp; &nbsp;
                         <Button
                           onClick={(event) =>
-                            handleOnClickDeleteOperator(
+                            handleConditionDelete(
                               objIns[objKeys[4]],
                               event
                             )
@@ -240,7 +278,7 @@ export const TableList = ({ datatype, data }) => {
                         &nbsp; &nbsp;
                         <Button
                           onClick={(event) =>
-                            handleOnClickDeleteBranch(objIns[objKeys[4]], event)
+                            handleConditionDelete(objIns[objKeys[4]], event)
                           }
                           variant="contained"
                           style={{

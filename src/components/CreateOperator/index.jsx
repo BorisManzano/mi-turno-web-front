@@ -196,7 +196,7 @@ const CreateOperator = function () {
 
   return (
     <>
-      {showPopUpConfirm && <PopupConfirm onChange={manejarCambio} message = {"¿Estás seguro que quieres reemplazar al anterior operador?"}/>}
+      {showPopUpConfirm && <PopupConfirm onChange={manejarCambio} message = {"<h2>¿Estás seguro que reemplazar al anterior operador?</h2><br/>Su asociación a la sucursal será removida. Contacta al anterior operador de ser necesario</p>"}/>}
       <div className={`${s.parent} body`}>
         <form onSubmit={handleConditionSumbit} className={s.f}>
           <h1>{dni ? "Editar Operador" : "Crear Operador"}</h1>
