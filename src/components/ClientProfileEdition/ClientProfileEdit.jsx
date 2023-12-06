@@ -8,7 +8,25 @@ import "../ClientProfileEdition/ClientProfileEdit.scss";
 import {deleteIcon} from "../../assets/icons"
 import { logout } from "../../state/user";
 import {useNavigate } from "react-router";
+import { PopupConfirm } from "../../commons/PopupConfirm";
+
 export default function ClientProfileEdit() {
+
+//=============popup confirm================
+  const [showPopUpConfirm, setShowPopUpConfirm] = useState(false);
+  const [estadoSubmit, setEstadoSubmit] = useState("none");
+  const [deleteInfo, setDeleteInfo] = useState("");
+
+  const manejarCambio = (nuevoEstado) => {
+    setEstadoSubmit(nuevoEstado);
+    console.log(estadoSubmit);
+  };
+
+  const handleConditionDelete = (e) =>{
+    e.preventDefault();
+    setShowPopUpConfirm(true);
+  }
+//==========================================
   const userRedux = useSelector((state) => state.user);
   const email = userRedux.email;
   const [user, setUser] = useState({});
@@ -133,6 +151,7 @@ export default function ClientProfileEdit() {
       .catch((err) => console.error("ERROR EN PEDIDO AXIOS", err));
   }
    const handleDeleteUser =(e)=>{
+    if(e) e.preventDefault();
     axios.put("http://localhost:3001/api/users/delete",{email:email})
     .then((resp)=>{
       console.log("se elimino correctamente")
@@ -142,13 +161,28 @@ export default function ClientProfileEdit() {
     })
 
    }
+
+   //=====================
+   useEffect(() => {
+    if (estadoSubmit == "accepted") {
+      setEstadoSubmit("none");
+      setShowPopUpConfirm(false);
+      handleDeleteUser();
+    } else {
+      setEstadoSubmit("none");
+      setShowPopUpConfirm(false);
+    }
+  }, [estadoSubmit]);
+
+   //=====================
   return (
     <>
+    {showPopUpConfirm && <PopupConfirm onChange={manejarCambio} message = {"<h2>¿Está seguro que quiere eliminar su cuenta?</h2><br/>Toda su información y reservas creadas serán removidas permanentemente"}/>}
       <div className="client-page">
         <div className="client-container">
           <div className="client-form">
             <div className="client-form-title">
-              <h1 className="h1-form-client">Mis datos </h1> <button onClick={handleDeleteUser} className="btn-deleteUser">{deleteIcon}</button>
+              <h1 className="h1-form-client">Mis datos </h1> <button onClick={handleConditionDelete} className="btn-deleteUser">{deleteIcon}</button>
             </div>
            
             <div className="inputs-div-container">

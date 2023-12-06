@@ -23,7 +23,7 @@ export const TableList = ({ datatype, data_ }) => {
     navigate(`/client/cancelReservation/${rid}`);
   };
 
-//==========================eliminar operador==================================
+//============================================================
   const [showPopUpConfirm, setShowPopUpConfirm] = useState(false);
   const [estadoSubmit, setEstadoSubmit] = useState("none");
   const [deleteInfo, setDeleteInfo] = useState("");
