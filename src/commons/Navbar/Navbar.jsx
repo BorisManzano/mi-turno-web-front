@@ -75,7 +75,7 @@ const Navbar = () => {
                   />
                 </svg>
               </Link>
-              <Link to={"/admin/allBranches"}>
+              <Link to={"/admin/reports"}>
                 <h5 className="h5-navbar-text">Reportes </h5>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
