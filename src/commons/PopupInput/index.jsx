@@ -57,7 +57,7 @@ const PopupInput = () => {
           style={{ gap: "3vh" }}
         >
           <div className="check-container">
-            <Check />
+            <Check width={"70"} height={"70"} />
           </div>
           <div>
             <h1>Email enviado</h1>
