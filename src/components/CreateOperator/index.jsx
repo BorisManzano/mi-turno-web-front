@@ -119,7 +119,6 @@ const CreateOperator = function () {
     document.querySelector(tag).classList[option](className);
   };
 
-  
   const handleSubmit = (e) => {
     if (e) e.preventDefault();
 
@@ -142,7 +141,7 @@ const CreateOperator = function () {
       })
       .then(() => {
         setPopupInfo({
-          title: dni ? `Cambios guardados` : `Operador creado con exito`,
+          title: dni ? `Cambios guardados` : `Operador creado con éxito`,
           text: `Gracias por confiar en nuestro servicio`,
           img: true,
           redirect: `/admin/operators`,
@@ -170,15 +169,13 @@ const CreateOperator = function () {
     if (dni) {
       if (suc.operator && dni != suc.operator.DNI) {
         setShowPopUpConfirm(true);
-      }
-      else{
+      } else {
         handleSubmit();
       }
     } else {
       if (suc.operator) {
         setShowPopUpConfirm(true);
-      }
-      else{
+      } else {
         handleSubmit();
       }
     }
@@ -196,7 +193,14 @@ const CreateOperator = function () {
 
   return (
     <>
-      {showPopUpConfirm && <PopupConfirm onChange={manejarCambio} message = {"¿Estás seguro que quieres reemplazar al anterior operador?"}/>}
+      {showPopUpConfirm && (
+        <PopupConfirm
+          onChange={manejarCambio}
+          message={
+            "¿Estás seguro de que quieres reemplazar al anterior operador?"
+          }
+        />
+      )}
       <div className={`${s.parent} body`}>
         <form onSubmit={handleConditionSumbit} className={s.f}>
           <h1>{dni ? "Editar Operador" : "Crear Operador"}</h1>
