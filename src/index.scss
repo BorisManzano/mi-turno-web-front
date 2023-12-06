@@ -1,3 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope&display=swap');
+
+@font-face {
+  font-family: "sf";
+  src: local("sf"),
+   url("./fonts/sf/SFUIText-Regular.otf") format("truetype");
+  // font-weight: bold;
+ } 
+
+body {
+  margin: 0;
+  font-family: sf !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+
 @import "./components/Login/style.module.scss";
 @import "./commons/Navbar/style.module.scss";
 @import "./commons/Popup/style.module.scss";
@@ -5,14 +23,7 @@
 @import "./components/RecoverPassword/style.module.scss";
 @import "./components/IndexPage/style.module.scss";
 
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
