@@ -61,7 +61,7 @@ export const AdministratorOperatorsList = () => {
     );
   return (
     <>
-      <TableList datatype="Operadores" data={allData} />
+      <TableList datatype="Operadores" data_={allData} />
     </>
   );
 };

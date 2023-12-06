@@ -62,7 +62,7 @@ export const AdministratorSucursalesList = () => {
     );
   return (
     <>
-      <TableList datatype="Sucursales" data={allData} />
+      <TableList datatype="Sucursales" data_={allData} />
     </>
   );
 };

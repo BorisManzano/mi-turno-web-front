@@ -59,7 +59,7 @@ export const UserReservationHistory = () => {
   else
     return (
       <>
-        <TableList data={reservations} datatype="Reservas" />
+        <TableList data_={reservations} datatype="Reservas" />
       </>
     );
 };
