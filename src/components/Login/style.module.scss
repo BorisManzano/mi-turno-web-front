@@ -8,7 +8,7 @@
 }
 .login-container {
   border-radius: 12px;
-  width: 35%;
+  width: 400px;
   height: 65%;
   box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.12);
   margin-top: 7vh;
@@ -31,6 +31,12 @@
 .p-form-login {
   margin-bottom: 6px;
 }
+
+input{
+  border-radius: 10px !important;
+  padding-left: 12px;
+}
+
 .inputLogin {
   border: 0.8px solid rgba(128, 128, 128, 0.541);
   border-radius: 5px;
