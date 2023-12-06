@@ -57,7 +57,7 @@ const PopupInput = () => {
           style={{ gap: "3vh" }}
         >
           <div className="check-container">
-            <Check />
+            <Check width={"70"} height={"70"} />
           </div>
           <div>
             <h1>Email enviado</h1>
@@ -72,16 +72,20 @@ const PopupInput = () => {
         <div
           className="div-popupI-content"
           id={stepper === 4 ? `show` : `hide`}
-          style={{ gap: "3vh" }}
+          style={{ gap: "5vh" }}
         >
           <div className="check-container">
             <Failed />
           </div>
           <div>
-            <h1 style={{ marginTop: "-10px" }}>Ocurrio un error</h1>
-            <p>Intenta nuevamente</p>
-            <button className="button-send-email" onClick={() => setStepper(1)}>
-              Reintentar
+            <h1 style={{ marginTop: "-20px" }}>Ocurrio un error</h1>
+            <p>El correo indicado no esta asociado a una cuenta</p>
+            <button
+              style={{ padding: "12px 150px" }}
+              className="button-send-email"
+              onClick={() => setStepper(1)}
+            >
+              Intentar nuevamente
             </button>
           </div>
         </div>

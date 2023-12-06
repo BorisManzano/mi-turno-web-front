@@ -2,10 +2,11 @@
   display: flex;
   justify-content: center;
   position: relative;
-  top: -60vh;
+  top: -53vh;
   transition: all 1.2s ease;
   scale: 0;
 }
+
 .blur-page {
   filter: blur(0.8px);
 }
@@ -20,20 +21,27 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 36vh;
-  width: 60vh;
+  height: 53vh;
+  width: 79vh;
   background-color: white;
   border-radius: 20px;
-  box-shadow: 0px 6px 20px -2px #8d868650;
+  box-shadow: 0px 6px 20px -2px rgba(141, 134, 134, 0.3137254902);
 }
 .div-popupI-content {
   display: flex;
   flex-direction: column;
-  padding: 14%;
-  gap: 1vh;
+  padding: 0%;
+  gap: 3vh;
 
   h1 {
-    margin-bottom: -10px;
+    color: var(--Principal, #a442f1);
+    text-align: center;
+    font-variant-numeric: slashed-zero;
+    font-family: Roboto;
+    font-size: 36px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 47px;
   }
   p {
     text-align: center;
@@ -41,7 +49,7 @@
   input {
     all: unset;
     height: 4vh;
-    width: 34vh;
+    width: 44vh;
     padding-left: 10px;
     border-radius: 8px;
     border: 0.1px solid rgba(175, 148, 148, 0.616);
@@ -59,7 +67,7 @@
   all: unset;
   border-radius: 8px;
   text-align: center;
-  padding: 10px 141px;
+  padding: 12px 190px;
   color: white;
   font-weight: 600;
   margin-top: 10px;
@@ -103,7 +111,7 @@
 }
 .loader {
   height: 14px;
-  width: 130px;
+  width: 190px;
   border-radius: 20px;
   --c: no-repeat linear-gradient(#9700ee 0 0);
   background: var(--c), var(--c), #d7b8fc;

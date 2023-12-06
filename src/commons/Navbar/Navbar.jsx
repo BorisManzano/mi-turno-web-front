@@ -175,7 +175,16 @@ const Navbar = () => {
             {user.email ? (
               <div>
                 <Link to={"/client/newReservation"}>
-                  <button className="navbar-button">
+                  <button
+                    className="navbar-button"
+                    style={{
+                      display:
+                        pathname === `/client/newReservation` ||
+                        pathname.includes(`/client/editReservation`)
+                          ? `none`
+                          : `flex`,
+                    }}
+                  >
                     <h4 className="h4-navbar">Reservar</h4>
                   </button>
                 </Link>
