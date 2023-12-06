@@ -6,8 +6,16 @@ export default function Check() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width={location.pathname === ("/" || "login") ? `70` : `24`}
-      height={location.pathname === ("/" || "login") ? `70` : `24`}
+      width={
+        location.pathname === "/login" || location.pathname === "/"
+          ? `70`
+          : `24`
+      }
+      height={
+        location.pathname === "/login" || location.pathname === "/"
+          ? `70`
+          : `24`
+      }
       viewBox="0 0 24 24"
       fill="none"
     >
