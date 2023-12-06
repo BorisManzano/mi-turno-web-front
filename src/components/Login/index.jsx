@@ -30,9 +30,7 @@ const Login = () => {
           email: userInputValue,
           password: passwordInputValue,
         },
-        {
-          withCredentials: true,
-        }
+        { withCredentials: true, credentials: "include" }
       )
       .then((res) => {
         dispatch(login(res.data));

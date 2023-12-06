@@ -22,7 +22,10 @@ function App() {
   const user = useSelector((state) => state.user);
   useEffect(() => {
     axios
-      .get("http://localhost:3001/api/users/me", { withCredentials: true })
+      .get("http://localhost:3001/api/users/me", {
+        withCredentials: true,
+        credentials: "include",
+      })
       .then((res) => {
         if (res.data) {
           const userData = {
