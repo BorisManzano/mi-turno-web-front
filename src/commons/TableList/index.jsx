@@ -5,6 +5,8 @@ import s from "./style.module.scss";
 import { Tooltip } from "react-tooltip";
 import { useNavigate } from "react-router";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const TableList = ({ datatype, data }) => {
   const [filter, setFilter] = useState("all");
@@ -23,7 +25,9 @@ export const TableList = ({ datatype, data }) => {
     axios
       .put(`http://localhost:3001/api/users/admin/deleteOperator/${oid}`)
       .then(() => {
-        alert("Se eliminó al operador");
+        toast.success("Se eliminó al operador",{
+          position: toast.POSITION.TOP_CENTER,
+        }) 
         window.location.reload();
       });
   };
@@ -33,7 +37,9 @@ export const TableList = ({ datatype, data }) => {
     axios
       .put(`http://localhost:3001/api/users/admin/deleteBranch/${id}`)
       .then(() => {
-        alert("Se eliminó la sucursal");
+        toast.success("Se eliminó la sucursal",{
+          position: toast.POSITION.TOP_CENTER,
+        }) 
         window.location.reload();
       });
   };
@@ -75,11 +81,13 @@ export const TableList = ({ datatype, data }) => {
     axios
       .put(`http://localhost:3001/api/appointments/attended/${id}`)
       .then(() => {
-        alert("asistencia confirmada");
+        return toast.success("Asistencia confirmada",{
+          position: toast.POSITION.TOP_CENTER,
+        }) 
       })
-      .catch(() => alert("no fue posible confirmar la asistencia"));
-    console.log("reservas traidas del back",objKeys)
-    console.log("evento y id =>", id, e);
+      .catch(() => toast.error("No fue posible confirmar la asistencia",{
+        position: toast.POSITION.TOP_CENTER,
+      }));
     button.disabled = true;
     button.innerText = "Confirmado ✓";   
     button.onClick = null;
@@ -309,6 +317,7 @@ export const TableList = ({ datatype, data }) => {
               )
             );
           })}
+          <ToastContainer />
         </div>
       </div>
       <Tooltip id="my-tooltip" className={s.myTooltip} />
