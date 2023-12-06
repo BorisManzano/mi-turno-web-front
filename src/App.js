@@ -13,7 +13,8 @@ import Navbar from "./commons/Navbar/Navbar";
 import Register from "./components/Register";
 import ConfirmAccount from "./components/ConfirmAccount";
 import RouteNotFound from "./components/RouteNotFound";
-import IndexPage from "./components/IndexPage";
+import IndexPage from "./components/IndexPage"; 
+import { motion,AnimatePresence, animate, delay } from "framer-motion";
 function App() {
   const location = useLocation();
   const { pathname } = location;
@@ -64,7 +65,20 @@ function App() {
     <div className="App">
       <PromotionalMessage />
       <Navbar />
-      <Routes>
+       <AnimatePresence mode="wait">
+        <motion.div 
+           key={useLocation().pathname}
+           variants={{
+            initial:{opacity:0,x:1000, },
+            animate:{opacity:100,x:0,  },
+            transition:{ duration: 1, delay: 0.9},
+           }}
+           initial="initial"
+           animate="animate"
+           exit="exit"
+           transition="transition"
+        >
+        <Routes>
         <Route path="/index" element={<IndexPage />} />
         <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
@@ -80,7 +94,10 @@ function App() {
         <Route path="/recoverPassword/:token" element={<RecoverPassword />} />
         <Route path="/account/confirm/:token" element={<ConfirmAccount />} />
         <Route path="/*" element={<RouteNotFound />} />
-      </Routes>
+        </Routes>
+        
+        </motion.div>
+     </AnimatePresence>
     </div>
   );
 }
