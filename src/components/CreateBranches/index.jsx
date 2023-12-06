@@ -72,7 +72,7 @@ const CreateBranches = function () {
       })
       .then(() => {
         setPopupInfo({
-          title: id ? `Cambios guardados` : `Sucursal creada con exito`,
+          title: id ? `Cambios guardados` : `Sucursal creada con éxito`,
           text: id
             ? `Gracias por confiar en nuestro servicio`
             : `No olvide asignarle un operador`,
@@ -158,7 +158,7 @@ const CreateBranches = function () {
                 type="text"
                 name="number"
                 id="telefono"
-                placeholder="ingrese su numero de Teléfono"
+                placeholder="ingrese su numero de teléfono"
                 required
               />
             </div>

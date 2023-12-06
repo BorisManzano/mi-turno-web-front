@@ -3,25 +3,123 @@ import s from "./style.module.scss";
 import useInput from "../../hooks/useInput";
 import axios from "axios";
 import Bag from "../../assets/Bag";
+import Check from "../../assets/Check";
+import Wrong from "../../assets/Wrong";
+import PieCharts from "../PieCharts";
+import LineCharts from "../LineCharts";
 
 function Reports() {
   const sucursal = useInput("");
   const sucursales = useInput([]);
   const [reservationsList, setReservationsList] = useState([]);
-  const [data, setData] = useState({});
+  const [data, setData] = useState([
+    { name: "reservations", value: 0 },
+    { name: "attended", value: 0 },
+    { name: "cancelled", value: 0 },
+  ]);
+  const [lineData, setLineData] = useState([]);
+  const [porcentage, setPorcentage] = useState();
+
+  const fetchAppointments = () => {
+    const branchName = sucursal.value;
+
+    axios
+      .get(
+        `http://localhost:3001/api/users/admin/appointments?branchName=${branchName}`
+      )
+      .then((res) => {
+        const appointments = res.data;
+
+        const uniqueDates = [...new Set(appointments.map((appt) => appt.date))];
+
+        const dataByDayOfWeek = {
+          Monday: {
+            dayOfWeek: "Lunes",
+            reservations: 0,
+            attended: 0,
+            cancelled: 0,
+          },
+          Tuesday: {
+            dayOfWeek: "Martes",
+            reservations: 0,
+            attended: 0,
+            cancelled: 0,
+          },
+          Wednesday: {
+            dayOfWeek: "Miércoles",
+            reservations: 0,
+            attended: 0,
+            cancelled: 0,
+          },
+          Thursday: {
+            dayOfWeek: "Jueves",
+            reservations: 0,
+            attended: 0,
+            cancelled: 0,
+          },
+          Friday: {
+            dayOfWeek: "Viernes",
+            reservations: 0,
+            attended: 0,
+            cancelled: 0,
+          },
+          Saturday: {
+            dayOfWeek: "Sábado",
+            reservations: 0,
+            attended: 0,
+            cancelled: 0,
+          },
+        };
+
+        appointments.forEach((appt) => {
+          const dayOfWeek = new Date(appt.date).toLocaleDateString("en-US", {
+            weekday: "long",
+          });
+          dataByDayOfWeek[dayOfWeek].reservations += 1;
+          if (appt.attended) {
+            dataByDayOfWeek[dayOfWeek].attended += 1;
+          } else {
+            dataByDayOfWeek[dayOfWeek].cancelled += 1;
+          }
+        });
+
+        const transformedData = Object.values(dataByDayOfWeek);
+
+        setReservationsList(appointments);
+        const totalReservations = appointments.length;
+        const totalAttendances = appointments.filter(
+          (appt) => appt.attended
+        ).length;
+        const attendancePercentage =
+          (totalAttendances / totalReservations) * 100;
+        const pieData = [
+          { name: "reservations", value: totalReservations },
+          { name: "attended", value: totalAttendances },
+          { name: "cancelled", value: 0 },
+        ];
+        setData(pieData);
+        setPorcentage(attendancePercentage);
+        setLineData(transformedData);
+      })
+      .catch((error) => {
+        console.error("Error fetching reservations:", error);
+      });
+  };
+
   useEffect(() => {
     axios
       .get("http://localhost:3001/api/users/admin/sucursalesList")
       .then((res) => {
         sucursales.setValue(res.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching branches:", error);
       });
-    // axios
-    //   .get(`http://localhost:3001/api/users/operator/reservationsList`)
-    //   .then((res) => {
-    //     setReservationsList(res.data);
-    //     console.log(reservationsList);
-    //   });
   }, []);
+
+  useEffect(() => {
+    fetchAppointments();
+  }, [sucursal.value]);
 
   return (
     <div className={s.dad}>
@@ -32,7 +130,7 @@ function Reports() {
           name="branch"
           id="Branch"
           className={s.inputArea}
-          value={data.branch}
+          value={sucursal?.value ?? ""}
         >
           <option disabled value="" selected>
             seleccione una sucursal
@@ -44,18 +142,63 @@ function Reports() {
               </option>
             );
           })}
+          <option value="">Todas las sucursales</option>
         </select>
       </div>
       <div className={s.cont}>
         <div className={s.number}>
           <div className={s.pos}>
-            <div>
-              <p className={s.num}>100</p>
+            <div className={s.divis}>
+              <p className={s.num}>{data[0].value}</p>
               <p className={s.text}>Total de reservas</p>
             </div>
-            <Bag className={s.icon} />
+            <div style={{ width: "89px", height: "89px" }}>
+              <Bag width={89} height={89} />
+            </div>
           </div>
           <div className={s.borderBtn} />
+        </div>
+        <div className={s.number}>
+          <div className={s.pos}>
+            <div className={s.divis}>
+              <p className={s.num}>{data[2].value}</p>
+              <p className={s.text}>Total de cancelaciones</p>
+            </div>
+            <div style={{ width: "89px", height: "89px" }}>
+              <Wrong width={89} height={89} color="var(--Principal, #A442F1)" />
+            </div>
+          </div>
+          <div className={s.borderBtn} />
+        </div>
+        <div className={s.number}>
+          <div className={s.pos}>
+            <div className={s.divis}>
+              <p className={s.num}>{data[1].value}</p>
+              <p className={s.text}>Total de asistencias</p>
+            </div>
+            <div style={{ width: "89px", height: "89px" }}>
+              <Check width={89} height={89} color="var(--Principal, #A442F1)" />
+            </div>
+          </div>
+          <div className={s.borderBtn} />
+        </div>
+      </div>
+      <div className={s.order}>
+        <div className={s.pie}>
+          <PieCharts data={data} />
+          <div className={s.row}>
+            <div className={s.pieOrder}>
+              <div className={s.block}></div>
+              <p>Reservas {Math.round(100 - porcentage)}%</p>
+            </div>
+            <div className={s.pieOrder}>
+              <div className={s.block2}></div>
+              <p>Asistencias {Math.round(porcentage)}%</p>
+            </div>
+          </div>
+        </div>
+        <div className={s.pie2}>
+          <LineCharts data={lineData} />
         </div>
       </div>
     </div>

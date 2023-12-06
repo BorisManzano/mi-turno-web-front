@@ -191,7 +191,7 @@ export default function ReservationPanel() {
     if (filteredSchedules.length < 1) {
       setPopupInfo({
         title: `Error en la reserva`,
-        text: `Ocurrio un error, intente nuevamente.`,
+        text: `Ocurrió un error, intente nuevamente.`,
         img: false,
         bottonText: `Aceptar`,
         redirect: true,
@@ -268,7 +268,7 @@ export default function ReservationPanel() {
       })
       .then((response) => {
         setPopupInfo({
-          title: `Turno reservado con exito`,
+          title: `Turno reservado con éxito`,
           text: `Gracias por confiar en nuestro servicio`,
           img: true,
           redirect: `/client/reservationConfirmed/${response}`,
@@ -320,7 +320,7 @@ export default function ReservationPanel() {
           .catch((error) => console.log(error));
 
         setPopupInfo({
-          title: `Turno modificado con exito`,
+          title: `Turno modificado con éxito`,
           text: `Gracias por confiar en nuestro servicio`,
           img: true,
           redirect: `/client/reservationConfirmed/${reservationId}`,
@@ -347,8 +347,8 @@ export default function ReservationPanel() {
   if (Countdown().props.children === "Tiempo agotado") {
     if (!popupInfo.title) {
       setPopupInfo({
-        title: `Se acabo el tiempo`,
-        text: `Haga click en el boton continuar para empezar nuevamente`,
+        title: `Se acabó el tiempo`,
+        text: `Haga click en el botón continuar para empezar nuevamente`,
         img: false,
         redirect: true,
       });
@@ -451,12 +451,12 @@ export default function ReservationPanel() {
               )}
             </Stack>
             {activeStep === 0 ? (
-              <div className="tx-panel">Selecciona tu sucursal</div>
+              <div className="tx-panel">Seleccioná tu sucursal</div>
             ) : (
               ""
             )}
             {activeStep === 1 ? (
-              <div className="tx-panel">Selecciona el día en el calendario</div>
+              <div className="tx-panel">Seleccioná el día en el calendario</div>
             ) : (
               ""
             )}

@@ -5,6 +5,7 @@ import { useNavigate } from "react-router";
 import { login } from "../../state/user";
 import Popup from "../../commons/Popup";
 import PopupInput from "../../commons/PopupInput";
+import Eye from "../../assets/Eye";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -12,6 +13,7 @@ const Login = () => {
   const [userInputValue, setUserInputValue] = useState();
   const [passwordInputValue, setPasswordInputValue] = useState();
   const [invalidInformation, setInvalidInformation] = useState();
+  const [showPassword, setShowPassword] = useState(false);
   const [popupInfo, setPopupInfo] = useState({
     title: undefined,
     text: undefined,
@@ -76,13 +78,16 @@ const Login = () => {
     logicPopUp(".div-popupI-container", "remove", "inactive-pi");
     logicPopUp(".div-popupI-container", "add", "active-pi");
   };
+  const handleTogglePassword = () => {
+    setShowPassword(!showPassword);
+  };
   return (
     <>
       <div>
         <div className="login-page">
           <div className="login-container">
             <div className="login-form">
-              <h1 className="h1-form-login">Iniciar sesion</h1>
+              <h1 className="h1-form-login">Iniciar sesión</h1>
               <p className="p-form-login">Usuario</p>
               <input
                 className="inputLogin"
@@ -90,13 +95,19 @@ const Login = () => {
                 onChange={(e) => setUserInputValue(e.target.value)}
                 autoComplete="username"
               />
+
               <p className="p-form-login">Contraseña</p>
-              <input
-                className="inputLogin input-password-focus"
-                type="password"
-                onChange={(e) => setPasswordInputValue(e.target.value)}
-                onKeyDown={(e) => e.code === "Enter" && handleSubmit()}
-              />
+              <div className="inputDiv">
+                <input
+                  className="inputLogin input-password-focus"
+                  type={showPassword ? "text" : "password"}
+                  onChange={(e) => setPasswordInputValue(e.target.value)}
+                  onKeyDown={(e) => e.code === "Enter" && handleSubmit()}
+                />
+                <div id="eye" onClick={handleTogglePassword}>
+                  <Eye />
+                </div>
+              </div>
               <p className="p-validation-error-login">{invalidInformation}</p>
               <h4
                 className="h4-form-login"

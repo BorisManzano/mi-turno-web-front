@@ -3,6 +3,8 @@ import "./index.scss";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { check, alertIcon } from "../../assets/icons";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const ConfirmAccount = function () {
   const [confirmed, setConfirmed] = useState(
     "Confirme su registro haciendo click en el boton!"
@@ -28,10 +30,11 @@ const ConfirmAccount = function () {
     axios
       .post(`http://localhost:3001/api/nodeMailer/accountConfirmation/${email}`)
       .then((resp) =>
-        alert(
-          "revise su casilla de correo para confirmar su registro de cuenta"
-        )
-      )
+       toast.success("Revise su casilla de correo para confirmar su registro de cuenta",{
+        position: toast.POSITION.TOP_CENTER,
+      })).then(()=>{
+         window.close()
+      })
       .catch((error) =>
         setConfirmed(
           "el email ingresado no se encuentra Pre registrado o ya se encuentra confirmado!"
@@ -43,7 +46,7 @@ const ConfirmAccount = function () {
     setConfirmed("Obtener Nuevo Token");
   };
   const handleBtnRedireccion = () => {
-    navigate("/");
+    navigate("/login");
   };
   return (
     <div className="bodyConfirmedRegister">
@@ -103,6 +106,7 @@ const ConfirmAccount = function () {
         ) : (
           ""
         )}
+         <ToastContainer />
       </div>
     </div>
   );

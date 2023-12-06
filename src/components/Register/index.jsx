@@ -5,6 +5,8 @@ import Fullname from "../../commons/Form/Fullname";
 import PasswordAndValidations from "../../commons/Form/PasswordAndValidations";
 import s from "./style.module.scss";
 import Popup from "../../commons/Popup";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -95,11 +97,17 @@ export default function Register() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!data.fullname || !data.DNI || !data.email || !data.password) {
-      alert("Debes completar todos los campos");
+      return toast.warn("Debes completar todos los campos",{
+        position: toast.POSITION.TOP_CENTER,
+      })
     } else if (!checklist.validation) {
-      alert("validation");
+      return toast.warn("validation",{
+        position: toast.POSITION.TOP_CENTER,
+      })
     } else if (data.password !== confirmPswd) {
-      alert("Las contraseñas deben ser iguales");
+      return toast.error("Las contraseñas deben ser iguales",{
+        position: toast.POSITION.TOP_CENTER,
+      })
     } else {
       axios
 
@@ -202,7 +210,8 @@ export default function Register() {
           <div className={s.bBorder}></div>
           <button onClick={returnLogin} className={s.btnLog}>
             ¿Ya tenés cuenta? Iniciá sesión
-          </button>
+          </button>     
+          <ToastContainer />
         </form>
       </div>
       <Popup popupInfo={popupInfo} />

@@ -42,7 +42,7 @@ const ReservationConfirmed = function () {
           }}
         >
           {" "}
-          ¿Quéres imprimir tu comprobante?
+          ¿Querés imprimir tu comprobante?
         </button>
       </div>
 
