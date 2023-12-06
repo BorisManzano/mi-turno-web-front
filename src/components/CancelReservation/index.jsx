@@ -9,6 +9,7 @@ import { useNavigate, useParams } from "react-router";
 import { useSelector } from "react-redux";
 import Popup from "../../commons/Popup/index.jsx";
 import {
+  HourComparator,
   dateComparator,
   hourGetter,
   todayGetter,
@@ -48,7 +49,7 @@ export const CancelReservation = () => {
     if (
       reservation.schedule.slice(0, 5) > hourGetter() &&
       dateComparator(reservation.date, todayGetter()) &&
-      parseInt(hourGetter()) - parseInt(reservation.schedule.slice(0, 5)) < 2
+      HourComparator(hourGetter(), reservation.schedule.slice(0, 5)) < 120
     ) {
       toast.error(
         "NO PUEDE RESERVAR UN TURNO CON MENOS DE DOS HORAS DE ANTICIPACION",

@@ -1,6 +1,4 @@
 export function dateComparator(frontDate, backDate) {
-  const newFrontDate = dateConversor(frontDate);
-  const newBackDate = dateConversor(backDate);
   return dateConversor(frontDate) === dateConversor(backDate);
 }
 
@@ -52,4 +50,13 @@ export function OcurrencyChecker(array, object) {
   return array.forEach((x) => {
     object[x] = (object[x] || 0) + 1;
   });
+}
+
+export function HourComparator(hour1, hour2) {
+  const [hours1, minutes1] = hour1.split(":");
+  const [hours2, minutes2] = hour2.split(":");
+  const finalHour1 = parseInt(hours1) * 60 + parseInt(minutes1);
+  const finalHour2 = parseInt(hours2) * 60 + parseInt(minutes2);
+
+  return Math.abs(finalHour1 - finalHour2);
 }
