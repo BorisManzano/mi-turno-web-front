@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { TableList } from "../../commons/TableList";
 import axios from "axios";
 import { Button } from "@mui/material";
-import s from "./index.scss";
+import s from "./style.module.scss";
 import { useNavigate } from "react-router";
 
 export const AdministratorSucursalesList = () => {
@@ -42,11 +42,11 @@ export const AdministratorSucursalesList = () => {
   if (loading) return <>Loading...</>;
   else if (allData.length == 0)
     return (
-      <div className={s.mid}>
-        <h1>No hay operadores</h1>
+      <div className={s.container}>
+        <h1 style={{margin:"20px"}}>No hay sucursales</h1>
         <Button
           onClick={(e) => {
-            navigate(`/`);
+            navigate(`/admin/create/branch`);
           }}
           variant="contained"
           style={{

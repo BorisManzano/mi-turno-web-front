@@ -113,3 +113,16 @@
   width: 70%;
   margin-bottom: 3%;
 }
+.client-form-title{
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+}
+.btn-deleteUser{
+ border-style:none;
+ background-color: transparent;
+}
+.btn-deleteUser:focus{
+ border: 1px solid #a442f1;
+ border-radius: 20%;
+}

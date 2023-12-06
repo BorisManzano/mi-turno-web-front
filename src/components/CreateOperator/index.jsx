@@ -5,25 +5,29 @@ import axios from "axios";
 import useInput from "../../hooks/useInput";
 import { useNavigate, useParams } from "react-router";
 import Popup from "../../commons/Popup";
+import PasswordAndValidations from "../../commons/Form/PasswordAndValidations";
 
 const CreateOperator = function () {
+
   const navigate = useNavigate();
-  const { DNI } = useParams();
+  const { dni } = useParams();
   const fullname = useInput("");
   const [emailBlocked, setEmailBlocked] = useState("");
   const email = useInput("");
   const dni_ = useInput(0);
   const sucursal = useInput("");
-  const password = useInput("");
-  const confirmPassword = useInput("");
+  const [disabled, setDisabled] = useState(false);
+
   const sucursales = useInput([]);
   const [sinSuc, setSinSuc] = useState(false);
+  const [data, setData] = useState({});
   const [popupInfo, setPopupInfo] = useState({
     title: undefined,
     text: undefined,
     img: undefined,
     redirect: undefined,
   });
+
   useEffect(() => {
     axios
       .get("http://localhost:3001/api/users/admin/sucursalesList")
@@ -33,9 +37,10 @@ const CreateOperator = function () {
   }, []);
 
   useEffect(() => {
-    if (DNI) {
+    if (dni) {
+      setDisabled(true);
       axios
-        .get(`http://localhost:3001/api/users/operator/info/${DNI}`)
+        .get(`http://localhost:3001/api/users/operator/info/${dni}`)
         .then((res) => {
           fullname.setValue(res.data.operator.fullname);
           setEmailBlocked(res.data.operator.email);
@@ -53,41 +58,80 @@ const CreateOperator = function () {
     }
   }, [sucursales.value]);
 
-  //const [password, setPassword] = useState("");
-  // const [confirmPswd, setConfirmPswd] = useState("");
-  const [focus, setFocus] = useState(false);
-  const [data, setData] = useState({});
-  // const fakeData = ["sucursal 1", "Sucursal 2", "Sucursal 3"];
+ //====================PASSWORD=========================
+ const [password, setPassword] = useState("");
+ const [confirmPswd, setConfirmPswd] = useState("");
+ const [showPassword, setShowPassword] = useState(false);
+ const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+ const [focus, setFocus] = useState(false);
+ const [checklist, setChecklist] = useState({
+   uppercaseLetter: false,
+   lowercaseLetter: false,
+   oneNumber: false,
+   large: false,
+   validation: false,
+ });
 
-  const handleToggleFocus = () => {
-    setFocus(!focus);
-  };
+ const handleToggleFocus = () => {
+   setFocus(!focus);
+ };
+
+ const handleTogglePassword = () => {
+   setShowPassword(!showPassword);
+ };
+
+ const handleToggleConfirmPassword = () => {
+   setShowConfirmPassword(!showConfirmPassword);
+ };
+
+ const handleInputConfirmPswd = (e) => {
+   const newValue = e.target.value;
+   setConfirmPswd(newValue);
+ };
+
+ const handleInputPassword = (e) => {
+   const newValue = e.target.value;
+   setPassword(newValue);
+   //setData({ ...data, password: newValue });
+   setChecklist({
+     uppercaseLetter: /[A-ZÑ]/.test(newValue),
+     lowercaseLetter: /[a-zñ]/.test(newValue),
+     oneNumber: /\d/.test(newValue),
+     large: newValue.length >= 8,
+     validation:
+       /[A-ZÑ]/.test(newValue) &&
+       /[a-zñ]/.test(newValue) &&
+       /\d/.test(newValue) &&
+       newValue.length >= 8,
+   });
+ };
+ //====================================================
+ 
   const logicPopUp = (tag, option, className) => {
     document.querySelector(tag).classList[option](className);
   };
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    //if(fullname.value !== "" && dni_.value !== 0 && sucursal.value !== "" && (email.value !== "" || emailBlocked != "")){
+    console.log(parseInt(sucursal.value))
     let data = {
       fullname: fullname.value,
       DNI: dni_.value,
-      email: DNI ? emailBlocked : email.value,
-      branchId: sucursal.value,
+      email: dni ? emailBlocked : email.value,
+      branchId: parseInt(sucursal.value),
       isOperator: true,
       isConfirmed: true,
     };
-    if (password.value != "" && confirmPassword.value == password.value)
-      data = { ...data, password: password.value };
+    
+    if (password != "" && confirmPswd == password)
+      data = { ...data, password: password };
 
-    axios
-
-      .post("http://localhost:3001/api/users/operator", data, {
+    axios.post("http://localhost:3001/api/users/operator", data, {
         withCredentials: true,
       })
       .then(() => {
         setPopupInfo({
-          title: DNI ? `Cambios guardados` : `Operador creado con exito`,
+          title: dni ?`Cambios guardados` :`Operador creado con exito`,
           text: `Gracias por confiar en nuestro servicio`,
           img: true,
           redirect: `/admin/operators`,
@@ -105,17 +149,13 @@ const CreateOperator = function () {
         );
       })
       .catch((err) => console.error(err));
-    //}
-    // else{
-    //   alert("Rellene todos los campos!");
-    // }
   };
 
   return (
     <>
       <div className={`${s.parent} body`}>
         <form onSubmit={handleSubmit} className={s.f}>
-          <h1>{DNI ? "Editar Operador" : "Crear Operador"}</h1>
+          <h1>{dni ? "Editar Operador" : "Crear Operador"}</h1>
           <div className={s.inputMail}>
             <Fullname
               value={fullname.value}
@@ -126,7 +166,7 @@ const CreateOperator = function () {
             <label htmlFor="email" className={s.textInputs}>
               Mail
             </label>
-            {DNI ? (
+            {dni ? (
               <input
                 style={{
                   backgroundColor: "#E3E3E3",
@@ -153,7 +193,7 @@ const CreateOperator = function () {
           </div>
           <div className={s.rowForm}>
             <div>
-              <label htmlFor="DNI" className={s.textInputs}>
+              <label htmlFor="dni" className={s.textInputs}>
                 DNI
               </label>
               <input
@@ -193,68 +233,54 @@ const CreateOperator = function () {
               </select>
             </div>
           </div>
-          <div className={s.rowForm}>
-            <div>
-              <label htmlFor="password" className={s.textInputs}>
-                {DNI
-                  ? "Nueva Contraseña (opcional)"
-                  : "Contraseña (obligatorio)"}
-              </label>
-              <div
-                className={
-                  focus
-                    ? password.value === confirmPassword.value
-                      ? s.focus
-                      : s.err
-                    : s.inputArea
-                }
-              >
-                <input
-                  type="text"
-                  name="password"
-                  id="password"
-                  placeholder="contraseña"
-                  className={s.inputPassword}
-                  {...password}
-                  onFocus={handleToggleFocus}
-                  onBlur={handleToggleFocus}
-                  required={DNI == null}
-                />
-              </div>
+          {disabled ? (
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+            className="inputs-div-container"
+          >
+            <div className="single-input-container special-password">
+              <p className="p-form-client">Contraseña</p>
+              <input
+                disabled={true}
+                name="password"
+                readOnly
+                className={s.inputArea}
+                type="password"
+                defaultValue={"Default123"}
+                style={{width:"100%"}}
+              />
             </div>
-            <div>
-              <label htmlFor="password" className={s.textInputs}>
-                Repetir Contraseña
-              </label>
-              <div
-                className={
-                  focus
-                    ? password.value === confirmPassword.value
-                      ? s.focus
-                      : s.err
-                    : s.inputArea
-                }
-              >
-                <input
-                  type="text"
-                  name="cpassword"
-                  id="cpassword"
-                  placeholder="contraseña"
-                  {...confirmPassword}
-                  className={s.inputPassword}
-                  onFocus={handleToggleFocus}
-                  onBlur={handleToggleFocus}
-                  required={DNI == null}
-                />
-              </div>
-            </div>
+            <h4 className="h4-form-edit" onClick={(e)=>{
+              e.preventDefault();
+              setDisabled(false);
+            }}>
+              Editar contraseña
+            </h4>
           </div>
+        ) :(<PasswordAndValidations
+            value={password}
+            handleInputConfirmPswd={handleInputConfirmPswd}
+            handleInputPassword={handleInputPassword}
+            handleToggleFocus={handleToggleFocus}
+            handleTogglePassword={handleTogglePassword}
+            handleToggleConfirmPassword={handleToggleConfirmPassword}
+            confirmPswd={confirmPswd}
+            showPassword={showPassword}
+            showConfirmPassword={showConfirmPassword}
+            checklist={checklist}
+            focus={focus}
+            
+          />)}
           <button
             type="submit"
             className={s.btnSingIn}
             style={{ marginTop: "3%" }}
           >
-            <h3>{DNI ? "Guardar Cambios" : "Registrar"}</h3>
+            <h3>{dni ? "Guardar Cambios" : "Registrar"}</h3>
           </button>
         </form>
       </div>
@@ -264,3 +290,4 @@ const CreateOperator = function () {
 };
 
 export default CreateOperator;
+

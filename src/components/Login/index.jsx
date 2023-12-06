@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import { login } from "../../state/user";
 import Popup from "../../commons/Popup";
+import PopupInput from "../../commons/PopupInput";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -70,21 +71,10 @@ const Login = () => {
         console.error(err);
       });
   };
-  const handleRecoverPassword = () => {
-    const email = prompt("ingrese su email");
-
-    axios
-      .post(
-        `http://localhost:3001/api/nodeMailer/recoverEmailPassword/${email}`
-      )
-      .then((resp) => {
-        alert("revise su casilla de correo para restaurar su contraseña");
-      })
-      .catch((error) => {
-        alert(
-          "se ha producido un error al intentar recuperar su contraseña, intentelo mas tarde"
-        );
-      });
+  const handleRecoverPasswordButton = () => {
+    logicPopUp(".login-page", "add", "blur-page");
+    logicPopUp(".div-popupI-container", "remove", "inactive-pi");
+    logicPopUp(".div-popupI-container", "add", "active-pi");
   };
   return (
     <>
@@ -108,7 +98,10 @@ const Login = () => {
                 onKeyDown={(e) => e.code === "Enter" && handleSubmit()}
               />
               <p className="p-validation-error-login">{invalidInformation}</p>
-              <h4 className="h4-form-login" onClick={handleRecoverPassword}>
+              <h4
+                className="h4-form-login"
+                onClick={handleRecoverPasswordButton}
+              >
                 ¿Olvidaste tu contraseña?
               </h4>
               <button className="login-button" onClick={() => handleSubmit()}>
@@ -126,6 +119,7 @@ const Login = () => {
         </div>
       </div>
       <Popup popupInfo={popupInfo} />
+      <PopupInput />
     </>
   );
 };

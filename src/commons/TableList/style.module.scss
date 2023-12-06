@@ -55,3 +55,40 @@
 b {
   color: black;
 }
+.filtersContainer,
+.titleContainer,
+.nothingContainer {
+  width: 50vh;
+}
+.headerContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.filtersContainer {
+  margin: 2% 0;
+  display: flex;
+  align-items: center;
+  gap: 3vh;
+  button {
+    all: unset;
+    height: min-content;
+    padding: 15px 20px;
+    // margin: 0vh 1vh;
+    color: var(--Principal, #a442f1);
+    text-align: center;
+    font-weight: 600;
+    border-radius: 12px;
+    background-color: #f0f0f0;
+    transition: all 0.5s ease;
+    &:hover {
+      transform: scale(1.05);
+      background-color: #e7e4e4;
+    }
+  }
+}
+.myTooltip {
+  // background-color: #a442f1;
+  padding: 10px;
+  border-radius: 10px;
+}

@@ -4,12 +4,20 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import axios from "axios";
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams, useNavigate } from "react-router";
+import { useParams } from "react-router";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Countdown from "../../commons/Countdown";
 import { login } from "../../state/user";
 import "../ReservationPanel/ReservationPanel.scss";
+import {
+  calculateTimeSlots,
+  OcurrencyChecker,
+  dateComparator,
+  hourGetter,
+  todayGetter,
+  dateConversor,
+} from "../../utils/date-functions.js";
 import {
   Box,
   Button,
@@ -28,7 +36,6 @@ import Popup from "../../commons/Popup";
 export default function ReservationPanel() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
-  const navigate = useNavigate();
   const [appointment, setAppointment] = React.useState({
     reservationId: "",
     branchId: "",
@@ -44,13 +51,10 @@ export default function ReservationPanel() {
   const [branches, setBranches] = React.useState([]);
   const [capacity, setCapacity] = React.useState(0);
   const [editing, setEditing] = React.useState(false);
-  const [reservationIdParams, setReservationIdParams] = React.useState();
   const [reservations, setReservations] = React.useState([]);
   const { reservationId } = useParams();
   const [schedules, setSchedules] = React.useState([]);
-  const [notAvailableSchedule, setNotAvilableSchedule] = React.useState("");
   const [reservedDay, setReservedDay] = React.useState([]);
-  const [openingTime, setOpeningTime] = React.useState("");
   const [popupInfo, setPopupInfo] = useState({
     title: undefined,
     text: undefined,
@@ -92,7 +96,7 @@ export default function ReservationPanel() {
       })
       .catch(() => console.error("NO BRANCHES AVAILABLE"));
   }, [reservationId]);
-  // const selectedDate = reservationId ? new Date(appointment.date) : null;
+
   //---------------------------------------------
   const [branchName, setBranchName] = React.useState("");
   //-------------------------------------------------------------
@@ -117,7 +121,7 @@ export default function ReservationPanel() {
     if (reservationId) setActiveStep(0);
     const [id, name, capacity, openingTime, closingTime] =
       e.target.value.split("-");
-    setOpeningTime(openingTime);
+
     setBranchName(name);
     setBranchId(id);
     setCapacity(capacity);
@@ -253,7 +257,6 @@ export default function ReservationPanel() {
     axios
       .post("http://localhost:3001/api/users/newAppointment", { ...inputs })
       .then((res) => {
-        setReservationIdParams(res.data.reservationId);
         sendConfirmationEmail(
           inputs.email,
           inputs.branchName,
@@ -303,14 +306,19 @@ export default function ReservationPanel() {
         ...toPut,
       })
       .then((resp) => {
-        axios.post("http://localhost:3001/api/nodeMailer/appointment/EditConfirmation",{
-          email:user.email,
-          reservationId:toPut.reservationId,
-          date:resp.data[1][0].date.split("T")[0],
-          time:resp.data[1][0].schedule.split(':').slice(0, 2).join(':')
-        }).then((res)=>console.log("email enviado"))
-        .catch((error)=>console.log(error))
-        
+        axios
+          .post(
+            "http://localhost:3001/api/nodeMailer/appointment/EditConfirmation",
+            {
+              email: user.email,
+              reservationId: toPut.reservationId,
+              date: resp.data[1][0].date.split("T")[0],
+              time: resp.data[1][0].schedule.split(":").slice(0, 2).join(":"),
+            }
+          )
+          .then((res) => console.log("email enviado"))
+          .catch((error) => console.log(error));
+
         setPopupInfo({
           title: `Turno modificado con exito`,
           text: `Gracias por confiar en nuestro servicio`,
@@ -725,7 +733,6 @@ export default function ReservationPanel() {
                     reservedDay.some((date) => dateComparator(day.$d, date)) ||
                     day.$d.getDay() === 0
                   }
-                  // defaultValue={selectedDate}
                 />
               </LocalizationProvider>
             ) : (
@@ -778,60 +785,4 @@ export default function ReservationPanel() {
       <ToastContainer />
     </div>
   );
-}
-//FUNCIONES AUXILIARES----------------------------------
-function dateComparator(frontDate, backDate) {
-  const newFrontDate = dateConversor(frontDate);
-  const newBackDate = dateConversor(backDate);
-  return dateConversor(frontDate) === dateConversor(backDate);
-}
-function dateConversor(date) {
-  const materialUidate = new Date(date);
-  const materialUiTime = materialUidate.getTime();
-  return materialUiTime;
-}
-function hourGetter() {
-  const now = new Date();
-  const currentHour = now.getHours().toString().padStart(2, "0");
-  const currentMinutes = now.getMinutes().toString().padStart(2, "0");
-  return `${currentHour}:${currentMinutes}`;
-}
-function todayGetter() {
-  const today = new Date();
-  const currentYear = today.getFullYear();
-  const currentMonth = today.getMonth() + 1;
-  const currentDay = today.getDate();
-  return `${currentYear}-${currentMonth}-${currentDay}`;
-}
-
-function calculateTimeSlots(openingTime, closingTime, capacity) {
-  let startTime;
-  openingTime[0] === "0"
-    ? (startTime = openingTime.slice(1, 2))
-    : (startTime = openingTime.slice(0, 2));
-  const endTime = closingTime.slice(0, 2);
-  const availableSlotsForCapacityOfOne = Math.abs(
-    parseInt(openingTime) - parseInt(closingTime)
-  );
-
-  const totalSlots = Math.floor(60 / 15) * availableSlotsForCapacityOfOne;
-  const timeSlots = [];
-
-  for (let i = 0; i < totalSlots; i++) {
-    const hour = Math.floor((i * 15) / 60) + parseInt(startTime);
-    const minute = (i * 15) % 60;
-
-    const formattedHour = hour.toString().padStart(2, "0");
-    const formattedMinute = minute.toString().padStart(2, "0");
-
-    timeSlots.push(`${formattedHour}:${formattedMinute}`);
-  }
-
-  return timeSlots;
-}
-
-function OcurrencyChecker(array, object) {
-  return array.forEach((x) => {
-    object[x] = (object[x] || 0) + 1;
-  });
 }

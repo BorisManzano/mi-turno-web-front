@@ -1,12 +1,13 @@
 import Button from "@mui/material/Button";
 import { red } from "@mui/material/colors";
-import React from "react";
+import React, { useState } from "react";
 import s from "./style.module.scss";
-
+import { Tooltip } from "react-tooltip";
 import { useNavigate } from "react-router";
 import axios from "axios";
 
 export const TableList = ({ datatype, data }) => {
+  const [filter, setFilter] = useState("all");
   const navigate = useNavigate();
   const handleOnClickEdit = (rid, e) => {
     //validar para distintos botones
@@ -67,27 +68,76 @@ export const TableList = ({ datatype, data }) => {
     column4 = "Sucursal";
   }
   //puede ser operadores, sucursales o historial de reservas.
-  // funcion confirmacion de reserva de parte del operador 
+  // funcion confirmacion de reserva de parte del operador
 
-  const handleConfirmedAssistence = (id, e)=>{
-    const button = document.getElementById(`${id}`)
-    axios.put(`http://localhost:3001/api/appointments/attended/${id}`)
-    .then(()=>{ 
-      alert("asistencia confirmada")
-   
-    })
-    .catch(()=>alert("no fue posible confirmar la asistencia"))
-    console.log("evento y id =>", id, e)
-    button.disabled = true   
-    button.innerText = "confirmado!"
-    button.onClick = null
-  }
+  const handleConfirmedAssistence = (id, e) => {
+    const button = document.getElementById(`${id}`);
+    axios
+      .put(`http://localhost:3001/api/appointments/attended/${id}`)
+      .then(() => {
+        alert("asistencia confirmada");
+      })
+      .catch(() => alert("no fue posible confirmar la asistencia"));
+    console.log("reservas traidas del back",objKeys)
+    console.log("evento y id =>", id, e);
+    button.disabled = true;
+    button.innerText = "Confirmado ✓";   
+    button.onClick = null;
+    window.location.reload()
+  };
   return (
     <>
       <div className={s.container} style={{ marginTop: "1.5%" }}>
-        <h1>{dataType === "OperatorReservas" ? "Reservas" : dataType}</h1>
+        <div
+          className={s.headerContainer}
+          style={{ display: dataType === `Sucursales` ? `flex` : `none` }}
+        >
+          <div className={s.filtersContainer}>
+            <h3>Filtrar : </h3>
+            <button
+              onClick={() =>
+                setFilter(filter === `without` ? `all` : `without`)
+              }
+            >
+              Sin operador
+            </button>
+            <button
+              data-tooltip-id="my-tooltip"
+              data-tooltip-content="Haz click nuevamente para quitar el filtro!"
+              data-tooltip-place="top-end"
+              onClick={() => setFilter(filter === `with` ? `all` : `with`)}
+            >
+              Con operador
+            </button>
+          </div>
+          <div className={s.titleContainer}>
+            <h1>{`Sucursales`}</h1>
+          </div>
+          <div className={s.nothingContainer} style={{ color: "white" }}>
+            .
+          </div>
+        </div>
+        <h1
+          style={{
+            margin: "3% 0 2% 0",
+            display: dataType === `Sucursales` ? `none` : `block`,
+          }}
+        >
+          {dataType === "OperatorReservas" ? "Reservas" : dataType}
+        </h1>
         <div className={s.table}>
           {data.map((objIns, i) => {
+            {
+              if (filter === "without") {
+                if (objIns.operator) {
+                  return;
+                }
+              } else if (filter === "with") {
+                if (!objIns.operator) {
+                  return;
+                }
+              }
+            }
             return (
               objIns[objKeys[0]] != "" && (
                 <div className={s.row} key={i}>
@@ -199,21 +249,26 @@ export const TableList = ({ datatype, data }) => {
                       <Button
                         id={`${objIns[objKeys[1]]}`}
                         variant="contained"
-                        style={{
+                        style={
+                          objIns[objKeys[5]] === false ?
+                          {
                           backgroundColor: "#F5F5F5",
                           color: "#A442F1",
                           textTransform: "none",
                           padding: "0 !important",
-                        }}
-                        onClick={
-                          (event) =>
-                          handleConfirmedAssistence(
-                             objIns[objKeys[1]],
-                              event
-                            )
+                        }:{
+                          backgroundColor: "#b93af8",
+                          color: "white",
+                          textTransform: "none",
+                          padding: "0 !important",
+                        }
+                       
+                      }
+                        onClick={(event) =>
+                          objIns[objKeys[5]] === false? handleConfirmedAssistence(objIns[objKeys[1]], event) : ""
                         }
                       >
-                        Confirmar
+                       {objIns[objKeys[5]] === false? "Confirmar" : "Confirmado ✓" } 
                       </Button>
                     )}
 
@@ -256,6 +311,7 @@ export const TableList = ({ datatype, data }) => {
           })}
         </div>
       </div>
+      <Tooltip id="my-tooltip" className={s.myTooltip} />
     </>
   );
 };

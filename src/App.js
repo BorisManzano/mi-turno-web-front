@@ -13,6 +13,7 @@ import Navbar from "./commons/Navbar/Navbar";
 import Register from "./components/Register";
 import ConfirmAccount from "./components/ConfirmAccount";
 import RouteNotFound from "./components/RouteNotFound";
+import IndexPage from "./components/IndexPage";
 function App() {
   const location = useLocation();
   const { pathname } = location;
@@ -48,10 +49,15 @@ function App() {
         navigate("/operator/reservationsList");
       if (pathname === "/" && !user.isOperator && !user.isAdmin && user.email)
         navigate("/client/newReservation");
-    } else if (pathname.includes("/login") || pathname.includes("/register")) {
-      user.isAdmin && navigate("/admin/allBranches");
-      user.isOperator && navigate("/operator/reservationsList");
-      user.email && navigate("/client/newReservation");
+      if (
+        pathname.includes("/login") ||
+        pathname.includes("/register") ||
+        pathname.includes("/index")
+      ) {
+        user.isAdmin && navigate("/admin/allBranches");
+        user.isOperator && navigate("/operator/reservationsList");
+        user.email && navigate("/client/newReservation");
+      }
     }
   }, [pathname, user, user.isAdmin, user.isOperator]);
   return (
@@ -59,6 +65,7 @@ function App() {
       <PromotionalMessage />
       <Navbar />
       <Routes>
+        <Route path="/index" element={<IndexPage />} />
         <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />

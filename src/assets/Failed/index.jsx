@@ -1,11 +1,14 @@
 import React from "react";
+import { useLocation } from "react-router";
 
 const Failed = () => {
+  const location = useLocation();
+
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="40"
-      height="40"
+      width={location.pathname === ("/" || "login") ? `50` : `40`}
+      height={location.pathname === ("/" || "login") ? `50` : `40`}
       viewBox="0 0 24 24"
       fill="none"
     >
