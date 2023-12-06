@@ -9,7 +9,7 @@ const PromotionalMessage = () => {
     <div>
       <div className="div-promotion-message">
         <p className="p-promotion-message">
-          Project made by: Hernan - Luis - Rosmari - Boris - Bautista
+          Project made by: Hernán - Luis - Rosmari - Boris - Bautista
         </p>
         <svg
           xmlns="http://www.w3.org/2000/svg"

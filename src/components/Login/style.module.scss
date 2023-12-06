@@ -32,12 +32,29 @@
   margin-bottom: 6px;
 }
 
-input{
+input {
   border-radius: 10px !important;
   padding-left: 12px;
 }
 
+.inputDiv {
+  position: relative;
+}
+
+#eye {
+  position: absolute;
+  display: block;
+  bottom: 0.5rem;
+  right: 1rem;
+
+  user-select: none;
+  cursor: pointer;
+}
+// input.input{
+//   padding-right: 2.5rem
+
 .inputLogin {
+  width: 95%;
   border: 0.8px solid rgba(128, 128, 128, 0.541);
   border-radius: 5px;
   height: 2.5rem;

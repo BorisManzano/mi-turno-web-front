@@ -14,8 +14,6 @@ import {
   hourGetter,
   todayGetter,
 } from "../../utils/date-functions.js";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 export const CancelReservation = () => {
   const userRedux = useSelector((state) => state.user);
   const [reservation, setReservation] = useState({ createdBy: {}, branch: {} });
@@ -51,12 +49,27 @@ export const CancelReservation = () => {
       dateComparator(reservation.date, todayGetter()) &&
       HourComparator(hourGetter(), reservation.schedule.slice(0, 5)) < 120
     ) {
-      toast.error(
-        "NO PUEDE RESERVAR UN TURNO CON MENOS DE DOS HORAS DE ANTICIPACION",
-        {
-          position: toast.POSITION.TOP_CENTER,
-        }
+      setPopupInfo({
+        title: `Reserva cancelada exitosamente`,
+        text: ``,
+        img: true,
+        buttonText: `Continuar`,
+        redirect: `/client/reservations`,
+      });
+      setPopupInfo({
+        title: `Error`,
+        text: `No puede cancelar una reserva menos de dos horas antes de que el turno comience.`,
+        img: false,
+        bottonText: `Aceptar`,
+        redirect: true,
+      });
+      logicPopUp(".body", "add", "external-div-container-inactive");
+      logicPopUp(
+        ".fake-container-popup",
+        "remove",
+        "fake-container-popup-inactive"
       );
+      logicPopUp(".fake-container-popup", "add", "fake-container-popup-active");
       return;
     } else {
       axios
@@ -221,7 +234,6 @@ export const CancelReservation = () => {
             );
           })}
         </div>
-        <ToastContainer />
         <div className={s.divright}>
           <br />
           <p className={s.Info}>Información de la reserva</p>

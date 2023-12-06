@@ -75,7 +75,7 @@ const Navbar = () => {
                   />
                 </svg>
               </Link>
-              <Link to={"/admin/allBranches"}>
+              <Link to={"/admin/reports"}>
                 <h5 className="h5-navbar-text">Reportes </h5>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -175,7 +175,16 @@ const Navbar = () => {
             {user.email ? (
               <div>
                 <Link to={"/client/newReservation"}>
-                  <button className="navbar-button">
+                  <button
+                    className="navbar-button"
+                    style={{
+                      display:
+                        pathname === `/client/newReservation` ||
+                        pathname.includes(`/client/editReservation`)
+                          ? `none`
+                          : `flex`,
+                    }}
+                  >
                     <h4 className="h4-navbar">Reservar</h4>
                   </button>
                 </Link>
