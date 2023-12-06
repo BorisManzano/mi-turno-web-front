@@ -44,16 +44,16 @@ export default function Register() {
 
   const handleTogglePassword = () => {
     setShowPassword(!showPassword);
-    document.querySelector(".strike-eye1").style.display = !showPassword
-      ? "inherit"
-      : "none";
+    // document.querySelector(".strike-eye1").style.display = !showPassword
+    //   ? "inherit"
+    //   : "none";
   };
 
   const handleToggleConfirmPassword = () => {
     setShowConfirmPassword(!showConfirmPassword);
-    document.querySelector(".strike-eye2").style.display = !showConfirmPassword
-      ? "inherit"
-      : "none";
+    // document.querySelector(".strike-eye2").style.display = !showConfirmPassword
+    //   ? "inherit"
+    //   : "none";
   };
 
   const handleInputConfirmPswd = (e) => {
