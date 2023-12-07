@@ -147,7 +147,7 @@ function Reports() {
   return (
     <div className={s.dad}>
       <div className={s.firstChild}>
-        <label htmlFor="Branch">Filtro por sucursalllll</label>
+        <label htmlFor="Branch">Filtro por sucursal</label>
         <select
           onChange={sucursal.onChange}
           name="branch"
