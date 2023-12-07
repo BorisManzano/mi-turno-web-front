@@ -92,15 +92,15 @@ function Reports() {
               }
             });
 
-            if (metricsData && metricsData.cancelled) {
-              const cancelledCount = metricsData.cancelled;
-              dataByDayOfWeek.Monday.cancelled += cancelledCount;
-              dataByDayOfWeek.Tuesday.cancelled += cancelledCount;
-              dataByDayOfWeek.Wednesday.cancelled += cancelledCount;
-              dataByDayOfWeek.Thursday.cancelled += cancelledCount;
-              dataByDayOfWeek.Friday.cancelled += cancelledCount;
-              dataByDayOfWeek.Saturday.cancelled += cancelledCount;
-            }
+            metricsData.forEach((cancelation) => {
+              const dayOfWeek = new Date(cancelation.date).toLocaleDateString(
+                "en-US",
+                {
+                  weekday: "long",
+                }
+              );
+              dataByDayOfWeek[dayOfWeek].cancelled += 1;
+            });
 
             const transformedData = Object.values(dataByDayOfWeek);
 
@@ -144,7 +144,6 @@ function Reports() {
   useEffect(() => {
     fetchAppointments();
   }, [sucursal.value]);
-
   return (
     <div className={s.dad}>
       <div className={s.firstChild}>
