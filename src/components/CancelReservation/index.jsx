@@ -42,7 +42,7 @@ export const CancelReservation = () => {
   const user = useSelector((state) => state.user);
   const navigate = useNavigate();
 
-  const handleOnClick = (e) => {
+  const handleOnClick = (e, i) => {
     e.preventDefault();
     if (
       reservation.schedule.slice(0, 5) > hourGetter() &&
@@ -74,7 +74,7 @@ export const CancelReservation = () => {
     } else {
       axios
         .delete(
-          `http://localhost:3001/api/users/removeAppointment/${reservationId}`
+          `http://localhost:3001/api/users/removeAppointment/${reservationId}?reason=${i}`
         )
         .then((res) => {
           setPopupInfo({
@@ -95,7 +95,6 @@ export const CancelReservation = () => {
             "add",
             "fake-container-popup-active"
           );
-
           axios
             .post(
               "http://localhost:3001/api/nodeMailer/appointment/cancellation",
@@ -108,8 +107,6 @@ export const CancelReservation = () => {
             )
             .then((res) => "")
             .catch((error) => console.log(error));
-          // document.querySelector(".fake-container-popup-active").style.display =
-          //   "flex";
         })
         .catch((error) => {
           alert("Ocurrió un error al eliminar la reserva");
@@ -217,7 +214,9 @@ export const CancelReservation = () => {
                     <p>La cancelación no puede ser revertida</p>
 
                     <Button
-                      onClick={handleOnClick}
+                      onClick={(e) => handleOnClick(e, i)}
+                      key={i}
+                      onMouseOver={() => console.log("mouse", i)}
                       variant="contained"
                       style={{
                         backgroundColor: red[500],
