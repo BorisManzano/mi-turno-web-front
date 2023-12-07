@@ -5,6 +5,11 @@ import s from "../../components/Reports/style.module.scss";
 const colors = ["#A442F1", "#CC6AFF"];
 
 function PieCharts({ data }) {
+  const dat = [
+    { name: "reservas", value: data[0].value },
+    { name: "asistencias", value: data[1].value },
+  ];
+
   return (
     <div style={{ width: "100%", height: 300, paddingTop: "50px" }}>
       <ResponsiveContainer>
@@ -27,7 +32,7 @@ function PieCharts({ data }) {
           <option>Inicio de los tiempos</option>
         </select> */}
         <PieChart>
-          <Pie data={data} dataKey="value">
+          <Pie data={dat} dataKey="value">
             {data.map((entry, index) => (
               <Cell
                 key={`cell-${index}`}
