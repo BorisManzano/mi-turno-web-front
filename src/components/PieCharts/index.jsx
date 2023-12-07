@@ -8,8 +8,10 @@ function PieCharts({ data }) {
   return (
     <div style={{ width: "100%", height: 300, paddingTop: "50px" }}>
       <ResponsiveContainer>
-        <p className={s.text}>Reservas vs Asistencias</p>
-        <select
+        <p className={s.text} style={{ width: "381px" }}>
+          Reservas vs Asistencias
+        </p>
+        {/* <select
           style={{ marginTop: "14px" }}
           name="branch"
           id="Branch"
@@ -23,7 +25,7 @@ function PieCharts({ data }) {
           <option>Semanal</option>
           <option>Diario</option>
           <option>Inicio de los tiempos</option>
-        </select>
+        </select> */}
         <PieChart>
           <Pie data={data} dataKey="value">
             {data.map((entry, index) => (
