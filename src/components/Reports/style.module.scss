@@ -122,6 +122,15 @@
   width: 100%;
 }
 
+.text1 {
+  color: var(--Grey-9, #282828);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-bottom: 4px;
+}
+
 .borderBtn {
   display: flex;
   width: 381px;
@@ -154,7 +163,7 @@
 .pie2 {
   display: flex;
   width: 580px;
-  height: 450px;
+  height: 454px;
   padding: 16px 32px 16px 32px;
   flex-direction: row;
   align-items: center;
@@ -218,10 +227,14 @@
   color: #fff;
 }
 
-.success {
+.reservation {
   background-color: #a442f1;
 }
 
-.info {
+.cancelled {
   background-color: #e53939;
+}
+
+.attended {
+  background-color: #cc6aff;
 }

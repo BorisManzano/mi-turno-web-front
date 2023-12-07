@@ -24,104 +24,106 @@ function Reports() {
   const fetchAppointments = () => {
     const branchName = sucursal.value;
 
-    Promise.all([
-      axios.get(
+    axios
+      .get(
         `http://localhost:3001/api/users/admin/appointments?branchName=${branchName}`
-      ),
-      axios.get(`http://localhost:3001/api/metrics/?branchName=${branchName}`),
-    ])
-      .then(([appointmentsRes, metricsRes]) => {
-        // Desestructurar los resultados
-        const appointments = appointmentsRes.data;
-        const cancelledMetrics = metricsRes.data;
+      )
+      .then((res) => {
+        const appointments = res.data;
 
-        // Resto del código para procesar las reservas
-        const uniqueDates = [...new Set(appointments.map((appt) => appt.date))];
-        const dataByDayOfWeek = {
-          Monday: {
-            dayOfWeek: "Lunes",
-            reservations: 0,
-            attended: 0,
-            cancelled: 0,
-          },
-          Tuesday: {
-            dayOfWeek: "Martes",
-            reservations: 0,
-            attended: 0,
-            cancelled: 0,
-          },
-          Wednesday: {
-            dayOfWeek: "Miércoles",
-            reservations: 0,
-            attended: 0,
-            cancelled: 0,
-          },
-          Thursday: {
-            dayOfWeek: "Jueves",
-            reservations: 0,
-            attended: 0,
-            cancelled: 0,
-          },
-          Friday: {
-            dayOfWeek: "Viernes",
-            reservations: 0,
-            attended: 0,
-            cancelled: 0,
-          },
-          Saturday: {
-            dayOfWeek: "Sábado",
-            reservations: 0,
-            attended: 0,
-            cancelled: 0,
-          },
-        };
+        axios
+          .get(`http://localhost:3001/api/metrics/?branchName=${branchName}`)
+          .then((metricsRes) => {
+            const metricsData = metricsRes.data;
 
-        appointments.forEach((appt) => {
-          const dayOfWeek = new Date(appt.date).toLocaleDateString("en-US", {
-            weekday: "long",
+            const uniqueDates = [
+              ...new Set(appointments.map((appt) => appt.date)),
+            ];
+
+            const dataByDayOfWeek = {
+              Monday: {
+                dayOfWeek: "Lunes",
+                reservations: 0,
+                attended: 0,
+                cancelled: 0,
+              },
+              Tuesday: {
+                dayOfWeek: "Martes",
+                reservations: 0,
+                attended: 0,
+                cancelled: 0,
+              },
+              Wednesday: {
+                dayOfWeek: "Miércoles",
+                reservations: 0,
+                attended: 0,
+                cancelled: 0,
+              },
+              Thursday: {
+                dayOfWeek: "Jueves",
+                reservations: 0,
+                attended: 0,
+                cancelled: 0,
+              },
+              Friday: {
+                dayOfWeek: "Viernes",
+                reservations: 0,
+                attended: 0,
+                cancelled: 0,
+              },
+              Saturday: {
+                dayOfWeek: "Sábado",
+                reservations: 0,
+                attended: 0,
+                cancelled: 0,
+              },
+            };
+
+            appointments.forEach((appt) => {
+              const dayOfWeek = new Date(appt.date).toLocaleDateString(
+                "en-US",
+                {
+                  weekday: "long",
+                }
+              );
+              dataByDayOfWeek[dayOfWeek].reservations += 1;
+              if (appt.attended) {
+                dataByDayOfWeek[dayOfWeek].attended += 1;
+              }
+            });
+
+            if (metricsData && metricsData.cancelled) {
+              const cancelledCount = metricsData.cancelled;
+              dataByDayOfWeek.Monday.cancelled += cancelledCount;
+              dataByDayOfWeek.Tuesday.cancelled += cancelledCount;
+              dataByDayOfWeek.Wednesday.cancelled += cancelledCount;
+              dataByDayOfWeek.Thursday.cancelled += cancelledCount;
+              dataByDayOfWeek.Friday.cancelled += cancelledCount;
+              dataByDayOfWeek.Saturday.cancelled += cancelledCount;
+            }
+
+            const transformedData = Object.values(dataByDayOfWeek);
+
+            setReservationsList(appointments);
+            const totalReservations = appointments.length;
+            const totalAttendances = appointments.filter(
+              (appt) => appt.attended
+            ).length;
+            const attendancePercentage =
+              (totalAttendances / totalReservations) * 100;
+            const totalCancelled = metricsData.length;
+            const pieData = [
+              { name: "reservations", value: totalReservations },
+              { name: "attended", value: totalAttendances },
+              { name: "cancelled", value: totalCancelled },
+            ];
+            setData(pieData);
+            setPorcentage(attendancePercentage);
+            setLineData(transformedData);
+          })
+          .catch((error) => {
+            console.error("Error fetching metrics:", error);
           });
-          dataByDayOfWeek[dayOfWeek].reservations += 1;
-          if (appt.attended) {
-            dataByDayOfWeek[dayOfWeek].attended += 1;
-          } else {
-            dataByDayOfWeek[dayOfWeek].cancelled += 1;
-          }
-        });
-
-        // Incorporar los datos de reservas canceladas desde la segunda llamada
-        if (cancelledMetrics && cancelledMetrics.cancelledReservations) {
-          dataByDayOfWeek.Monday.cancelled =
-            cancelledMetrics.cancelledReservations.Monday || 0;
-          dataByDayOfWeek.Tuesday.cancelled =
-            cancelledMetrics.cancelledReservations.Tuesday || 0;
-          dataByDayOfWeek.Wednesday.cancelled =
-            cancelledMetrics.cancelledReservations.Wednesday || 0;
-          dataByDayOfWeek.Thursday.cancelled =
-            cancelledMetrics.cancelledReservations.Thursday || 0;
-          dataByDayOfWeek.Friday.cancelled =
-            cancelledMetrics.cancelledReservations.Friday || 0;
-          dataByDayOfWeek.Saturday.cancelled =
-            cancelledMetrics.cancelledReservations.Saturday || 0;
-        }
-
-        const transformedData = Object.values(dataByDayOfWeek);
-
-        // Resto del código para actualizar el estado
-        setReservationsList(appointments);
-        const totalReservations = appointments.length;
-        const totalAttendances = appointments.filter(
-          (appt) => appt.attended
-        ).length;
-        const attendancePercentage =
-          (totalAttendances / totalReservations) * 100;
-        const pieData = [
-          { name: "reservations", value: totalReservations },
-          { name: "attended", value: totalAttendances },
-          { name: "cancelled", value: 0 },
-        ];
-        setData(pieData);
-        setPorcentage(attendancePercentage);
-        setLineData(transformedData);
       })
       .catch((error) => {
         console.error("Error fetching reservations:", error);
