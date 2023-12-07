@@ -495,7 +495,6 @@ export default function ReservationPanel() {
               xs={12}
               sx={{
                 display: "flex",
-
                 width: "100%",
                 padding: "12px 12px 8px 12px",
               }}
@@ -513,9 +512,8 @@ export default function ReservationPanel() {
                 <select
                   xs={12}
                   style={{
-                    width: "100",
-                    height: "30px",
-
+                    width: "100%",
+                    height: "35px",
                     padding: "5px",
                   }}
                   onChange={handleSelection}
@@ -603,7 +601,7 @@ export default function ReservationPanel() {
                       <br />
 
                       <input
-                        style={{ width: "90%", height: "30px" }}
+                        style={{ width: "92%", height: "30px" }}
                         name="fullname"
                         defaultValue={
                           reservationId ? appointment.fullname : user.fullname
@@ -618,7 +616,6 @@ export default function ReservationPanel() {
                       <FormLabel
                         style={{
                           marginTop: "15px",
-
                           fontWeight: "bolder",
                         }}
                       >
@@ -626,7 +623,7 @@ export default function ReservationPanel() {
                       </FormLabel>
                       <br />
                       <input
-                        style={{ width: "100%", height: "30px" }}
+                        style={{ width: "96%", height: "30px" }}
                         name="telephone"
                         defaultValue={
                           reservationId ? appointment.telephone : ""
@@ -645,7 +642,7 @@ export default function ReservationPanel() {
                   </FormLabel>
                   <br />
                   <input
-                    style={{ width: "100%", height: "30px" }}
+                    style={{ width: "98%", height: "30px" }}
                     name="email"
                     defaultValue={
                       reservationId ? appointment.email : user.email
