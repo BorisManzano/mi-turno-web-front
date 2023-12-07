@@ -249,7 +249,7 @@ export default function ClientProfileEdit() {
               <div style={{ flex: 1, marginLeft: "10px" }}>
                 <p className="p-form-client">Telefono</p>
                 <input
-                  style={{ width: "98.5%" }}
+                  style={{ width: "96.5%" }}
                   name="telephone"
                   defaultValue={user.telephone}
                   className="inputLogin"
