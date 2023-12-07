@@ -1,70 +1,44 @@
-# Getting Started with Create React App
+# mi-turno-web-front
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+#                                                 MI TURNO WEB
 
-## Available Scripts
+## Descripción: Es una aplicación web que permite la reserva de turnos para empresas con sucursales físicas, permitiendo la administración de la cantidad de clientes simultanea por locación. La aplicación cuenta con el registro y la funcionalidad específica para tres tipos distintios de usuarios según sea administrador, operador o cliente, de manera de poder controlar tanto el flujo de reservas así como también monitorear el estado de cada turno y sucursal y contar con un registro estadístico de su funcionamiento.
 
-In the project directory, you can run:
+## INSTALACION : Para la instalación del proyecto, ingrese los siguientes comandos en la terminal, siguiendo el orden propuesto:
 
-### `npm start`
+1- Clone este repositorio: https://github.com/FoXXeNFlaY/mi-turno-web-front 
+2- Asegúrese de estar o navegar en el directorio de este proyecto: cd mi-turno-web-front
+3- Instale las dependencias con el siguiente comando: npm install
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## USO: Para arrancar el proyecto ingrese el siguiente comando en la terminal:
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+* npm start : Esto abrira la aplicación en su navegador predeterminado.
 
-### `npm test`
+## Las tecnologías empleadas en este proyecto fueron:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+* React
+* Redux
+* SCSS
+* Material UI
+* Framer-Motion
+* Axios 
+* Recharts
 
-### `npm run build`
+#                                            Créditos y Contactos 
+## Este proyecto fue realizado por los siguientes integrantes del Equipo 4 de Mi turno web:
+* Bautista Gorchs: https://github.com/bautistagorchs
+* Luis Robledo: https://github.com/luis206r
+* Rosmari Ledesma: https://github.com/Rosm08
+* Boris Manzano: https://github.com/FoXXeNFlaY
+* Hernan Duarte: https://github.com/hernan789
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
