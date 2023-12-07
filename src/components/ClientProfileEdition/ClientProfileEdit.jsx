@@ -127,17 +127,19 @@ export default function ClientProfileEdit() {
         position: toast.POSITION.TOP_CENTER,
       });
       return;
-    } else {
-      data.password = data.newPassword;
     }
-    const toPut = { email: user.email };
-    for (const key in data) {
-      if (data[key] && data[key] !== user[key]) {
-        toPut[key] = data[key];
+    const info = {
+      password: data.password,
+    };
+    const toPut = { email: user.email, ...info };
+    for (const key in info) {
+      if (info[key] && info[key] !== user[key]) {
+        toPut[key] = info[key];
       } else {
         toPut[key] = user[key];
       }
     }
+
     axios
       .put("http://localhost:3001/api/users/edit/profile", {
         ...toPut,
