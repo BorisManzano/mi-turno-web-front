@@ -7,6 +7,7 @@ import Check from "../../assets/Check";
 import Wrong from "../../assets/Wrong";
 import PieCharts from "../PieCharts";
 import LineCharts from "../LineCharts";
+import BarCharts from "../BarCharts";
 
 function Reports() {
   const sucursal = useInput("");
@@ -23,15 +24,19 @@ function Reports() {
   const fetchAppointments = () => {
     const branchName = sucursal.value;
 
-    axios
-      .get(
+    Promise.all([
+      axios.get(
         `http://localhost:3001/api/users/admin/appointments?branchName=${branchName}`
-      )
-      .then((res) => {
-        const appointments = res.data;
+      ),
+      axios.get(`http://localhost:3001/api/metrics/?branchName=${branchName}`),
+    ])
+      .then(([appointmentsRes, metricsRes]) => {
+        // Desestructurar los resultados
+        const appointments = appointmentsRes.data;
+        const cancelledMetrics = metricsRes.data;
 
+        // Resto del código para procesar las reservas
         const uniqueDates = [...new Set(appointments.map((appt) => appt.date))];
-
         const dataByDayOfWeek = {
           Monday: {
             dayOfWeek: "Lunes",
@@ -83,8 +88,25 @@ function Reports() {
           }
         });
 
+        // Incorporar los datos de reservas canceladas desde la segunda llamada
+        if (cancelledMetrics && cancelledMetrics.cancelledReservations) {
+          dataByDayOfWeek.Monday.cancelled =
+            cancelledMetrics.cancelledReservations.Monday || 0;
+          dataByDayOfWeek.Tuesday.cancelled =
+            cancelledMetrics.cancelledReservations.Tuesday || 0;
+          dataByDayOfWeek.Wednesday.cancelled =
+            cancelledMetrics.cancelledReservations.Wednesday || 0;
+          dataByDayOfWeek.Thursday.cancelled =
+            cancelledMetrics.cancelledReservations.Thursday || 0;
+          dataByDayOfWeek.Friday.cancelled =
+            cancelledMetrics.cancelledReservations.Friday || 0;
+          dataByDayOfWeek.Saturday.cancelled =
+            cancelledMetrics.cancelledReservations.Saturday || 0;
+        }
+
         const transformedData = Object.values(dataByDayOfWeek);
 
+        // Resto del código para actualizar el estado
         setReservationsList(appointments);
         const totalReservations = appointments.length;
         const totalAttendances = appointments.filter(
@@ -200,6 +222,9 @@ function Reports() {
         <div className={s.pie2}>
           <LineCharts data={lineData} />
         </div>
+      </div>
+      <div className={s.bar}>
+        <BarCharts data={data} />
       </div>
     </div>
   );
