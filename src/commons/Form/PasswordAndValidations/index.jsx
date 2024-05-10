@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Eye from "../../../assets/Eye";
 import Check from "../../../assets/Check";
 import Wrong from "../../../assets/Wrong";
@@ -21,16 +21,18 @@ function PasswordAndValidations({
   const location = useLocation();
   const { pathname } = location;
   return (
-    <div style={{width:"100%"}}>
-      <div style={{width:"100%"}}>
-        <div style={{width:"100%"}} 
+    <div style={{ width: "100%" }}>
+      <div style={{ width: "100%" }}>
+        <div
+          style={{ width: "100%" }}
           className={
             pathname === ("/admin/profile" || "/operator/profile")
               ? s.password
               : s.rowForm
           }
         >
-          <div style={{width:"100%"}}
+          <div
+            style={{ width: "100%" }}
             className={
               pathname === ("/admin/profile" || "/operator/profile")
                 ? s.password1
@@ -40,7 +42,8 @@ function PasswordAndValidations({
             <label htmlFor="password" className={s.textInputs}>
               Contraseña
             </label>
-            <div style={{width:"95%"}}
+            <div
+              style={{ width: "95%" }}
               className={
                 pathname === ("/admin/profile" || "/operator/profile")
                   ? focus && value === confirmPswd
@@ -76,7 +79,8 @@ function PasswordAndValidations({
             <label htmlFor="password" className={s.textInputs}>
               Repetir Contraseña
             </label>
-            <div style={{width:"95%"}}
+            <div
+              style={{ width: "95%" }}
               className={
                 pathname === ("/admin/profile" || "/operator/profile")
                   ? focus && value === confirmPswd
@@ -110,7 +114,8 @@ function PasswordAndValidations({
           </div>
         </div>
       </div>
-      <div style={{width:"96%"}}
+      <div
+        style={{ width: "96%" }}
         className={
           pathname === ("/admin/profile" || "/operator/profile")
             ? s.warningP
