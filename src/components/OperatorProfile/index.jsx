@@ -17,7 +17,9 @@ const OperatorProfile = function () {
   const user = useSelector((state) => state.user);
   useEffect(() => {
     axios
-      .get(`http://localhost:3001/api/users/operator/info/${user.DNI}`)
+      .get(
+        `${process.env.REACT_APP_API_URL}:3001/api/users/operator/info/${user.DNI}`
+      )
       .then((result) => {
         setBranchName(result.data.name);
       });
@@ -105,9 +107,13 @@ const OperatorProfile = function () {
       }
     }
     axios
-      .put("http://localhost:3001/api/users/edit/profile", toPut, {
-        withCredentials: true,
-      })
+      .put(
+        `${process.env.REACT_APP_API_URL}:3001/api/users/edit/profile`,
+        toPut,
+        {
+          withCredentials: true,
+        }
+      )
       .then((resp) => {
         const payload = {
           fullname: resp.data.fullname,

@@ -13,8 +13,8 @@ import Navbar from "./commons/Navbar/Navbar";
 import Register from "./components/Register";
 import ConfirmAccount from "./components/ConfirmAccount";
 import RouteNotFound from "./components/RouteNotFound";
-import IndexPage from "./components/IndexPage"; 
-import { motion,AnimatePresence, animate, delay } from "framer-motion";
+import IndexPage from "./components/IndexPage";
+import { motion, AnimatePresence, animate, delay } from "framer-motion";
 function App() {
   const location = useLocation();
   const { pathname } = location;
@@ -23,7 +23,9 @@ function App() {
   const user = useSelector((state) => state.user);
   useEffect(() => {
     axios
-      .get("http://localhost:3001/api/users/me", { withCredentials: true })
+      .get(`${process.env.REACT_APP_API_URL}:3001/api/users/me`, {
+        withCredentials: true,
+      })
       .then((res) => {
         if (res.data) {
           const userData = {
@@ -65,39 +67,46 @@ function App() {
     <div className="App">
       <PromotionalMessage />
       <Navbar />
-       <AnimatePresence mode="wait">
-        <motion.div 
-           key={useLocation().pathname}
-           variants={{
-            initial:{opacity:0,x:1000, },
-            animate:{opacity:100,x:0,  },
-            transition:{ duration: 1, delay: 0.9},
-           }}
-           initial="initial"
-           animate="animate"
-           exit="exit"
-           transition="transition"
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={useLocation().pathname}
+          variants={{
+            initial: { opacity: 0, x: 1000 },
+            animate: { opacity: 100, x: 0 },
+            transition: { duration: 1, delay: 0.9 },
+          }}
+          initial="initial"
+          animate="animate"
+          exit="exit"
+          transition="transition"
         >
-        <Routes>
-        <Route path="/index" element={<IndexPage />} />
-        <Route path="/" element={<Login />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        {user.email && !user.isAdmin && !user.isOperator && (
-          <Route path="/client/*" element={<ClientRoutes />} />
-        )}
-        {user.isOperator && (
-          <Route path="/operator/*" element={<OperatorRoutes />} />
-        )}
+          <Routes>
+            <Route path="/index" element={<IndexPage />} />
+            <Route path="/" element={<Login />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            {user.email && !user.isAdmin && !user.isOperator && (
+              <Route path="/client/*" element={<ClientRoutes />} />
+            )}
+            {user.isOperator && (
+              <Route path="/operator/*" element={<OperatorRoutes />} />
+            )}
 
-        {user.isAdmin && <Route path="/admin/*" element={<AdminRoutes />} />}
-        <Route path="/recoverPassword/:token" element={<RecoverPassword />} />
-        <Route path="/account/confirm/:token" element={<ConfirmAccount />} />
-        <Route path="/*" element={<RouteNotFound />} />
-        </Routes>
-        
+            {user.isAdmin && (
+              <Route path="/admin/*" element={<AdminRoutes />} />
+            )}
+            <Route
+              path="/recoverPassword/:token"
+              element={<RecoverPassword />}
+            />
+            <Route
+              path="/account/confirm/:token"
+              element={<ConfirmAccount />}
+            />
+            <Route path="/*" element={<RouteNotFound />} />
+          </Routes>
         </motion.div>
-     </AnimatePresence>
+      </AnimatePresence>
     </div>
   );
 }

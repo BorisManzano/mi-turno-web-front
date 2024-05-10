@@ -11,9 +11,12 @@ export const AdministratorOperatorsList = () => {
   const navigate = useNavigate();
   useEffect(() => {
     axios
-      .get(`http://localhost:3001/api/users/admin/operatorsList`, {
-        // mediante la ruta de sucursales tambien se trae la info de operadores
-      })
+      .get(
+        `${process.env.REACT_APP_API_URL}:3001/api/users/admin/operatorsList`,
+        {
+          // mediante la ruta de sucursales tambien se trae la info de operadores
+        }
+      )
       .then((res) => {
         setAllData(
           res.data.map((obj) => {
@@ -36,10 +39,9 @@ export const AdministratorOperatorsList = () => {
   if (loading) return <>Loading...</>;
   else if (allData.length == 0)
     return (
-  <div className={s.container}>
-     
-        <h1 style={{margin:"20px"}}>No hay operadores</h1>
-       
+      <div className={s.container}>
+        <h1 style={{ margin: "20px" }}>No hay operadores</h1>
+
         <Button
           onClick={(e) => {
             navigate(`/admin/create/operador`);
@@ -50,13 +52,11 @@ export const AdministratorOperatorsList = () => {
             color: "#A442F1",
             textTransform: "none",
             padding: "0 !important",
-            margin:"0",
+            margin: "0",
           }}
         >
           Crear operador
         </Button>
-        
-      
       </div>
     );
   return (

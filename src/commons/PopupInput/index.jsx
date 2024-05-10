@@ -10,7 +10,7 @@ const PopupInput = () => {
     setStepper(2);
     axios
       .post(
-        `http://localhost:3001/api/nodeMailer/recoverEmailPassword/${inputValue}`
+        `${process.env.REACT_APP_API_URL}:3001/api/nodeMailer/recoverEmailPassword/${inputValue}`
       )
       .then((resp) => {
         setStepper(3);

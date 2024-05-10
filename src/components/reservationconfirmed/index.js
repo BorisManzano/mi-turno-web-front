@@ -11,7 +11,7 @@ const ReservationConfirmed = function () {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3001/api/users/appointment/${reservationId}`
+          `${process.env.REACT_APP_API_URL}:3001/api/users/appointment/${reservationId}`
         );
         setReservation(response.data);
       } catch (error) {

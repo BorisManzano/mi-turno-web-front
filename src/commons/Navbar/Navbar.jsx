@@ -12,7 +12,7 @@ const Navbar = () => {
   const handleButtonRigth = (e) => {
     e.preventDefault();
     axios
-      .post(`http://localhost:3001/api/users/logout`, null, {
+      .post(`${process.env.REACT_APP_API_URL}:3001/api/users/logout`, null, {
         withCredentials: true,
       })
       .then(() => {

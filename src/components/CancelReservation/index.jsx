@@ -31,7 +31,9 @@ export const CancelReservation = () => {
   };
   useEffect(() => {
     axios
-      .get(`http://localhost:3001/api/users/appointment/${reservationId}`)
+      .get(
+        `${process.env.REACT_APP_API_URL}:3001/api/users/appointment/${reservationId}`
+      )
       .then((res) => {
         setReservation(res.data);
       })
@@ -74,7 +76,7 @@ export const CancelReservation = () => {
     } else {
       axios
         .delete(
-          `http://localhost:3001/api/users/removeAppointment/${reservationId}`
+          `${process.env.REACT_APP_API_URL}:3001/api/users/removeAppointment/${reservationId}`
         )
         .then((res) => {
           setPopupInfo({
@@ -98,7 +100,7 @@ export const CancelReservation = () => {
 
           axios
             .post(
-              "http://localhost:3001/api/nodeMailer/appointment/cancellation",
+              `${process.env.REACT_APP_API_URL}:3001/api/nodeMailer/appointment/cancellation`,
               {
                 email: userRedux.email,
                 branch: reservation.branch.name,

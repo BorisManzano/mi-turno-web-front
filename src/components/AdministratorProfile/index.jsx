@@ -111,9 +111,13 @@ const AdministratorProfile = function () {
     }
 
     axios
-      .put("http://localhost:3001/api/users/edit/profile", toPut, {
-        withCredentials: true,
-      })
+      .put(
+        `${process.env.REACT_APP_API_URL}:3001/api/users/edit/profile`,
+        toPut,
+        {
+          withCredentials: true,
+        }
+      )
       .then((resp) => {
         const payload = {
           fullname: resp.data.fullname,
@@ -195,20 +199,20 @@ const AdministratorProfile = function () {
             </h4>
           </div>
         ) : (
-          <div style={{width:"91%"}}>
-          <PasswordAndValidations
-            value={data.password}
-            handleInputConfirmPswd={handleInputConfirmPswd}
-            handleInputPassword={handleInputPassword}
-            handleToggleFocus={handleToggleFocus}
-            handleTogglePassword={handleTogglePassword}
-            handleToggleConfirmPassword={handleToggleConfirmPassword}
-            confirmPswd={confirmPswd}
-            showPassword={showPassword}
-            showConfirmPassword={showConfirmPassword}
-            checklist={checklist}
-            focus={focus}
-          />
+          <div style={{ width: "91%" }}>
+            <PasswordAndValidations
+              value={data.password}
+              handleInputConfirmPswd={handleInputConfirmPswd}
+              handleInputPassword={handleInputPassword}
+              handleToggleFocus={handleToggleFocus}
+              handleTogglePassword={handleTogglePassword}
+              handleToggleConfirmPassword={handleToggleConfirmPassword}
+              confirmPswd={confirmPswd}
+              showPassword={showPassword}
+              showConfirmPassword={showConfirmPassword}
+              checklist={checklist}
+              focus={focus}
+            />
           </div>
         )}
         <div>

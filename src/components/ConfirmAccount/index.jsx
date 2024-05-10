@@ -13,7 +13,9 @@ const ConfirmAccount = function () {
   const { token } = useParams();
   const confirmedRegister = (e) => {
     axios
-      .put(`http://localhost:3001/api/nodeMailer/confirmation/${token}`)
+      .put(
+        `${process.env.REACT_APP_API_URL}:3001/api/nodeMailer/confirmation/${token}`
+      )
       .then((response) => {
         setConfirmed(true);
       })
@@ -28,12 +30,19 @@ const ConfirmAccount = function () {
     const email = e.target.email.value;
 
     axios
-      .post(`http://localhost:3001/api/nodeMailer/accountConfirmation/${email}`)
+      .post(
+        `${process.env.REACT_APP_API_URL}:3001/api/nodeMailer/accountConfirmation/${email}`
+      )
       .then((resp) =>
-       toast.success("Revise su casilla de correo para confirmar su registro de cuenta",{
-        position: toast.POSITION.TOP_CENTER,
-      })).then(()=>{
-         window.close()
+        toast.success(
+          "Revise su casilla de correo para confirmar su registro de cuenta",
+          {
+            position: toast.POSITION.TOP_CENTER,
+          }
+        )
+      )
+      .then(() => {
+        window.close();
       })
       .catch((error) =>
         setConfirmed(
@@ -106,7 +115,7 @@ const ConfirmAccount = function () {
         ) : (
           ""
         )}
-         <ToastContainer />
+        <ToastContainer />
       </div>
     </div>
   );

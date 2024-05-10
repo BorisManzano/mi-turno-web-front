@@ -97,26 +97,30 @@ export default function Register() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!data.fullname || !data.DNI || !data.email || !data.password) {
-      return toast.warn("Debes completar todos los campos",{
+      return toast.warn("Debes completar todos los campos", {
         position: toast.POSITION.TOP_CENTER,
-      })
+      });
     } else if (!checklist.validation) {
-      return toast.warn("validation",{
+      return toast.warn("validation", {
         position: toast.POSITION.TOP_CENTER,
-      })
+      });
     } else if (data.password !== confirmPswd) {
-      return toast.error("Las contraseñas deben ser iguales",{
+      return toast.error("Las contraseñas deben ser iguales", {
         position: toast.POSITION.TOP_CENTER,
-      })
+      });
     } else {
       axios
 
-        .post("http://localhost:3001/api/users/register", data, {
-          withCredentials: true,
-        })
+        .post(
+          `${process.env.REACT_APP_API_URL}:3001/api/users/register`,
+          data,
+          {
+            withCredentials: true,
+          }
+        )
         .then((resp) => {
           axios.post(
-            `http://localhost:3001/api/nodeMailer/accountConfirmation/${resp.data.email}`
+            `${process.env.REACT_APP_API_URL}:3001/api/nodeMailer/accountConfirmation/${resp.data.email}`
           );
         })
         .then(() => {
@@ -210,7 +214,7 @@ export default function Register() {
           <div className={s.bBorder}></div>
           <button onClick={returnLogin} className={s.btnLog}>
             ¿Ya tenés cuenta? Iniciá sesión
-          </button>     
+          </button>
           <ToastContainer />
         </form>
       </div>

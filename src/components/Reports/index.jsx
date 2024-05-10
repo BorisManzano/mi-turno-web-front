@@ -26,13 +26,15 @@ function Reports() {
 
     axios
       .get(
-        `http://localhost:3001/api/users/admin/appointments?branchName=${branchName}`
+        `${process.env.REACT_APP_API_URL}:3001/api/users/admin/appointments?branchName=${branchName}`
       )
       .then((res) => {
         const appointments = res.data;
 
         axios
-          .get(`http://localhost:3001/api/metrics/?branchName=${branchName}`)
+          .get(
+            `${process.env.REACT_APP_API_URL}:3001/api/metrics/?branchName=${branchName}`
+          )
           .then((metricsRes) => {
             const metricsData = metricsRes.data;
 
@@ -132,7 +134,9 @@ function Reports() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/api/users/admin/sucursalesList")
+      .get(
+        `${process.env.REACT_APP_API_URL}:3001/api/users/admin/sucursalesList`
+      )
       .then((res) => {
         sucursales.setValue(res.data);
       })

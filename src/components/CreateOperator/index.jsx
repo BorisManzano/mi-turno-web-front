@@ -38,7 +38,9 @@ const CreateOperator = function () {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/api/users/admin/sucursalesList")
+      .get(
+        `${process.env.REACT_APP_API_URL}:3001/api/users/admin/sucursalesList`
+      )
       .then((res) => {
         sucursales.setValue(res.data);
       });
@@ -48,7 +50,9 @@ const CreateOperator = function () {
     if (dni) {
       setDisabled(true);
       axios
-        .get(`http://localhost:3001/api/users/operator/info/${dni}`)
+        .get(
+          `${process.env.REACT_APP_API_URL}:3001/api/users/operator/info/${dni}`
+        )
         .then((res) => {
           fullname.setValue(res.data.operator.fullname);
           setEmailBlocked(res.data.operator.email);
@@ -136,7 +140,7 @@ const CreateOperator = function () {
       data = { ...data, password: password };
 
     axios
-      .post("http://localhost:3001/api/users/operator", data, {
+      .post(`${process.env.REACT_APP_API_URL}:3001/api/users/operator`, data, {
         withCredentials: true,
       })
       .then(() => {
@@ -193,7 +197,14 @@ const CreateOperator = function () {
 
   return (
     <>
-      {showPopUpConfirm && <PopupConfirm onChange={manejarCambio} message = {"<h2>¿Está seguro que quiere reemplazar al anterior operador?</h2><br/>Su asociación a la sucursal será removida. Contacta al anterior operador de ser necesario"}/>}
+      {showPopUpConfirm && (
+        <PopupConfirm
+          onChange={manejarCambio}
+          message={
+            "<h2>¿Está seguro que quiere reemplazar al anterior operador?</h2><br/>Su asociación a la sucursal será removida. Contacta al anterior operador de ser necesario"
+          }
+        />
+      )}
       <div className={`${s.parent} body`}>
         <form onSubmit={handleConditionSumbit} className={s.f}>
           <h1>{dni ? "Editar Operador" : "Crear Operador"}</h1>

@@ -28,7 +28,7 @@ const CreateBranches = function () {
   useEffect(() => {
     if (id) {
       axios
-        .get(`http://localhost:3001/api/branches/info/${id}`)
+        .get(`${process.env.REACT_APP_API_URL}:3001/api/branches/info/${id}`)
         .then((res) => {
           nombre.setValue(res.data.name);
           setCorreoBlocked(res.data.email);
@@ -67,7 +67,7 @@ const CreateBranches = function () {
       capacity: maxCap.value,
     };
     axios
-      .post("http://localhost:3001/api/branches/", info, {
+      .post(`${process.env.REACT_APP_API_URL}:3001/api/branches/`, info, {
         withCredentials: true,
       })
       .then(() => {

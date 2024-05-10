@@ -65,7 +65,7 @@ const RecoverPassword = () => {
     } else setInvalidInformation("");
     axios
       .put(
-        `http://localhost:3001/api/nodeMailer/recoverPassword/${token}`,
+        `${process.env.REACT_APP_API_URL}:3001/api/nodeMailer/recoverPassword/${token}`,
         { newPassword },
         { withCredentials: true }
       )

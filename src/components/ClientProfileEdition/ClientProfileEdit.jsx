@@ -58,7 +58,9 @@ export default function ClientProfileEdit() {
   useEffect(() => {
     if (email) {
       axios
-        .get(`http://localhost:3001/api/users/edit/profile/${email}`)
+        .get(
+          `${process.env.REACT_APP_API_URL}:3001/api/users/edit/profile/${email}`
+        )
         .then((res) => {
           setUser({
             fullname: res.data.fullname,
@@ -141,7 +143,7 @@ export default function ClientProfileEdit() {
     }
 
     axios
-      .put("http://localhost:3001/api/users/edit/profile", {
+      .put(`${process.env.REACT_APP_API_URL}:3001/api/users/edit/profile`, {
         ...toPut,
       })
       .then(() => {
@@ -154,7 +156,9 @@ export default function ClientProfileEdit() {
   const handleDeleteUser = (e) => {
     if (e) e.preventDefault();
     axios
-      .put("http://localhost:3001/api/users/delete", { email: email })
+      .put(`${process.env.REACT_APP_API_URL}:3001/api/users/delete`, {
+        email: email,
+      })
       .then((resp) => {
         console.log("se elimino correctamente");
         document.cookie =

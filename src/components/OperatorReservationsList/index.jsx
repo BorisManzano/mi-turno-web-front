@@ -11,7 +11,7 @@ export const OperatorReservationsList = () => {
   useEffect(() => {
     axios
       .get(
-        `http://localhost:3001/api/users/operator/reservationsList/${user.DNI}`
+        `${process.env.REACT_APP_API_URL}:3001/api/users/operator/reservationsList/${user.DNI}`
       )
       .then((res) => {
         console.log("reservas traidas del back =>", res.data);

@@ -69,7 +69,9 @@ export default function ReservationPanel() {
   React.useEffect(() => {
     if (reservationId) {
       axios
-        .get(`http://localhost:3001/api/users/appointment/${reservationId}`)
+        .get(
+          `${process.env.REACT_APP_API_URL}:3001/api/users/appointment/${reservationId}`
+        )
         .then((result) => {
           const data = {
             reservationId: reservationId,
@@ -90,7 +92,7 @@ export default function ReservationPanel() {
     }
 
     axios
-      .get(`http://localhost:3001/api/branches/allBranches`)
+      .get(`${process.env.REACT_APP_API_URL}:3001/api/branches/allBranches`)
       .then((result) => {
         setBranches(result.data);
       })
@@ -130,7 +132,9 @@ export default function ReservationPanel() {
     const daysWithAppointments = [];
     const allAppointmentsOnBranch = [];
     axios
-      .get(`http://localhost:3001/api/appointments/confirmed/${id}`)
+      .get(
+        `${process.env.REACT_APP_API_URL}:3001/api/appointments/confirmed/${id}`
+      )
       .then((result) => {
         result.data.forEach((appointment) => {
           allAppointmentsOnBranch.push(appointment);
@@ -255,7 +259,9 @@ export default function ReservationPanel() {
       });
     }
     axios
-      .post("http://localhost:3001/api/users/newAppointment", { ...inputs })
+      .post(`${process.env.REACT_APP_API_URL}:3001/api/users/newAppointment`, {
+        ...inputs,
+      })
       .then((res) => {
         sendConfirmationEmail(
           inputs.email,
@@ -302,13 +308,13 @@ export default function ReservationPanel() {
       }
     }
     axios
-      .put("http://localhost:3001/api/users/newAppointment", {
+      .put(`${process.env.REACT_APP_API_URL}:3001/api/users/newAppointment`, {
         ...toPut,
       })
       .then((resp) => {
         axios
           .post(
-            "http://localhost:3001/api/nodeMailer/appointment/EditConfirmation",
+            `${process.env.REACT_APP_API_URL}:3001/api/nodeMailer/appointment/EditConfirmation`,
             {
               email: user.email,
               reservationId: toPut.reservationId,
@@ -366,7 +372,7 @@ export default function ReservationPanel() {
     time = time.slice(0, 5);
     axios
       .post(
-        "http://localhost:3001/api/nodeMailer/appointment/confirmation",
+        `${process.env.REACT_APP_API_URL}:3001/api/nodeMailer/appointment/confirmation`,
         { email, branch, date, time },
         {
           withCredentials: true,
