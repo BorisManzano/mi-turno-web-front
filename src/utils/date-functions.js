@@ -25,7 +25,6 @@ export function calculateTimeSlots(openingTime, closingTime, capacity) {
   openingTime[0] === "0"
     ? (startTime = openingTime.slice(1, 2))
     : (startTime = openingTime.slice(0, 2));
-  const endTime = closingTime.slice(0, 2);
   const availableSlotsForCapacityOfOne = Math.abs(
     parseInt(openingTime) - parseInt(closingTime)
   );

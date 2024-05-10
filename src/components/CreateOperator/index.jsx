@@ -1,9 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
 import s from "./style.module.scss";
 import Fullname from "../../commons/Form/Fullname";
 import axios from "axios";
 import useInput from "../../hooks/useInput";
-import { useNavigate, useParams } from "react-router";
+import { useParams } from "react-router";
 import Popup from "../../commons/Popup";
 import PasswordAndValidations from "../../commons/Form/PasswordAndValidations";
 import { PopupConfirm } from "../../commons/PopupConfirm";
@@ -17,7 +19,6 @@ const CreateOperator = function () {
     console.log(estadoSubmit);
   };
 
-  const navigate = useNavigate();
   const { dni } = useParams();
   const fullname = useInput("");
   const [emailBlocked, setEmailBlocked] = useState("");
@@ -136,7 +137,7 @@ const CreateOperator = function () {
       isConfirmed: true,
     };
 
-    if (password != "" && confirmPswd == password)
+    if (password !== "" && confirmPswd === password)
       data = { ...data, password: password };
 
     axios
@@ -167,11 +168,11 @@ const CreateOperator = function () {
 
   const handleConditionSumbit = (e) => {
     e.preventDefault();
-    const suc = sucursales.value.filter((s) => s.id == sucursal.value)[0];
+    const suc = sucursales.value.filter((s) => s.id === sucursal.value)[0];
     console.log(suc);
 
     if (dni) {
-      if (suc.operator && dni != suc.operator.DNI) {
+      if (suc.operator && dni !== suc.operator.DNI) {
         setShowPopUpConfirm(true);
       } else {
         handleSubmit();
@@ -186,7 +187,7 @@ const CreateOperator = function () {
   };
 
   useEffect(() => {
-    if (estadoSubmit == "accepted") {
+    if (estadoSubmit === "accepted") {
       setShowPopUpConfirm(false);
       handleSubmit();
     } else {

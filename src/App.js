@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import axios from "axios";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,7 +15,7 @@ import Register from "./components/Register";
 import ConfirmAccount from "./components/ConfirmAccount";
 import RouteNotFound from "./components/RouteNotFound";
 import IndexPage from "./components/IndexPage";
-import { motion, AnimatePresence, animate, delay } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 function App() {
   const location = useLocation();
   const { pathname } = location;

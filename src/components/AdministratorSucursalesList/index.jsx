@@ -43,7 +43,7 @@ export const AdministratorSucursalesList = () => {
   // const operators = allData;
 
   if (loading) return <>Loading...</>;
-  else if (allData.length == 0)
+  else if (allData.length === 0)
     return (
       <div className={s.container}>
         <h1 style={{ margin: "20px" }}>No hay sucursales</h1>

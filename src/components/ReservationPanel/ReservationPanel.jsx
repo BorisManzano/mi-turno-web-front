@@ -772,7 +772,6 @@ export default function ReservationPanel() {
               backgroundColor: "#a442f1",
               color: "white",
               borderRadius: "12px",
-              transition: "all 0.7s ease",
               transition: "transform 1.2s ease",
               "&:hover": {
                 backgroundColor: "#8631c7",

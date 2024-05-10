@@ -14,7 +14,6 @@ export default function ClientProfileEdit() {
   //=============popup confirm================
   const [showPopUpConfirm, setShowPopUpConfirm] = useState(false);
   const [estadoSubmit, setEstadoSubmit] = useState("none");
-  const [deleteInfo, setDeleteInfo] = useState("");
 
   const manejarCambio = (nuevoEstado) => {
     setEstadoSubmit(nuevoEstado);
@@ -29,7 +28,6 @@ export default function ClientProfileEdit() {
   const userRedux = useSelector((state) => state.user);
   const email = userRedux.email;
   const [user, setUser] = useState({});
-  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [confirmPswd, setConfirmPswd] = useState("");
   const [focus, setFocus] = useState(false);
@@ -73,6 +71,7 @@ export default function ClientProfileEdit() {
         })
         .catch((err) => console.error(err));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [email]);
   const [disabled, setDisabled] = useState(true);
   const [data, setData] = useState({
@@ -103,7 +102,6 @@ export default function ClientProfileEdit() {
   };
   const handleInputPassword = (e) => {
     const newValue = e.target.value;
-    setPassword(newValue);
     setData({ ...data, password: newValue });
     setChecklist({
       uppercaseLetter: /[A-ZÑ]/.test(newValue),
@@ -170,7 +168,7 @@ export default function ClientProfileEdit() {
 
   //=====================
   useEffect(() => {
-    if (estadoSubmit == "accepted") {
+    if (estadoSubmit === "accepted") {
       setEstadoSubmit("none");
       setShowPopUpConfirm(false);
       handleDeleteUser();
@@ -178,6 +176,7 @@ export default function ClientProfileEdit() {
       setEstadoSubmit("none");
       setShowPopUpConfirm(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [estadoSubmit]);
 
   //=====================

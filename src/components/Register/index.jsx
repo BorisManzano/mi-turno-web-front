@@ -17,6 +17,7 @@ export default function Register() {
     password: "",
   });
   const [error, setError] = useState("");
+  // eslint-disable-next-line no-unused-vars
   const [password, setPassword] = useState("");
   const [confirmPswd, setConfirmPswd] = useState("");
   const [showPassword, setShowPassword] = useState(false);

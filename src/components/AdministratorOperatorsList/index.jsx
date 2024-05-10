@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { TableList } from "../../commons/TableList";
 import axios from "axios";
 import s from "./style.module.scss";
-import { Button, accordionActionsClasses } from "@mui/material";
+import { Button } from "@mui/material";
 import { useNavigate } from "react-router";
 
 export const AdministratorOperatorsList = () => {
@@ -37,7 +37,7 @@ export const AdministratorOperatorsList = () => {
   // const operators = allData;
 
   if (loading) return <>Loading...</>;
-  else if (allData.length == 0)
+  else if (allData.length === 0)
     return (
       <div className={s.container}>
         <h1 style={{ margin: "20px" }}>No hay operadores</h1>

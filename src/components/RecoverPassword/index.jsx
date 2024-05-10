@@ -9,7 +9,6 @@ import Popup from "../../commons/Popup";
 
 const RecoverPassword = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [state, setState] = useState(true);
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
   const [newPassword, setNewPassword] = useState();
   const [newPasswordConfirmation, setNewPasswordConfirmation] = useState();
@@ -92,7 +91,7 @@ const RecoverPassword = () => {
           "fake-container-popup-active"
         );
       })
-      .catch(() => setState(false));
+      .catch(() => {});
   };
   return (
     <div>

@@ -36,7 +36,7 @@ export const UserReservationHistory = () => {
       });
   }, [user]);
   if (loading) return <>Loading...</>;
-  else if (reservations.length == 0)
+  else if (reservations.length === 0)
     return (
       <div className={s.container}>
         <h1 style={{ margin: "20px" }}>No hay reservas</h1>

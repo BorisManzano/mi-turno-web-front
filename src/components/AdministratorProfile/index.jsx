@@ -86,7 +86,6 @@ const AdministratorProfile = function () {
       return toast.error("LAS CONTRASEÑAS NO COINCIDEN", {
         position: toast.POSITION.TOP_CENTER,
       });
-      return;
     }
     if (confirmPswd && password && !checklist.validation) {
       toast.error("PASSWORD ERROR", {

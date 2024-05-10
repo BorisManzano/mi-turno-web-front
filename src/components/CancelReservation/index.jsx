@@ -39,9 +39,9 @@ export const CancelReservation = () => {
       })
       .then(() => setLoading(false))
       .catch((error) => console.error(error));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const user = useSelector((state) => state.user);
   const navigate = useNavigate();
 
   const handleOnClick = (e) => {

@@ -8,7 +8,6 @@ import PopupInput from "../../commons/PopupInput";
 import Eye from "../../assets/Eye";
 
 const Login = () => {
-  const apiUrl = process.env.REACT_APP_API_URL;
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [userInputValue, setUserInputValue] = useState();

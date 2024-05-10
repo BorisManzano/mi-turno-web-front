@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 import Button from "@mui/material/Button";
 import { red } from "@mui/material/colors";
 import React, { useEffect, useState } from "react";
@@ -46,8 +47,8 @@ export const TableList = ({ datatype, data_ }) => {
         `${process.env.REACT_APP_API_URL}:3001/api/users/admin/deleteOperator/${oid}`
       )
       .then(() => {
-        const newData = data.filter((obj) => obj.id != oid);
-        if (newData.length == 0) window.location.reload();
+        const newData = data.filter((obj) => obj.id !== oid);
+        if (newData.length === 0) window.location.reload();
         else {
           setData(newData);
           toast.success("Se eliminó al operador", {
@@ -64,8 +65,8 @@ export const TableList = ({ datatype, data_ }) => {
         `${process.env.REACT_APP_API_URL}:3001/api/users/admin/deleteBranch/${id}`
       )
       .then(() => {
-        const newData = data.filter((obj) => obj.id != id);
-        if (newData.length == 0) window.location.reload();
+        const newData = data.filter((obj) => obj.id !== id);
+        if (newData.length === 0) window.location.reload();
         else {
           setData(newData);
           toast.success("Se eliminó la sucursal", {
@@ -76,7 +77,7 @@ export const TableList = ({ datatype, data_ }) => {
   };
 
   useEffect(() => {
-    if (estadoSubmit == "accepted") {
+    if (estadoSubmit === "accepted") {
       setEstadoSubmit("none");
       setShowPopUpConfirm(false);
       dataType === "Sucursales"
@@ -86,6 +87,7 @@ export const TableList = ({ datatype, data_ }) => {
       setEstadoSubmit("none");
       setShowPopUpConfirm(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [estadoSubmit]);
 
   const dataType = datatype;
@@ -191,19 +193,18 @@ export const TableList = ({ datatype, data_ }) => {
         </h1>
         <div className={s.table}>
           {data.map((objIns, i) => {
-            {
-              if (filter === "without") {
-                if (objIns.operator) {
-                  return;
-                }
-              } else if (filter === "with") {
-                if (!objIns.operator) {
-                  return;
-                }
+            if (filter === "without") {
+              if (objIns.operator) {
+                return;
+              }
+            } else if (filter === "with") {
+              if (!objIns.operator) {
+                return;
               }
             }
+
             return (
-              objIns[objKeys[0]] != "" && (
+              objIns[objKeys[0]] !== "" && (
                 <div className={s.row} key={i}>
                   <div className={s.rowItem}>
                     <p>{column1}</p>
@@ -225,7 +226,7 @@ export const TableList = ({ datatype, data_ }) => {
                         &nbsp; · &nbsp;
                         <>{objIns[objKeys[4]].slice(0, 5)}hs</>
                       </b>
-                    ) : objIns[objKeys[2]] == "Sin asignar" ? (
+                    ) : objIns[objKeys[2]] === "Sin asignar" ? (
                       <b style={{ color: red[500] }}>Sin asignar</b>
                     ) : (
                       <b>{objIns[objKeys[2]]}</b>

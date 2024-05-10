@@ -1,8 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import "./index.scss";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../state/user";
-import { Tooltip } from "react-tooltip";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useState } from "react";
@@ -86,7 +86,6 @@ const OperatorProfile = function () {
       return toast.error("LAS CONTRASEÑAS NO COINCIDEN", {
         position: toast.POSITION.TOP_CENTER,
       });
-      return;
     }
     if (confirmPswd && password && !checklist.validation) {
       toast.error("PASSWORD ERROR", {

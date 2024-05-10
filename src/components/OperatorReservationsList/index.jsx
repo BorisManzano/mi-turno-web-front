@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -57,7 +58,7 @@ export const OperatorReservationsList = () => {
     return 0;
   });
   if (loading) return <>Loading...</>;
-  else if (reservationsList.length == 0)
+  else if (reservationsList.length === 0)
     return (
       <div className={s.container}>
         <h1>No hay Reservas por confirmar</h1>

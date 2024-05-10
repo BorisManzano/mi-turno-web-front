@@ -24,6 +24,7 @@ export default function Countdown() {
     if (countdown <= 0) {
       clearInterval(timerId.current);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return <p>{countdown >= 0 ? formatTime(countdown) : "Tiempo agotado"}</p>;

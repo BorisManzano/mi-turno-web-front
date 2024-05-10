@@ -1,3 +1,6 @@
+/* eslint-disable import/no-anonymous-default-export */
+/* eslint-disable no-const-assign */
+/* eslint-disable no-unused-vars */
 const USERS = [
   {
     id: 1,
@@ -795,15 +798,15 @@ class FakeData {
   getUserReservations = (user_id) => {
     const results = [];
     results = this.reservations.filter(
-      (reservation) => reservation.user_id == user_id
+      (reservation) => reservation.user_id === user_id
     );
     return results;
   };
   getBranch = (branch_id) => {
-    return this.branches.filter((branch) => branch.id == branch_id);
+    return this.branches.filter((branch) => branch.id === branch_id);
   };
   getUser = (user_id) => {
-    return this.users.filter((user) => user.id == user_id);
+    return this.users.filter((user) => user.id === user_id);
   };
   getUsers = () => this.users;
   getBranches = () => this.branches;
