@@ -16,7 +16,6 @@ const CreateOperator = function () {
 
   const manejarCambio = (nuevoEstado) => {
     setEstadoSubmit(nuevoEstado);
-    console.log(estadoSubmit);
   };
 
   const { dni } = useParams();
@@ -59,9 +58,6 @@ const CreateOperator = function () {
           setEmailBlocked(res.data.operator.email);
           dni_.setValue(res.data.operator.DNI);
           if (res.data.name) {
-            console.log(
-              sucursales.value.filter((suc) => suc.name === res.data.name)
-            );
             const obj = sucursales.value.filter(
               (suc) => suc.name === res.data.name
             )[0];
@@ -127,7 +123,6 @@ const CreateOperator = function () {
   const handleSubmit = (e) => {
     if (e) e.preventDefault();
 
-    console.log(parseInt(sucursal.value));
     let data = {
       fullname: fullname.value,
       DNI: dni_.value,
@@ -168,22 +163,37 @@ const CreateOperator = function () {
 
   const handleConditionSumbit = (e) => {
     e.preventDefault();
-    const suc = sucursales.value.filter((s) => s.id === sucursal.value)[0];
-    console.log(suc);
-
-    if (dni) {
-      if (suc.operator && dni !== suc.operator.DNI) {
-        setShowPopUpConfirm(true);
-      } else {
-        handleSubmit();
-      }
-    } else {
-      if (suc.operator) {
-        setShowPopUpConfirm(true);
-      } else {
-        handleSubmit();
-      }
-    }
+    handleSubmit();
+    // const suc = sucursales.value.filter((s) => s.id === sucursal.value)[0];
+    // if (!suc) {
+    //   setPopupInfo({
+    //     title: "Error",
+    //     text: "Refresque la pagina e intente nuevamente",
+    //     redirect: "/admin/operators",
+    //   });
+    //   logicPopUp(".body", "add", "external-div-container-inactive");
+    //   logicPopUp(
+    //     ".fake-container-popup",
+    //     "remove",
+    //     "fake-container-popup-inactive"
+    //   );
+    //   logicPopUp(".fake-container-popup", "add", "fake-container-popup-active");
+    //   return;
+    // }
+    // if (dni !== undefined) {
+    //   ("dni es esto", dni);
+    //   if (suc.operator && dni !== suc.operator.DNI) {
+    //     setShowPopUpConfirm(true);
+    //   } else {
+    //     handleSubmit();
+    //   }
+    // } else {
+    //   if (suc.operator) {
+    //     setShowPopUpConfirm(true);
+    //   } else {
+    //     handleSubmit();
+    //   }
+    // }
   };
 
   useEffect(() => {

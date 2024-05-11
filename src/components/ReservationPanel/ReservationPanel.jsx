@@ -322,8 +322,8 @@ export default function ReservationPanel() {
               time: resp.data[1][0].schedule.split(":").slice(0, 2).join(":"),
             }
           )
-          .then((res) => console.log("email enviado"))
-          .catch((error) => console.log(error));
+          .then((res) => console.error("email enviado"))
+          .catch((error) => console.error(error));
 
         setPopupInfo({
           title: `Turno modificado con éxito`,

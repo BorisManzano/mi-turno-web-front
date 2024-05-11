@@ -109,7 +109,7 @@ export const CancelReservation = () => {
               }
             )
             .then((res) => "")
-            .catch((error) => console.log(error));
+            .catch((error) => console.error(error));
           // document.querySelector(".fake-container-popup-active").style.display =
           //   "flex";
         })

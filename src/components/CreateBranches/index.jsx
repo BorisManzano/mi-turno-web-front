@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-unused-vars */
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
@@ -96,7 +98,6 @@ const CreateBranches = function () {
         return error;
       });
   };
-  // console.log(document.cookie);
   return (
     <>
       <div className="bodyContent">

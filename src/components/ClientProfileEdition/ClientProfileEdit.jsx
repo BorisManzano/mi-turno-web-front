@@ -17,7 +17,6 @@ export default function ClientProfileEdit() {
 
   const manejarCambio = (nuevoEstado) => {
     setEstadoSubmit(nuevoEstado);
-    console.log(estadoSubmit);
   };
 
   const handleConditionDelete = (e) => {
@@ -158,7 +157,6 @@ export default function ClientProfileEdit() {
         email: email,
       })
       .then((resp) => {
-        console.log("se elimino correctamente");
         document.cookie =
           "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
         dispatch(logout());

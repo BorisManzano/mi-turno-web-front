@@ -31,7 +31,6 @@ export const TableList = ({ datatype, data_ }) => {
 
   const manejarCambio = (nuevoEstado) => {
     setEstadoSubmit(nuevoEstado);
-    console.log(estadoSubmit);
   };
 
   const handleConditionDelete = (info, e) => {

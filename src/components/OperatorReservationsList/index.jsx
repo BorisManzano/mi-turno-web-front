@@ -15,7 +15,6 @@ export const OperatorReservationsList = () => {
         `${process.env.REACT_APP_API_URL}:3001/api/users/operator/reservationsList/${user.DNI}`
       )
       .then((res) => {
-        console.log("reservas traidas del back =>", res.data);
         setReservationsList(
           res.data.map((obj) => {
             //usernamew/reserva n/sucursal/date
