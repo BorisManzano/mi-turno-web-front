@@ -408,6 +408,7 @@ export default function ReservationPanel() {
             width: "fixed",
             height: "auto",
           }}
+          style={{ paddingBottom: "100px" }}
           rowSpacing={1}
           columnSpacing={{ xs: 1, sm: 2, md: 3 }}
         >
@@ -685,7 +686,7 @@ export default function ReservationPanel() {
                       className="button-confirm-reservation-panel"
                       sx={{
                         marginTop: "5%",
-                        marginBottom: "5%",
+                        marginBottom: "1%",
                         background: "#a442f1",
                         transition: "all 0.7s ease",
                         "&:hover": {
