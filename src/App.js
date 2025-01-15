@@ -22,9 +22,6 @@ function App() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
-  const token = document.cookie;
-  console.log(`🚀 - token:`, token);
-
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_API_URL}:3001/api/users/me`, {
