@@ -9,7 +9,38 @@ const PromotionalMessage = () => {
     <div>
       <div className="div-promotion-message">
         <p className="p-promotion-message">
-          Project made by: Hernán - Luis - Rosmari - Boris - Bautista
+          Project made by:{" "}
+          <a
+            href="https://www.linkedin.com/in/hern%C3%A1n-duarte-b70a90291/"
+            target="_blank"
+          >
+            {" "}
+            Hernán Duarte -
+          </a>{" "}
+          <a
+            href="https://www.linkedin.com/in/luis-robledo-7723a01b6/"
+            target="_blank"
+          >
+            Luis Robledo -
+          </a>
+          <a
+            href="https://www.linkedin.com/in/rosmari-serena-ledesma-britez-developer/"
+            target="_blank"
+          >
+            {" "}
+            Rosmari Ledesma -
+          </a>
+          <a
+            href="https://www.linkedin.com/in/boris-tob%C3%ADas-manzano-cocchi/"
+            target="_blank"
+          >
+            {" "}
+            Boris Manzano -
+          </a>
+          <a href="https://www.linkedin.com/in/bautistagorchs/" target="_blank">
+            {" "}
+            Bautista Gorchs
+          </a>
         </p>
         <svg
           xmlns="http://www.w3.org/2000/svg"
